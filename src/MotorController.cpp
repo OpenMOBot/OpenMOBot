@@ -114,20 +114,20 @@ void MotorControllerClass::SetPWM(int16_t left, int16_t right)
 	if (left > 0)
 	{
 		// Forward.
-    m_dirCntLeft = 1;
+		m_dirCntLeft = 1;
 		analogWrite(m_motorModel.PinLeftForward, 0);
 		analogWrite(m_motorModel.PinLeftBackward, abs(left));
 	}
 	else if (left < 0)
 	{
 		// Revers.
-    m_dirCntLeft = -1;
+		m_dirCntLeft = -1;
 		analogWrite(m_motorModel.PinLeftBackward, 0);
 		analogWrite(m_motorModel.PinLeftForward, abs(left));
 	}
 	else
 	{
-    m_dirCntLeft = 0;
+		m_dirCntLeft = 0;
 		analogWrite(m_motorModel.PinLeftForward, 0);
 		analogWrite(m_motorModel.PinLeftBackward, 0);
 	}
@@ -135,20 +135,20 @@ void MotorControllerClass::SetPWM(int16_t left, int16_t right)
 	if (right > 0)
 	{
 		// Forward.
-    m_dirCntRight = 1;
+		m_dirCntRight = 1;
 		analogWrite(m_motorModel.PinRightBackward, 0);
 		analogWrite(m_motorModel.PinRightForward, abs(right));
 	}
 	else if (right < 0)
 	{
 		// Revers.
-    m_dirCntRight = -1;
+		m_dirCntRight = -1;
 		analogWrite(m_motorModel.PinRightForward, 0);
 		analogWrite(m_motorModel.PinRightBackward, abs(right));
 	}
 	else
 	{
-    m_dirCntRight = 0;
+		m_dirCntRight = 0;
 		analogWrite(m_motorModel.PinRightForward, 0);
 		analogWrite(m_motorModel.PinRightBackward, 0);
 	}
