@@ -8,9 +8,7 @@ void FxTimer::update()
 {
 	m_now = millis();
 
-	unsigned long PassedTimeL = m_now - m_last_time;
-
-	if (PassedTimeL >= m_expiration_time)
+	if ((m_now - m_last_time) >= m_expiration_time)
 	{
 		if (m_expired == false)
 		{
