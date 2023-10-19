@@ -17,10 +17,10 @@ class FxTimer
 	 bool m_expired = false;
 
 	 /** @brief Expiration time. */
-	 int m_expiration_time = 0;
+	 unsigned long m_expiration_time = 0;
 	 
 	 /** @brief Last time. */
-	 int m_last_time = 0;
+	 unsigned long m_last_time = 0;
 	 
 	 /** @brief Current time. */
 	 unsigned long m_now = 0;

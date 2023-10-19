@@ -67,10 +67,23 @@ SOFTWARE.
 /** @brief Pin right encoder. */
 #define PIN_RIGHT_ENCODER 3
 
-#define PIN_L_PWM_F 9
-#define PIN_L_PWM_B 10
-#define PIN_R_PWM_F 5
-#define PIN_R_PWM_B 6
+/** @brief Pin left forward. */
+#define PIN_L_F 7
+
+/** @brief Pin left backward. */
+#define PIN_L_B 6
+
+/** @brief Pin left PWM. */
+#define PIN_L_PWM 10
+
+/** @brief Pin right forward. */
+#define PIN_R_F 5
+
+/** @brief Pin right backward. */
+#define PIN_R_B 4
+
+/** @brief Pin right PWM. */
+#define PIN_R_PWM 9
 
 #define PIN_US_SERVO 11
 #define PIN_US_TRIG 7

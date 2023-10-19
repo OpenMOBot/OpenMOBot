@@ -40,9 +40,11 @@ SOFTWARE.
 typedef struct
 {
 	uint8_t PinLeftForward; ///< Left speed pin.
-	uint8_t PinRightForward; ///< Right speed pin.
 	uint8_t PinLeftBackward; ///< Left direction pin.
+	uint8_t PinLeftPWM; ///< Left PWM pin.
+	uint8_t PinRightForward; ///< Right speed pin.
 	uint8_t PinRightBackward; ///< Right direction pin.
+	uint8_t PinRightPWM; ///< Right PWM pin.
 	double WheelDiameter; ///< Wheels diameter.
 	double DistanceBetweenWheels; ///< Distance between wheels.
 	uint32_t EncoderTracs; ///< Number of encoders track.
@@ -123,6 +125,15 @@ class MotorControllerClass
 	 */
 	void MoveMM(float mm, int mspeed);
 
+	/** @brief Control the PWM chanels of the H bridge for motor control.
+	 *  @param left int16_t, input value holding values of the left pair PWMs.
+	 *  @param right int16_t, input value holding values of the right pair PWMs.
+	 *  @return Void.
+	 */
+	void SetPWM(int16_t left, int16_t right);
+
+
+
 	/** @brief Function to Spin Right.
 	 *  @param mm float, Millimeters to be done.
 	 *  @param mspeed int, input value holding values of the PWM.
@@ -138,7 +149,7 @@ class MotorControllerClass
 	void SpinLeft(float mm, int mspeed);
 
 	void MoveSpeed(int16_t left, int16_t right);
-	void SetPWM(int16_t left, int16_t right);
+	
 
 	/**
 	 * @brief Get the Left Encoder value.

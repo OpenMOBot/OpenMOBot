@@ -42,10 +42,16 @@ void MotorControllerClass::init(MotorModel_t* model)
 	pinMode(m_motorModel.PinRightForward, OUTPUT);
 	pinMode(m_motorModel.PinLeftBackward, OUTPUT);
 	pinMode(m_motorModel.PinRightBackward, OUTPUT);
-	analogWrite(m_motorModel.PinLeftForward, 0);
-	analogWrite(m_motorModel.PinRightForward, 0);
-	analogWrite(m_motorModel.PinLeftBackward, 0);
-	analogWrite(m_motorModel.PinRightBackward, 0);
+
+	// Stop all directions
+	digitalWrite(m_motorModel.PinLeftForward, 0);
+	digitalWrite(m_motorModel.PinRightForward, 0);
+	digitalWrite(m_motorModel.PinLeftBackward, 0);
+	digitalWrite(m_motorModel.PinRightBackward, 0);
+
+	// Stop all eanbles/PWMs.
+	analogWrite(m_motorModel.PinLeftPWM, 0);
+	analogWrite(m_motorModel.PinRightPWM, 0);
 }
 
 /** @brief Update left encoder value.
@@ -115,42 +121,48 @@ void MotorControllerClass::SetPWM(int16_t left, int16_t right)
 	{
 		// Forward.
 		m_dirCntLeft = 1;
-		analogWrite(m_motorModel.PinLeftForward, 0);
-		analogWrite(m_motorModel.PinLeftBackward, abs(left));
+		digitalWrite(m_motorModel.PinLeftBackward, LOW);
+		digitalWrite(m_motorModel.PinLeftForward, HIGH);
+		analogWrite(m_motorModel.PinLeftPWM, abs(left));
 	}
 	else if (left < 0)
 	{
 		// Revers.
 		m_dirCntLeft = -1;
-		analogWrite(m_motorModel.PinLeftBackward, 0);
-		analogWrite(m_motorModel.PinLeftForward, abs(left));
+		digitalWrite(m_motorModel.PinLeftForward, LOW);
+		digitalWrite(m_motorModel.PinLeftBackward, HIGH);
+		analogWrite(m_motorModel.PinLeftPWM, abs(left));
 	}
 	else
 	{
 		m_dirCntLeft = 0;
-		analogWrite(m_motorModel.PinLeftForward, 0);
-		analogWrite(m_motorModel.PinLeftBackward, 0);
+		digitalWrite(m_motorModel.PinLeftForward, LOW);
+		digitalWrite(m_motorModel.PinLeftBackward, LOW);
+		analogWrite(m_motorModel.PinLeftPWM, 0);
 	}
 
 	if (right > 0)
 	{
 		// Forward.
 		m_dirCntRight = 1;
-		analogWrite(m_motorModel.PinRightBackward, 0);
-		analogWrite(m_motorModel.PinRightForward, abs(right));
+		digitalWrite(m_motorModel.PinRightBackward, LOW);
+		digitalWrite(m_motorModel.PinRightForward, HIGH);
+		analogWrite(m_motorModel.PinRightPWM, abs(right));
 	}
 	else if (right < 0)
 	{
 		// Revers.
 		m_dirCntRight = -1;
-		analogWrite(m_motorModel.PinRightForward, 0);
-		analogWrite(m_motorModel.PinRightBackward, abs(right));
+		digitalWrite(m_motorModel.PinRightForward, LOW);
+		digitalWrite(m_motorModel.PinRightBackward, HIGH);
+		analogWrite(m_motorModel.PinRightPWM, abs(right));
 	}
 	else
 	{
 		m_dirCntRight = 0;
-		analogWrite(m_motorModel.PinRightForward, 0);
-		analogWrite(m_motorModel.PinRightBackward, 0);
+		digitalWrite(m_motorModel.PinRightForward, LOW);
+		digitalWrite(m_motorModel.PinRightBackward, LOW);
+		analogWrite(m_motorModel.PinRightPWM, 0);
 	}
 }
 
