@@ -37,67 +37,140 @@ SOFTWARE.
 
 #pragma region GPIO Map
 
-/** @brief Pin line sensor 1. */
-#define PIN_LS_1 A0
+  // Check the microcontroller type
+  #if defined(__AVR_ATmega328P__)
 
-/** @brief Pin line sensor 2. */
-#define PIN_LS_2 A1
+	/** @brief Line sensors count. */
+	#define LINE_SENSORS_COUNT 6
 
-/** @brief Pin line sensor 3. */
-#define PIN_LS_3 A2
+	/** @brief Pin line sensor 1. */
+	#define PIN_LS_1 A0
 
-/** @brief Pin line sensor 4. */
-#define PIN_LS_4 A3
+	/** @brief Pin line sensor 2. */
+	#define PIN_LS_2 A1
 
-/** @brief Pin line sensor 5. */
-#define PIN_LS_5 A4
+	/** @brief Pin line sensor 3. */
+	#define PIN_LS_3 A2
 
-/** @brief Pin line sensor 6. */
-#define PIN_LS_6 A5
+	/** @brief Pin line sensor 4. */
+	#define PIN_LS_4 A3
 
-/** @brief Pin line sensor 7. */
-#define PIN_LS_7 14
+	/** @brief Pin line sensor 5. */
+	#define PIN_LS_5 A4
 
-/** @brief Pin line sensor 8. */
-#define PIN_LS_8 15
+	/** @brief Pin line sensor 6. */
+	#define PIN_LS_6 A5
 
-/** @brief Pin left encoder. */
-#define PIN_LEFT_ENCODER 2
+	/** @brief Pin left encoder. */
+	#define PIN_LEFT_ENCODER 2
 
-/** @brief Pin right encoder. */
-#define PIN_RIGHT_ENCODER 3
+	/** @brief Pin right encoder. */
+	#define PIN_RIGHT_ENCODER 3
 
-/** @brief Pin left forward. */
-#define PIN_L_F 7
+	/** @brief Pin left forward. */
+	#define PIN_L_F 7
 
-/** @brief Pin left backward. */
-#define PIN_L_B 6
+	/** @brief Pin left backward. */
+	#define PIN_L_B 6
 
-/** @brief Pin left PWM. */
-#define PIN_L_PWM 10
+	/** @brief Pin left PWM. */
+	#define PIN_L_PWM 10
 
-/** @brief Pin right forward. */
-#define PIN_R_F 5
+	/** @brief Pin right forward. */
+	#define PIN_R_F 5
 
-/** @brief Pin right backward. */
-#define PIN_R_B 4
+	/** @brief Pin right backward. */
+	#define PIN_R_B 4
 
-/** @brief Pin right PWM. */
-#define PIN_R_PWM 9
+	/** @brief Pin right PWM. */
+	#define PIN_R_PWM 9
 
-#define PIN_US_SERVO 11
+	/** @brief Pin ultrasonic servo PWM. */
+	#define PIN_US_SERVO 11
+
+	/** @brief Pin user LED */
+	#define PIN_USER_LED 13
+
+  // Check the microcontroller type
+  #elif defined(__AVR_ATmega2560__)
+
+	/** @brief Line sensors count. */
+	#define LINE_SENSORS_COUNT 8
+
+	/** @brief Pin line sensor 1. */
+	#define PIN_LS_1 8
+
+	/** @brief Pin line sensor 2. */
+	#define PIN_LS_2 9
+
+	/** @brief Pin line sensor 3. */
+	#define PIN_LS_3 10
+
+	/** @brief Pin line sensor 4. */
+	#define PIN_LS_4 11
+
+	/** @brief Pin line sensor 5. */
+	#define PIN_LS_5 12
+
+	/** @brief Pin line sensor 6. */
+	#define PIN_LS_6 13
+
+	/** @brief Pin line sensor 7. */
+	#define PIN_LS_7 14
+
+	/** @brief Pin line sensor 8. */
+	#define PIN_LS_8 15
+
+	/** @brief Pin left encoder. */
+	#define PIN_LEFT_ENCODER 2
+
+	/** @brief Pin right encoder. */
+	#define PIN_RIGHT_ENCODER 3
+
+	/** @brief Pin left forward. */
+	#define PIN_L_F 7
+
+	/** @brief Pin left backward. */
+	#define PIN_L_B 6
+
+	/** @brief Pin left PWM. */
+	#define PIN_L_PWM 10
+
+	/** @brief Pin right forward. */
+	#define PIN_R_F 5
+
+	/** @brief Pin right backward. */
+	#define PIN_R_B 4
+
+	/** @brief Pin right PWM. */
+	#define PIN_R_PWM 9
+
+	/** @brief Pin ultrasonic servo PWM. */
+	#define PIN_US_SERVO 11
+
+	/** @brief Pin user LED */
+	#define PIN_USER_LED 13
+  
+  // Check the microcontroller type
+  #elif defined(ESP8266)
+	#pragma message ("Unsuported ESP32")
+
+  // Check the microcontroller type
+  #elif defined(ESP32)
+	#pragma message ("Unsuported ESP8266")
+
+  // Unsuported
+  #else
+	#pragma message ("Unsuported MCU")
+
+  #endif
+
 #define PIN_US_TRIG 7
 #define PIN_US_ECHO 4
-
-#define PIN_USER_BUZZER 8
-#define PIN_USER_BUTTON 12
-#define PIN_USER_LED 13
 
 #pragma endregion
 
 #pragma region Line Sensor
-
-#define LINE_SENSORS_COUNT 6
 
 #define LINE_SENSORS_CALIBRATION_SIZE 50
 
