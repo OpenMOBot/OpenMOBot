@@ -38,22 +38,22 @@ SOFTWARE.
 #pragma region GPIO Map
 
 /** @brief Pin line sensor 1. */
-#define PIN_LS_1 8
+#define PIN_LS_1 A0
 
 /** @brief Pin line sensor 2. */
-#define PIN_LS_2 9
+#define PIN_LS_2 A1
 
 /** @brief Pin line sensor 3. */
-#define PIN_LS_3 10
+#define PIN_LS_3 A2
 
 /** @brief Pin line sensor 4. */
-#define PIN_LS_4 11
+#define PIN_LS_4 A3
 
 /** @brief Pin line sensor 5. */
-#define PIN_LS_5 12
+#define PIN_LS_5 A4
 
 /** @brief Pin line sensor 6. */
-#define PIN_LS_6 13
+#define PIN_LS_6 A5
 
 /** @brief Pin line sensor 7. */
 #define PIN_LS_7 14
@@ -97,7 +97,7 @@ SOFTWARE.
 
 #pragma region Line Sensor
 
-#define LINE_SENSORS_COUNT 8
+#define LINE_SENSORS_COUNT 6
 
 #define LINE_SENSORS_CALIBRATION_SIZE 50
 
