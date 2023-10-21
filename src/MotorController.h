@@ -219,6 +219,20 @@ class MotorControllerClass
 	 */
 	int16_t GetRightMotor();
 
+	/**
+	 * @brief Get the Left wheel RPM.
+	 * 
+	 * @return double RPM Value
+	 */
+	double GetLeftMotorRPM();
+
+	/**
+	 * @brief Get the Right wheel RPM.
+	 * 
+	 * @return double RPM Value
+	 */
+	double GetRightMotorRPM();
+
 #pragma endregion
 
 };

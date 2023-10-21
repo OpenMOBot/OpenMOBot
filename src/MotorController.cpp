@@ -288,6 +288,26 @@ int16_t MotorControllerClass::GetRightMotor()
 }
 
 /**
+ * @brief Get the Left wheel RPM.
+ * 
+ * @return double RPM Value
+ */
+double MotorControllerClass::GetLeftMotorRPM()
+{
+	return this->m_leftMotorRPM;
+}
+
+/**
+ * @brief Get the Right wheel RPM.
+ * 
+ * @return double RPM Value
+ */
+double MotorControllerClass::GetRightMotorRPM()
+{
+	return this->m_rightMotorRPM;
+}
+
+/**
  * @brief Bridge controller instance.
  * 
  */
