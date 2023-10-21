@@ -35,6 +35,8 @@ SOFTWARE.
 	#include "WProgram.h"
 #endif
 
+
+#include "FxTimer.h"
 // #include "DebugPort.h"
 
 typedef struct
@@ -85,7 +87,20 @@ class MotorControllerClass
 	 * 
 	 */
 	int16_t m_rightPWM;
+	
+	/** 
+	 * @brief Motor speed timer instance.
+	 */
+	FxTimer *m_MotorSpeedTimer;
 
+	double m_encLeftPulses;
+
+	double m_encRightPulses;
+
+	double m_leftMotorRPM;
+
+	double m_rightMotorRPM;
+	
 #pragma endregion
 
 #pragma region Methods
@@ -95,6 +110,11 @@ class MotorControllerClass
 	 *  @return encoder counts.
 	 */
 	unsigned int MM2Steps(float mm);
+
+	/** @brief Function to calculate motor speed.
+	 *  @return Void.
+	 */
+	void calc_motors_speed();
 
 #pragma endregion
 
@@ -107,6 +127,12 @@ class MotorControllerClass
 	 *  @return Void.
 	 */
 	void init(MotorModel_t* model);
+
+	/** @brief Update the bridge controller.
+	 *  @return Void.
+	 */
+	void update();
+
 
 	/** @brief Incremet the left encoder value.
 	 *  @return Void.
