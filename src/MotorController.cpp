@@ -167,6 +167,16 @@ void MotorControllerClass::calc_motors_speed()
  */
 void MotorControllerClass::SetPWM(int16_t left, int16_t right)
 {
+	// If the values are the same exit.
+	if (m_leftPWM == left && m_rightPWM == right)
+	{
+		return;
+	}
+	
+	// Else update new values.
+	m_leftPWM = left;
+	m_rightPWM = right;
+	
 	if (left > 0)
 	{
 		// Forward.
