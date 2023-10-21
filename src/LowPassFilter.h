@@ -35,17 +35,15 @@ SOFTWARE.
 	#include "WProgram.h"
 #endif
 
-// order is 1 or 2
-template <int order>
 class LowPassFilter
 {
-  private:
+  protected:
 
     bool m_adaptive;
 
-    float m_a[order];
+    float *m_a;
 
-    float m_b[order+1];
+    float *m_b;
 
     float m_omega0;
 
@@ -53,92 +51,19 @@ class LowPassFilter
 
     float m_tn1 = 0;
 
-    float m_x[order+1]; // Raw values
+    float *m_x; // Raw values
 
-    float m_y[order+1]; // Filtered values
+    float *m_y; // Filtered values
+
+	int m_order; // 1 or 2 order.
 
   public:  
 
-    LowPassFilter(float f0, float fs, bool adaptive)
-    {
-      // f0: cutoff frequency (Hz)
-      // fs: sample frequency (Hz)
-      // adaptive: boolean flag, if set to 1, the code will automatically set
-      // the sample frequency based on the time history.
-      
-      m_omega0 = 6.28318530718*f0;
-      m_dt = 1.0 / fs;
-      m_adaptive = adaptive;
-      m_tn1 = -m_dt;
+    LowPassFilter(int order, float f0, float fs, bool adaptive);
 
-      for(int k = 0; k < order+1; k++)
-      {
-        m_x[k] = 0;
-        m_y[k] = 0;        
-      }
+    void setCoef();
 
-      setCoef();
-    }
-
-    void setCoef()
-    {
-      if (m_adaptive)
-      {
-        float t = micros() / 1.0e6;
-        m_dt = t - m_tn1;
-        m_tn1 = t;
-      }
-      
-      float alpha = m_omega0 * m_dt;
-      if (order==1)
-      {
-        m_a[0] = -(alpha - 2.0) / (alpha+2.0);
-        m_b[0] = alpha / (alpha+2.0);
-        m_b[1] = alpha / (alpha+2.0);        
-      }
-
-      if (order==2)
-      {
-        float alphaSq = alpha * alpha;
-        float beta[] = {1, sqrt(2), 1};
-        float D = alphaSq * beta[0] + 2 * alpha * beta[1] + 4 * beta[2];
-        m_b[0] = alphaSq / D;
-        m_b[1] = 2 * m_b[0];
-        m_b[2] = m_b[0];
-        m_a[0] = -(2 * alphaSq * beta[0] - 8 * beta[2]) / D;
-        m_a[1] = -(beta[0] * alphaSq - 2 * beta[1] * alpha + 4 * beta[2]) / D;
-      }
-    }
-
-    float filt(float xn)
-    {
-      // Provide me with the current raw value: x
-      // I will give you the current filtered value: y
-      if(m_adaptive)
-      {
-        setCoef(); // Update coefficients if necessary      
-      }
-
-      m_y[0] = 0;
-      m_x[0] = xn;
-
-      // Compute the filtered values
-      for(int k = 0; k < order; k++)
-      {
-        m_y[0] += m_a[k] * m_y[k+1] + m_b[k] * m_x[k];
-      }
-      m_y[0] += m_b[order] * m_x[order];
-
-      // Save the historical values
-      for(int k = order; k > 0; k--)
-      {
-        m_y[k] = m_y[k-1];
-        m_x[k] = m_x[k-1];
-      }
-  
-      // Return the filtered value    
-      return m_y[0];
-    }
+    float filter(float xn);
 };
 
 #endif // _LOWPASSFILTER_h
