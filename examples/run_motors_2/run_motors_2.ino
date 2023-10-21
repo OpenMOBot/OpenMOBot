@@ -39,6 +39,7 @@ SOFTWARE.
 #include "OpenMOBot.h"
 #include "MotorController.h"
 #include "FxTimer.h"
+#include "LowPassFilter.h"
 
 #ifdef DEBUG_TEXT
 #include "DebugPort.h"
@@ -84,6 +85,9 @@ FxTimer *SendTimer_g;
 
 unsigned long EncoderPulses_g = 0;
 
+// Filter instance
+LowPassFilter<2> *LPFEncoder_g; // (5, 1e3, true);
+
 #pragma endregion
 
 void setup()
@@ -98,6 +102,9 @@ void setup()
 	attachInterrupt(digitalPinToInterrupt(PIN_LEFT_ENCODER), ISR_Left_Encoder, RISING);
 	// Increase counter 2 when speed sensor pin goes High.
 	attachInterrupt(digitalPinToInterrupt(PIN_RIGHT_ENCODER), ISR_Right_Encoder, RISING);
+  // Init the low pass filters.
+  LPFEncoder_g = new LowPassFilter<2>(15, 1e3, true);
+
 
   Serial.begin(9600);
   Serial.println("Leftencoder,RightEncoder");
@@ -158,7 +165,8 @@ void loop()
     SendTimer_g->updateLastTime();
     SendTimer_g->clear();
 
-    Serial.print(MotorController.GetLeftMotorRPM());
+    
+    Serial.print(LPFEncoder_g->filt(MotorController.GetLeftMotorRPM()));
     Serial.print(",");
     Serial.println(MotorController.GetRightMotorRPM());
   }
