@@ -54,12 +54,12 @@ void MotorControllerClass::init(MotorModel_t* model)
 	analogWrite(m_motorModel.PinRightPWM, 0);
 	
 	m_MotorSpeedTimer = new FxTimer();
-	m_MotorSpeedTimer->setExpirationTime(100);
+	m_MotorSpeedTimer->setExpirationTime(RPM_UPDATE_TIME);
 	m_MotorSpeedTimer->updateLastTime();
 	
 	// Init the low pass filters.
-	m_LPFLeftSpeed = new LowPassFilter(2, 2, 5, true);
-	m_LPFRightSpeed = new LowPassFilter(2, 2, 5, true);
+	m_LPFLeftSpeed = new LowPassFilter(FILTER_ORDER, SUPRESUN_FRQ, UPDATE_FRQ, FILTER_ADAPT);
+	m_LPFRightSpeed = new LowPassFilter(FILTER_ORDER, SUPRESUN_FRQ, UPDATE_FRQ, FILTER_ADAPT);
 }
 
 void MotorControllerClass::update()
