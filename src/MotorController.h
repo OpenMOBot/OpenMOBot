@@ -29,12 +29,17 @@ SOFTWARE.
 #ifndef _MOTORCONTROLLER_h
 #define _MOTORCONTROLLER_h
 
+#define FILTER_ORDER 2
+#define SUPRESUN_FRQ 2
+#define UPDATE_FRQ 5
+#define FILTER_ADAPT true
+#define RPM_UPDATE_TIME 100
+
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "arduino.h"
 #else
 	#include "WProgram.h"
 #endif
-
 
 #include "FxTimer.h"
 #include "LowPassFilter.h"
@@ -62,20 +67,30 @@ class MotorControllerClass
 
 #pragma region Variables
 
-	 /** @brief Motor settings. */
-	 MotorModel_t m_motorModel;
+	/**
+	 * @brief Motor settings.
+	 */
+	MotorModel_t m_motorModel;
 
-	 /** @brief Left encoder counter. */
-	 volatile long m_cntLeft;
+	/**
+	 * @brief Left encoder counter.
+	 */
+	volatile long m_cntLeft;
 
-	 /** @brief Right encoder counter. */
-	 volatile long m_cntRight;
+	/**
+	 * @brief Right encoder counter.
+	 */
+	volatile long m_cntRight;
 
-	 /** @brief Left encoder counter enable flag. */
-	 volatile int8_t m_dirCntLeft;
+	/**
+	 * @brief Left encoder counter enable flag.
+	 */
+	volatile int8_t m_dirCntLeft;
 
-	 /** @brief Right encoder counter enable flag. */
-	 volatile int8_t m_dirCntRight;
+	/** 
+	 * @brief Right encoder counter enable flag.
+	 */
+	volatile int8_t m_dirCntRight;
 
 	/**
 	 * @brief Left motor PWM value.
@@ -94,8 +109,14 @@ class MotorControllerClass
 	 */
 	FxTimer *m_MotorSpeedTimer;
 
+	/** 
+	 * @brief Left encoder pulses.
+	 */
 	double m_encLeftPulses;
 
+	/** 
+	 * @brief Right encoder pulses.
+	 */
 	double m_encRightPulses;
 
 	/** 
@@ -174,7 +195,6 @@ class MotorControllerClass
 	 *  @return Void.
 	 */
 	void SetPWM(int16_t left, int16_t right);
-
 
 
 	/** @brief Function to Spin Right.
@@ -257,4 +277,3 @@ class MotorControllerClass
 extern MotorControllerClass MotorController;
 
 #endif
-
