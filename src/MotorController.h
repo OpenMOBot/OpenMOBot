@@ -37,6 +37,7 @@ SOFTWARE.
 
 
 #include "FxTimer.h"
+#include "LowPassFilter.h"
 // #include "DebugPort.h"
 
 typedef struct
@@ -97,9 +98,25 @@ class MotorControllerClass
 
 	double m_encRightPulses;
 
+	/** 
+	 * @brief Left motor RPM.
+	 */
 	double m_leftMotorRPM;
 
+	/** 
+	 * @brief Right motor RPM.
+	 */
 	double m_rightMotorRPM;
+
+	/** 
+	 * @brief Low Pass filter left speed.
+	 */
+	LowPassFilter *m_LPFLeftSpeed; // (2, 5, 1e3, true);
+
+	/** 
+	 * @brief Low Pass filter right speed.
+	 */
+	LowPassFilter *m_LPFRightSpeed; // (2, 5, 1e3, true);
 	
 #pragma endregion
 
@@ -175,7 +192,6 @@ class MotorControllerClass
 	void SpinLeft(float mm, int mspeed);
 
 	void MoveSpeed(int16_t left, int16_t right);
-	
 
 	/**
 	 * @brief Get the Left Encoder value.

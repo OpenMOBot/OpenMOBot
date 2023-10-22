@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) [2019] [Orlin Dimitrov]
+Copyright (c) [2019] [OpenMOBot]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -56,6 +56,10 @@ void MotorControllerClass::init(MotorModel_t* model)
 	m_MotorSpeedTimer = new FxTimer();
 	m_MotorSpeedTimer->setExpirationTime(100);
 	m_MotorSpeedTimer->updateLastTime();
+	
+	// Init the low pass filters.
+	m_LPFLeftSpeed = new LowPassFilter(2, 2, 5, true);
+	m_LPFRightSpeed = new LowPassFilter(2, 2, 5, true);
 }
 
 void MotorControllerClass::update()
@@ -156,8 +160,8 @@ void MotorControllerClass::calc_motors_speed()
   PreviousTimeL = CurrentTimeL;
 
   // Convert speed to desired units (e.g., RPM)
-  m_leftMotorRPM = LeftPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs);
-  m_rightMotorRPM = RightPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs);
+  m_leftMotorRPM = m_LPFLeftSpeed->filter(LeftPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
+  m_rightMotorRPM = m_LPFLeftSpeed->filter(RightPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
 }
 
 /** @brief Control the PWM chanels of the H bridge for motor control.
