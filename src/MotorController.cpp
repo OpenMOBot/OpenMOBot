@@ -161,7 +161,7 @@ void MotorControllerClass::calc_motors_speed()
 
   // Convert speed to desired units (e.g., RPM)
   m_leftMotorRPM = m_LPFLeftSpeed->filter(LeftPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
-  m_rightMotorRPM = m_LPFLeftSpeed->filter(RightPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
+  m_rightMotorRPM = m_LPFRightSpeed->filter(RightPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
 }
 
 /** @brief Control the PWM chanels of the H bridge for motor control.
