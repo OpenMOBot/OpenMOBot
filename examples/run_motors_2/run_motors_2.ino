@@ -82,8 +82,6 @@ FxTimer *BlinkTimer_g;
  */
 FxTimer *SendTimer_g;
 
-unsigned long EncoderPulses_g = 0;
-
 #pragma endregion
 
 void setup()
@@ -158,6 +156,7 @@ void loop()
     SendTimer_g->updateLastTime();
     SendTimer_g->clear();
 
+    
     Serial.print(MotorController.GetLeftMotorRPM());
     Serial.print(",");
     Serial.println(MotorController.GetRightMotorRPM());
