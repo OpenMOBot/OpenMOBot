@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) [2019] [Orlin Dimitrov]
+Copyright (c) [2023] [OpenMOBot]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -110,7 +110,7 @@ void setup()
 #endif
 
 #ifdef DEBUG_OSC
-  Serial.begin(9600);
+  Serial.begin(DEFAULT_BAUD);
 #endif
 
 	// Initialize the line sensor.

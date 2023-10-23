@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) [2019] [OpenMOBot]
+Copyright (c) [2023] [OpenMOBot]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -161,7 +161,7 @@ void MotorControllerClass::calc_motors_speed()
 
   // Convert speed to desired units (e.g., RPM)
   m_leftMotorRPM = m_LPFLeftSpeed->filter(LeftPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
-  m_rightMotorRPM = m_LPFLeftSpeed->filter(RightPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
+  m_rightMotorRPM = m_LPFRightSpeed->filter(RightPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
 }
 
 /** @brief Control the PWM chanels of the H bridge for motor control.

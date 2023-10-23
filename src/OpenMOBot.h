@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) [2019] [OpenMOBOt]
+Copyright (c) [2023] [OpenMOBOt]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -91,6 +91,12 @@ SOFTWARE.
 	/** @brief Pin user LED */
 	#define PIN_USER_LED 13
 
+	/** @brief Pin ultra sonic trigger. */
+	#define PIN_US_TRIG 8
+	
+	/** @brief Pin ultra sonic echo. */
+	#define PIN_US_ECHO 12
+
   // Check the microcontroller type
   #elif defined(__AVR_ATmega2560__)
 
@@ -153,20 +159,17 @@ SOFTWARE.
   
   // Check the microcontroller type
   #elif defined(ESP8266)
-	#pragma message ("Unsuported ESP32")
+	#pragma message ("Unsupported ESP8266")
 
   // Check the microcontroller type
   #elif defined(ESP32)
-	#pragma message ("Unsuported ESP8266")
+	#pragma message ("Unsupported ESP32")
 
   // Unsuported
   #else
-	#pragma message ("Unsuported MCU")
+	#pragma message ("Unsupported MCU")
 
   #endif
-
-#define PIN_US_TRIG 7
-#define PIN_US_ECHO 4
 
 #pragma endregion
 
@@ -182,13 +185,15 @@ SOFTWARE.
 // Change to match value of encoder disk
 #define ENCODER_TRACKS 20
 
-#define WHEEL_DIAMETER 66.10F
+#define WHEEL_DIAMETER 66.00F
 
 #define DISTANCE_BETWEEN_WHEELS 130.00F
 
 #pragma endregion
 
 #define DEBOUNCE_TIME 100
+
+#define DEFAULT_BAUD 115200
 
 #endif
 

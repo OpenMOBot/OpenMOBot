@@ -1,8 +1,71 @@
-#define BLINK_INTERVAL 2000
+/*
+
+MIT License
+
+Copyright (c) [2023] [OpenMOBot]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*/
+
+#pragma region Definitions
+
+// #define DEBUG_TEXT
+
+#define DEBUG_OSC
+
+#define BLINK_INTERVAL 5000
+
+#pragma endregion
+
+#pragma region Headers
 
 #include "OpenMOBot.h"
 #include "MotorController.h"
 #include "FxTimer.h"
+
+#ifdef DEBUG_TEXT
+#include "DebugPort.h"
+#endif
+
+#pragma endregion
+
+#pragma region Functions Prototypes
+
+/** @brief Interrupt Service Routine for handling left encoder.
+ *  @return Void.
+ */
+void ISR_Left_Encoder();
+
+/** @brief Interrupt Service Routine for handling right encoder.
+ *  @return Void.
+ */
+void ISR_Right_Encoder();
+
+/** @brief Read motor speed.
+ *  @return Motor speed.
+ */
+double read_motor_speed();
+
+#pragma endregion
+
+#pragma region Variables
 
 /** 
  * @brief Blink led last state flag.
@@ -19,15 +82,7 @@ FxTimer *BlinkTimer_g;
  */
 FxTimer *SendTimer_g;
 
-/** @brief Interrupt Service Routine for handleng left encoder.
- *  @return Void.
- */
-void ISR_Left_Encoder();
-
-/** @brief Interrupt Service Routine for handleng right encoder.
- *  @return Void.
- */
-void ISR_Right_Encoder();
+#pragma endregion
 
 void setup()
 {
@@ -42,7 +97,7 @@ void setup()
 	// Increase counter 2 when speed sensor pin goes High.
 	attachInterrupt(digitalPinToInterrupt(PIN_RIGHT_ENCODER), ISR_Right_Encoder, RISING);
 
-  Serial.begin(115200);
+  Serial.begin(DEFAULT_BAUD);
   Serial.println("Leftencoder,RightEncoder");
 
   BlinkTimer_g = new FxTimer();
@@ -105,7 +160,9 @@ void loop()
   }
 }
 
-/** @brief Interrupt Service Routine for handleng left encoder.
+#pragma region Functions
+
+/** @brief Interrupt Service Routine for handling left encoder.
  *  @return Void.
  */
 void ISR_Left_Encoder()
@@ -113,10 +170,12 @@ void ISR_Left_Encoder()
 	MotorController.UpdateLeftEncoder();
 }
 
-/** @brief Interrupt Service Routine for handleng right encoder.
+/** @brief Interrupt Service Routine for handling right encoder.
  *  @return Void.
  */
 void ISR_Right_Encoder()
 {
 	MotorController.UpdateRightEncoder();
 }
+
+#pragma endregion
