@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) [2019] [Orlin Dimitrov]
+Copyright (c) [2023] [OpenMOBot]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -97,7 +97,7 @@ void setup()
 	// Increase counter 2 when speed sensor pin goes High.
 	attachInterrupt(digitalPinToInterrupt(PIN_RIGHT_ENCODER), ISR_Right_Encoder, RISING);
 
-  Serial.begin(9600);
+  Serial.begin(DEFAULT_BAUD);
   Serial.println("Leftencoder,RightEncoder");
 
   BlinkTimer_g = new FxTimer();
@@ -163,7 +163,9 @@ void loop()
   }
 }
 
-/** @brief Interrupt Service Routine for handleng left encoder.
+#pragma region Functions
+
+/** @brief Interrupt Service Routine for handling left encoder.
  *  @return Void.
  */
 void ISR_Left_Encoder()
@@ -171,10 +173,12 @@ void ISR_Left_Encoder()
 	MotorController.UpdateLeftEncoder();
 }
 
-/** @brief Interrupt Service Routine for handleng right encoder.
+/** @brief Interrupt Service Routine for handling right encoder.
  *  @return Void.
  */
 void ISR_Right_Encoder()
 {
 	MotorController.UpdateRightEncoder();
 }
+
+#pragma endregion
