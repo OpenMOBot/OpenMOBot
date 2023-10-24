@@ -58,8 +58,8 @@ void MotorControllerClass::init(MotorModel_t* model)
 	m_MotorSpeedTimer->updateLastTime();
 	
 	// Init the low pass filters.
-	m_LPFLeftSpeed = new LowPassFilter(FILTER_ORDER, SUPRESUN_FRQ, UPDATE_FRQ, FILTER_ADAPT);
-	m_LPFRightSpeed = new LowPassFilter(FILTER_ORDER, SUPRESUN_FRQ, UPDATE_FRQ, FILTER_ADAPT);
+	m_LPFLeftSpeed = new LowPassFilter(FILTER_ORDER, SUPPRESSION_FRQ, UPDATE_FRQ, FILTER_ADAPT);
+	m_LPFRightSpeed = new LowPassFilter(FILTER_ORDER, SUPPRESSION_FRQ, UPDATE_FRQ, FILTER_ADAPT);
 }
 
 void MotorControllerClass::update()
@@ -104,13 +104,13 @@ void MotorControllerClass::UpdateRightEncoder()
 	
 	if (m_dirCntRight < 0)
 	{
-    // Decrement motor right counter value.
-    m_cntRight--;
+		// Decrement motor right counter value.
+		m_cntRight--;
 	}
 	else if (m_dirCntRight > 0)
 	{
-    // Increment motor right counter value.
-    m_cntRight++;
+		// Increment motor right counter value.
+		m_cntRight++;
 	}
 }
 
@@ -136,32 +136,38 @@ unsigned int MotorControllerClass::MM2Steps(float mm)
 	return result;
 }
 
-
 void MotorControllerClass::calc_motors_speed()
 {
-  // Declare motor speed, number of pulses and time elapsed
-  static unsigned long PreviousTimeL = 0;
-  static unsigned long CurrentTimeL = 0;
-  static unsigned long DeltaTimeL = 0;
-  static double LeftPulsesPerMsL = 0;
-  static double RightPulsesPerMsL = 0;
+// Declare motor speed, number of pulses and time elapsed
+	static unsigned long PreviousTimeL = 0;
+	static unsigned long CurrentTimeL = 0;
+	static unsigned long DeltaTimeL = 0;
+	static double LeftPulsesPerMsL = 0;
+	static double RightPulsesPerMsL = 0;
 
-  // Calculate motor speed based on the number of pulses and time elapsed
-  CurrentTimeL = millis();
-  DeltaTimeL = CurrentTimeL - PreviousTimeL;
+	// Calculate motor speed based on the number of pulses and time elapsed
+	CurrentTimeL = millis();
+	DeltaTimeL = CurrentTimeL - PreviousTimeL;
 
-  // Calculate motor speed in pulses per millisecond
-  LeftPulsesPerMsL = static_cast<double>(m_encLeftPulses) / static_cast<double>(DeltaTimeL);
-  RightPulsesPerMsL = static_cast<double>(m_encRightPulses) / static_cast<double>(DeltaTimeL);
+#if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega2560__)
+ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+{
+#endif
+	// Calculate motor speed in pulses per millisecond
+	LeftPulsesPerMsL = static_cast<double>(m_encLeftPulses) / static_cast<double>(DeltaTimeL);
+	RightPulsesPerMsL = static_cast<double>(m_encRightPulses) / static_cast<double>(DeltaTimeL);
 
-  // Reset encoder pulse count and update previous time
-  m_encLeftPulses = 0;
-  m_encRightPulses = 0;
-  PreviousTimeL = CurrentTimeL;
+	// Reset encoder pulse count and update previous time
+	m_encLeftPulses = 0;
+	m_encRightPulses = 0;
+	PreviousTimeL = CurrentTimeL;
 
-  // Convert speed to desired units (e.g., RPM)
-  m_leftMotorRPM = m_LPFLeftSpeed->filter(LeftPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
-  m_rightMotorRPM = m_LPFRightSpeed->filter(RightPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
+	// Convert speed to desired units (e.g., RPM)
+	m_leftMotorRPM = m_LPFLeftSpeed->filter(LeftPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
+	m_rightMotorRPM = m_LPFRightSpeed->filter(RightPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
+#if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega2560__)
+}
+#endif
 }
 
 /** @brief Control the PWM chanels of the H bridge for motor control.
@@ -171,6 +177,26 @@ void MotorControllerClass::calc_motors_speed()
  */
 void MotorControllerClass::SetPWM(int16_t left, int16_t right)
 {
+	if (left > PWM_MAX)
+	{
+		left = PWM_MAX;
+	}
+
+	if (left < PWM_MIN)
+	{
+		left = PWM_MIN;
+	}
+
+	if (right > PWM_MAX)
+	{
+		right = PWM_MAX;
+	}
+
+	if (right < PWM_MIN)
+	{
+		right = PWM_MIN;
+	}
+
 	// If the values are the same exit.
 	if (m_leftPWM == left && m_rightPWM == right)
 	{
