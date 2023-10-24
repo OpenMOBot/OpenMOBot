@@ -62,10 +62,10 @@ SOFTWARE.
 	#define PIN_LS_6 A5
 
 	/** @brief Pin left encoder. */
-	#define PIN_LEFT_ENCODER 2
+	#define PIN_LEFT_ENCODER 3
 
 	/** @brief Pin right encoder. */
-	#define PIN_RIGHT_ENCODER 3
+	#define PIN_RIGHT_ENCODER 2
 
 	/** @brief Pin left forward. */
 	#define PIN_L_F 7
@@ -128,10 +128,10 @@ SOFTWARE.
 	#define PIN_LS_8 15
 
 	/** @brief Pin left encoder. */
-	#define PIN_LEFT_ENCODER 2
+	#define PIN_LEFT_ENCODER 3
 
 	/** @brief Pin right encoder. */
-	#define PIN_RIGHT_ENCODER 3
+	#define PIN_RIGHT_ENCODER 2
 
 	/** @brief Pin left forward. */
 	#define PIN_L_F 7
