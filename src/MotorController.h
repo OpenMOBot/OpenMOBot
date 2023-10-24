@@ -29,11 +29,40 @@ SOFTWARE.
 #ifndef _MOTORCONTROLLER_h
 #define _MOTORCONTROLLER_h
 
+/** 
+ * @brief LPF order.
+ */
 #define FILTER_ORDER 2
-#define SUPRESUN_FRQ 2
+
+/** 
+ * @brief LPF suppression frequency.
+ */
+#define SUPPRESSION_FRQ 2
+
+/** 
+ * @brief LPF update frequency.
+ */
 #define UPDATE_FRQ 5
+
+/** 
+ * @brief PWM adaptation.
+ */
 #define FILTER_ADAPT true
+
+/** 
+ * @brief RPM timer update time.
+ */
 #define RPM_UPDATE_TIME 100
+
+/** 
+ * @brief PWM minimum value.
+ */
+#define PWM_MIN 0
+
+/** 
+ * @brief PWM maximum value.
+ */
+#define PWM_MAX 255
 
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "arduino.h"
@@ -44,6 +73,10 @@ SOFTWARE.
 #include "FxTimer.h"
 #include "LowPassFilter.h"
 // #include "DebugPort.h"
+
+#if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega2560__)
+#include <util/atomic.h>
+#endif
 
 typedef struct
 {
