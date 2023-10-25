@@ -165,7 +165,7 @@ SOFTWARE.
   #elif defined(ESP32)
 	#pragma message ("Unsupported ESP32")
 
-  // Unsuported
+  // Unsupported
   #else
 	#pragma message ("Unsupported MCU")
 
