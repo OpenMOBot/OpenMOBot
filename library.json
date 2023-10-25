@@ -1,0 +1,42 @@
+{
+  "name": "OpenMOBot Framework Library",
+  "description": "Arduino library for OpenMOBot robot.",
+  "keywords": "OpenMOBot, robot",
+  "authors": [
+    {
+      "name": "Orlin Dimitrov",
+      "maintainer": true
+    },
+    {
+      "name": "Martin Ayvazov",
+      "maintainer": true
+    },
+    {
+      "name": "Borimir Georgiev",
+      "maintainer": true
+    },
+    {
+      "name": "Kristiyan Gyorev",
+      "maintainer": true
+    },
+    {
+      "name": "Martin Groshev",
+      "maintainer": true
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OpenMOBot/OpenMOBot.git"
+  },
+  "version": "1.0.0",
+  "license": "MIT",
+  "frameworks": "arduino",
+  "platforms": ["atmelavr", "atmelmegaavr", "avr"],
+  "dependencies": [
+    {
+      "name": "PIDv1",
+      "platforms": "avr"
+    }
+  ],
+  "headers": "DebugPort.h, FxTimer.h, HCSR04.h, LineSensor.h, LowPassFilter.h, LRData.h, MotorController.h, XYData.h, OpenMOBot.h, utils.h"
+}
