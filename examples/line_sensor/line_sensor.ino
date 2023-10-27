@@ -84,7 +84,13 @@ bool CalibrationDone_g = false;
 /**
   * @brief Line sensor position.
   */
-float LinePosition_g = 0.0;
+float LinePosCur_g = 0.0;
+
+/**
+  * @brief Line sensor position.
+  */
+float LinePosPrev_g = 0.0;
+
 
 /**
   * @brief StateStatusLED_g used to set the LED.
@@ -162,15 +168,41 @@ void loop()
 			CalibartionsL = 0;
       CalibrationDone_g = true;
       BlinkTimer_g->setExpirationTime(500);
+      LineSensorTimer_g->setExpirationTime(200);
 		}
 
     if (CalibrationDone_g)
     {
   		// Get Road conditions.
-	  	LinePosition_g = LineSensor.getLinePosition();
+	  	LinePosCur_g = LineSensor.getLinePosition();
+
 #ifdef DEBUG_OSC
-      Serial.println(LinePosition_g);
+      // Not on the line bit.
+      // If 1 the not on the line.
+      // If 0 then on the line.
+      Serial.print((LinePosCur_g > 500.0));
+      Serial.print(",");
+      // Left turn detector.
+      // If 1 then left turn.
+      // If 0 then no left turn.
+      Serial.print(((LinePosCur_g >= 0.0) && (LinePosCur_g <= 150.0)));
+      Serial.print(",");
+      // Right turn detector.
+      // If 1 then right turn.
+      // If 0 then no right turn.
+      Serial.print(((LinePosCur_g >= 350.0) && (LinePosCur_g <= 500.0)));
+      Serial.print(",");
+      // Side speed of the line.
+      // Negative means right motion of the robot.
+      // Positive means left motion of the robot.
+      Serial.print((LinePosCur_g - LinePosPrev_g));
+      Serial.print(",");
+      // Current line position.
+      Serial.println(LinePosCur_g);
 #endif
+
+      // Update the last position.
+      LinePosPrev_g = LinePosCur_g;
     }
   }
 }
