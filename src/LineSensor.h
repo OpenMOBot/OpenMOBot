@@ -35,7 +35,11 @@ SOFTWARE.
 #include "WProgram.h"
 #endif
 
-#include "DebugPort.h"
+// #include "DebugPort.h"
+#ifndef DEBUGLOG
+#define DEBUGLOG(...)
+#endif
+
 
 #define UPPER_HIGH 100
 #define UPPER_LOW 80
