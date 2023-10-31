@@ -47,30 +47,44 @@ In this particular section we will describe the examples that are provided by th
 
 This example is just blinking the build in LED. The purpose is to heat you up and see fas results with maximum safety before the run.
 
+![](https://raw.githubusercontent.com/OpenMOBot/OpenMOBot/create_reademe/images/img_1_blink_led.png)
+
  - [line_sensor](https://github.com/OpenMOBot/OpenMOBot/blob/development/examples/line_sensor/line_sensor.ino)
 
 Line sensor example is created to understand and test line sensor functionalities of the robot. This example also helps the user to understand does the electrical connections are good enough and is it connected properly in general way. For this kind of sensors is vary often to swap cables and pins, thats why this example is very good for test.
+
+![](https://raw.githubusercontent.com/OpenMOBot/OpenMOBot/create_reademe/images/img_1_line_sensor.png)
 
  - [us_servo](https://github.com/OpenMOBot/OpenMOBot/blob/development/examples/us_servo/us_servo.ino)
 
 The example simply runs the ultra-sonic sensor servo motor to see does it work properly or is it connected properly.
 
+![](https://raw.githubusercontent.com/OpenMOBot/OpenMOBot/create_reademe/images/img_1_us_servo.png)
+
  - [us_servo_2](https://github.com/OpenMOBot/OpenMOBot/blob/development/examples/us_servo_2/us_servo_2.ino)
 
 Second example are provided but this time it includes the ultra-sonic sensor distance information.
 
+![](https://raw.githubusercontent.com/OpenMOBot/OpenMOBot/create_reademe/images/img_1_us_servo_2.png)
+
  - [run_motors](https://github.com/OpenMOBot/OpenMOBot/blob/development/examples/run_motors/run_motors.ino)
 
 After we move our first motor, the servo motor it is time to move the main motors or engines of our robot. The example is focused to do this job, and provide nice information about its position, and passed way. <u>This example also provide a test for correctly connected motors and photo encoders.</u>
+
+![](https://raw.githubusercontent.com/OpenMOBot/OpenMOBot/create_reademe/images/img_1_run_motors.png)
 
  - [run_motors_2](https://github.com/OpenMOBot/OpenMOBot/blob/development/examples/run_motors_2/run_motors_2.ino)
 
 Great, if are on this stage of tests you are successfully run your motors.
 Likely the previous example we did read the motor position information, this time we will get more deep and will reed motor speed information.
 
+![](https://raw.githubusercontent.com/OpenMOBot/OpenMOBot/create_reademe/images/img_1_run_motors_2.png)
+
  - [run_motors_3](https://github.com/OpenMOBot/OpenMOBot/blob/development/examples/run_motors_3/run_motors_3.ino)
 
 Unfortunately because it is educational and hobby robot. This example only runs the left engine with PID regulator. We believe that if you pass trough this example it is time you to start writing your own code.
+
+![](https://raw.githubusercontent.com/OpenMOBot/OpenMOBot/create_reademe/images/img_1_run_motors_3.png)
 
   - [line_follower](https://github.com/OpenMOBot/OpenMOBot/blob/development/examples/line_follower/line_follower.ino)
 
