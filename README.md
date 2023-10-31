@@ -2,7 +2,7 @@
 
 ## Educational Robot System
 
-**Review**
+### Review
 
 This robot system is dedicated to focus on a few different aspects of education of robotics electronics and programming.
 The system provides modular robotics hardware that can be separated on a modular education blocks. Robot system covers:
@@ -11,7 +11,13 @@ The system provides modular robotics hardware that can be separated on a modular
  - Modular electronics that is extendable of various parts.
  - Modular software that is open source and easy to rewrite.
 
-**Installing the Arduino library**
+### Electronic schematic
+
+In this section we will describe the by schematic diagram how the electrical connection of the robot are made.
+
+![](https://github.com/OpenMOBot/OpenMOBot/blob/create_reademe/schematic/OpenBot_bb.png?raw=true)
+
+### Installing the Arduino library
  - Go to the [main branch](https://github.com/OpenMOBot/OpenMOBot).
  - Click first on Clone or Download > [Download ZIP](https://github.com/OpenMOBot/OpenMOBot/archive/refs/heads/main.zip).
  - Unzip it and place it in Arduino Libraries folder.
@@ -33,7 +39,7 @@ MAC users:
 
  - Create content.
 
-**Getting started**
+### Getting started
 
 In this particular section we will describe the examples that are provided by this library.
 
