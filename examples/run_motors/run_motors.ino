@@ -98,7 +98,6 @@ void setup()
 	attachInterrupt(digitalPinToInterrupt(PIN_RIGHT_ENCODER), ISR_Right_Encoder, RISING);
 
   Serial.begin(DEFAULT_BAUD);
-  Serial.println("Leftencoder,RightEncoder");
 
   BlinkTimer_g = new FxTimer();
   BlinkTimer_g->setExpirationTime(BLINK_INTERVAL);
@@ -136,11 +135,11 @@ void loop()
     // if the LED is off turn it on and vice-versa:
     if (StateStatusLED_g == LOW)
     {
-    	MotorController.SetPWM(-120, 120);
+    	MotorController.SetPWM(-150, 150);
     }
     else
     {
-    	MotorController.SetPWM(120, -120);
+    	MotorController.SetPWM(150, -150);
     }
 
     // set the LED with the StateStatusLED_g of the variable:
@@ -153,9 +152,11 @@ void loop()
   {
     SendTimer_g->updateLastTime();
     SendTimer_g->clear();
-
+  
+    Serial.print("LeftЕncoder:");
     Serial.print(MotorController.GetLeftEncoder());
     Serial.print(",");
+    Serial.print("RightEncoder:");
     Serial.println(MotorController.GetRightEncoder());
   }
 }

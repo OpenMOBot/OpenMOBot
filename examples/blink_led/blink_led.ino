@@ -61,7 +61,9 @@ FxTimer *BlinkTimer_g;
 
 void setup()
 {
-	// Setup the user LED pin.
+  Serial.begin(DEFAULT_BAUD);
+  
+  // Setup the user LED pin.
 	pinMode(PIN_USER_LED, OUTPUT);
 	
 	// Setup the blink timer.
@@ -81,5 +83,8 @@ void loop()
     // set the LED with the StateStatusLED_g of the variable:
     StateStatusLED_g = !StateStatusLED_g;
     digitalWrite(PIN_USER_LED, StateStatusLED_g);
+
+    Serial.print("StateStatusLED_g:");
+    Serial.println(StateStatusLED_g);
   }
 }

@@ -79,6 +79,8 @@ FxTimer *ServoSweepTimer;
 
 void setup()
 {
+  Serial.begin(DEFAULT_BAUD);
+
   // attaches the servo on pin 11 to the servo object
   UsServo_g.attach(PIN_US_SERVO);
 
@@ -138,5 +140,8 @@ void loop()
 
     // tell servo to go to position in variable 'pos'
     UsServo_g.write(ServoPosition_g);
+
+    Serial.print("ServoPosition:");
+    Serial.println(ServoPosition_g);
   }
 }
