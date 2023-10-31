@@ -57,7 +57,7 @@ SOFTWARE.
 /** 
  * @brief PWM minimum value.
  */
-#define PWM_MIN 0
+#define PWM_MIN -255
 
 /** 
  * @brief PWM maximum value.

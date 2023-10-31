@@ -91,7 +91,6 @@ float USDistance_g = 200;
 void setup()
 {
   Serial.begin(DEFAULT_BAUD);
-  Serial.println("Distance,Position");
 
   // attaches the servo on pin 11 to the servo object
   UsServo_g.attach(PIN_US_SERVO);
@@ -160,8 +159,9 @@ void loop()
     USDistance_g = HCSR04_g.convert(microsec, HCSR04::CM);
 
 
+    Serial.print("Distance:");
     Serial.print(USDistance_g);
     Serial.print(",");
-    Serial.println(ServoPosition_g);
-  }
+    Serial.print("ServoPosition:");
+    Serial.println(ServoPosition_g);  }
 }

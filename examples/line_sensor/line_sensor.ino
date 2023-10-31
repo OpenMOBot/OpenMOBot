@@ -180,24 +180,29 @@ void loop()
       // Not on the line bit.
       // If 1 the not on the line.
       // If 0 then on the line.
+      Serial.print("OnTheLine:");
       Serial.print((LinePosCur_g > 500.0));
       Serial.print(",");
       // Left turn detector.
       // If 1 then left turn.
       // If 0 then no left turn.
+      Serial.print("LeftTurn:");
       Serial.print(((LinePosCur_g >= 0.0) && (LinePosCur_g <= 150.0)));
       Serial.print(",");
       // Right turn detector.
       // If 1 then right turn.
       // If 0 then no right turn.
+      Serial.print("RightTurn:");
       Serial.print(((LinePosCur_g >= 350.0) && (LinePosCur_g <= 500.0)));
       Serial.print(",");
       // Side speed of the line.
       // Negative means right motion of the robot.
       // Positive means left motion of the robot.
+      Serial.print("SideSpeedOfTheLine:");
       Serial.print((LinePosCur_g - LinePosPrev_g));
       Serial.print(",");
       // Current line position.
+      Serial.print("LinePosition:");
       Serial.println(LinePosCur_g);
 #endif
 

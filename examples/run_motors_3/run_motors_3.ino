@@ -110,7 +110,6 @@ void setup()
 	attachInterrupt(digitalPinToInterrupt(PIN_RIGHT_ENCODER), ISR_Right_Encoder, RISING);
 
   Serial.begin(DEFAULT_BAUD);
-  Serial.println("LeftEncoder,RightEncoder");
 
   BlinkTimer_g = new FxTimer();
   BlinkTimer_g->setExpirationTime(BLINK_INTERVAL);
@@ -178,10 +177,13 @@ void loop()
     // Set the output from the regulator.
     MotorController.SetPWM(Output, 0);
 
+    Serial.print("Setpoint:");
     Serial.print(Setpoint);
     Serial.print(", ");
+    Serial.print("Input:");
     Serial.print(Input);
     Serial.print(", ");
+    Serial.print("Output:");
     Serial.println(Output);
   }
 }

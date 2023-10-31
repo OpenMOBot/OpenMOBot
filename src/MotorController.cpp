@@ -49,7 +49,7 @@ void MotorControllerClass::init(MotorModel_t* model)
 	digitalWrite(m_motorModel.PinLeftBackward, 0);
 	digitalWrite(m_motorModel.PinRightBackward, 0);
 
-	// Stop all eanbles/PWMs.
+	// Stop all enables/PWMs.
 	analogWrite(m_motorModel.PinLeftPWM, 0);
 	analogWrite(m_motorModel.PinRightPWM, 0);
 	

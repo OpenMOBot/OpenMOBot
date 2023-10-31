@@ -48,12 +48,12 @@ SOFTWARE.
 
 #pragma region Functions Prototypes
 
-/** @brief Interrupt Service Routine for handleng left encoder.
+/** @brief Interrupt Service Routine for handling left encoder.
  *  @return Void.
  */
 void ISR_Left_Encoder();
 
-/** @brief Interrupt Service Routine for handleng right encoder.
+/** @brief Interrupt Service Routine for handling right encoder.
  *  @return Void.
  */
 void ISR_Right_Encoder();
@@ -98,7 +98,6 @@ void setup()
 	attachInterrupt(digitalPinToInterrupt(PIN_RIGHT_ENCODER), ISR_Right_Encoder, RISING);
 
   Serial.begin(DEFAULT_BAUD);
-  Serial.println("Leftencoder,RightEncoder");
 
   BlinkTimer_g = new FxTimer();
   BlinkTimer_g->setExpirationTime(BLINK_INTERVAL);
@@ -157,8 +156,10 @@ void loop()
     SendTimer_g->clear();
 
     
+    Serial.print("LeftEncoder:");
     Serial.print(MotorController.GetLeftMotorRPM());
     Serial.print(",");
+    Serial.print("RightEncoder:");
     Serial.println(MotorController.GetRightMotorRPM());
   }
 }
