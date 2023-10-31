@@ -43,36 +43,54 @@ MAC users:
 
 In this particular section we will describe the examples that are provided by this library.
 
- - blink_led
+ - [blink_led](https://github.com/OpenMOBot/OpenMOBot/blob/development/examples/blink_led/blink_led.ino)
 
 This example is just blinking the build in LED. The purpose is to heat you up and see fas results with maximum safety before the run.
 
- - line_sensor
+ - [line_sensor](https://github.com/OpenMOBot/OpenMOBot/blob/development/examples/line_sensor/line_sensor.ino)
 
 Line sensor example is created to understand and test line sensor functionalities of the robot. This example also helps the user to understand does the electrical connections are good enough and is it connected properly in general way. For this kind of sensors is vary often to swap cables and pins, thats why this example is very good for test.
 
- - us_servo
+ - [us_servo](https://github.com/OpenMOBot/OpenMOBot/blob/development/examples/us_servo/us_servo.ino)
 
 The example simply runs the ultra-sonic sensor servo motor to see does it work properly or is it connected properly.
 
- - us_servo_2
+ - [us_servo_2](https://github.com/OpenMOBot/OpenMOBot/blob/development/examples/us_servo_2/us_servo_2.ino)
 
 Second example are provided but this time it includes the ultra-sonic sensor distance information.
 
- - run_motors
+ - [run_motors](https://github.com/OpenMOBot/OpenMOBot/blob/development/examples/run_motors/run_motors.ino)
 
 After we move our first motor, the servo motor it is time to move the main motors or engines of our robot. The example is focused to do this job, and provide nice information about its position, and passed way. <u>This example also provide a test for correctly connected motors and photo encoders.</u>
 
- - run_motors_2
+ - [run_motors_2](https://github.com/OpenMOBot/OpenMOBot/blob/development/examples/run_motors_2/run_motors_2.ino)
 
 Great, if are on this stage of tests you are successfully run your motors.
 Likely the previous example we did read the motor position information, this time we will get more deep and will reed motor speed information.
 
- - run_motors_3
+ - [run_motors_3](https://github.com/OpenMOBot/OpenMOBot/blob/development/examples/run_motors_3/run_motors_3.ino)
 
 Unfortunately because it is educational and hobby robot. This example only runs the left engine with PID regulator. We believe that if you pass trough this example it is time you to start writing your own code.
 
-  - line_follower
+  - [line_follower](https://github.com/OpenMOBot/OpenMOBot/blob/development/examples/line_follower/line_follower.ino)
 
 By this time (2023 5-th of November) we agree that this is the last example.
-We believe that you as enthusiast will start write your application using our API. After all it is your turn to show yourself what can you do with this robot. The example will provide a line following robot.
+We believe that you as enthusiast will start write your application using our API. After all it is your turn to show yourself what can you do with this robot. <u>The example will provide a line following robot.</u>
+
+# Contributing
+
+If you'd like to contribute to this project, please follow these steps:
+
+1. Fork the repository on GitHub.
+2. Clone your forked repository to your local machine.
+3. Create a new branch for your changes: `git checkout -b my-new-feature`.
+4. Make your modifications and write tests if applicable.
+5. Commit your changes: `git commit -am 'Add some feature'`.
+6. Push the branch to your forked repository: `git push origin my-new-feature`.
+7. Create a pull request on the main repository.
+
+We appreciate your contributions!
+
+# License
+
+This project is licensed under the MIT License. See the [MIT](https://www.mit.edu/~amini/LICENSE.md) file for more details.
