@@ -1,0 +1,32 @@
+#######################################
+# Syntax Coloring Map For OpenMOBot
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+MotorModel_t	KEYWORD1
+MotorController	KEYWORD1
+MotorControllerClass	KEYWORD1
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+MM2Steps	KEYWORD2
+init	KEYWORD2
+UpdateLeftEncoder	KEYWORD2
+UpdateRightEncoder	KEYWORD2
+MoveMM	KEYWORD2
+SpinRight	KEYWORD2
+SpinLeft	KEYWORD2
+GetLeftEncoder	KEYWORD2
+GetRightEncoder	KEYWORD2
+SetLeftEncoder	KEYWORD2
+SetRightEncoder	KEYWORD2
+GetLeftMotor	KEYWORD2
+GetRightMotor	KEYWORD2
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+PIN_LED	LITERAL1
+
