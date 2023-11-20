@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) [2019] [OpenMOBot]
+Copyright (c) [2023] [OpenMOBot]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -59,7 +59,7 @@ void LineSensorClass::init(int sensorCount)
 
 /** @brief read a single sensor.
  *  @param int sensor, Sensor index.
- *  @return uint16_t, ADC filtred sensor value.
+ *  @return uint16_t, ADC filtered sensor value.
  */
 void LineSensorClass::update()
 {
@@ -68,7 +68,7 @@ void LineSensorClass::update()
 
 	for (uint8_t index = 0; index < m_sensorsCount; index++)
 	{
-		m_curSensorsValues[index] = readFiltredSensor(index);
+		m_curSensorsValues[index] = readFilteredSensor(index);
 	}
 	
 	// Clamp and scale to resolution.
@@ -114,7 +114,7 @@ void LineSensorClass::calibrate()
 	// Find minimums and maximums.
 	for (uint8_t index = 0; index < m_sensorsCount; index++)
 	{
-		m_curSensorsValues[index] = readFiltredSensor(index);
+		m_curSensorsValues[index] = readFilteredSensor(index);
 
 		if (m_curSensorsValues[index] < m_minSensorsValues[index])
 		{
@@ -257,9 +257,9 @@ uint16_t LineSensorClass::readSensor(int sensorIndex)
 
 /** @brief Read a single sensor.
  *  @param int sensor, Sensor index.
- *  @return uint16_t, ADC filtred sensor value.
+ *  @return uint16_t, ADC filtered sensor value.
  */
-uint16_t LineSensorClass::readFiltredSensor(int sensorIndex)
+uint16_t LineSensorClass::readFilteredSensor(int sensorIndex)
 {
 	uint16_t SensorValueL = 0;
 
@@ -278,7 +278,7 @@ uint16_t LineSensorClass::readFiltredSensor(int sensorIndex)
 	return SensorValueL;
 }
 
-/** @brief Create histeresis binarization.
+/** @brief Create hysteresis binarization.
  *  @param int sensor, Sensor index.
  *  @return bool, Threshold level.
  */
@@ -311,7 +311,7 @@ float LineSensorClass::getLinePosition()
 	m_linePosition = 0;
 	m_onTheLineFlag = false;
 
-	// Determin line position.
+	// Determine line position.
 	for (uint8_t index = 0; index < m_sensorsCount; index++)
 	{
 		uint16_t value = m_actSensorsValues[index];

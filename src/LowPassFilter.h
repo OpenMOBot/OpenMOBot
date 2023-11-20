@@ -24,67 +24,46 @@ SOFTWARE.
 
 */
 
-#pragma region Definitions
+// LowPassFilter.h
 
-// #define DEBUG_TEXT
+#ifndef _LOWPASSFILTER_h
+#define _LOWPASSFILTER_h
 
-#define DEBUG_OSC
-
-#define BLINK_INTERVAL 500
-
-#pragma endregion
-
-#pragma region Headers
-
-#include "OpenMOBot.h"
-#include "FxTimer.h"
-
-#ifdef DEBUG_TEXT
-#include "DebugPort.h"
+#if defined(ARDUINO) && ARDUINO >= 100
+	#include "Arduino.h"
+#else
+	#include "WProgram.h"
 #endif
 
-#pragma endregion
-
-#pragma region Variables
-
-/**
-  * @brief StateStatusLED_g used to set the LED.
-  */
-int StateStatusLED_g = LOW;
-
-/** 
- * @brief Blink timer instance.
- */
-FxTimer *BlinkTimer_g;
-
-#pragma endregion
-
-void setup()
+class LowPassFilter
 {
-  Serial.begin(DEFAULT_BAUD);
-  
-  // Setup the user LED pin.
-	pinMode(PIN_USER_LED, OUTPUT);
-	
-	// Setup the blink timer.
-	BlinkTimer_g = new FxTimer();
-	BlinkTimer_g->setExpirationTime(BLINK_INTERVAL);
-	BlinkTimer_g->updateLastTime();
-}
+  protected:
 
-void loop()
-{
-  BlinkTimer_g->update();
-  if(BlinkTimer_g->expired())
-  {
-    BlinkTimer_g->updateLastTime();
-    BlinkTimer_g->clear();
+    bool m_adaptive;
 
-    // set the LED with the StateStatusLED_g of the variable:
-    StateStatusLED_g = !StateStatusLED_g;
-    digitalWrite(PIN_USER_LED, StateStatusLED_g);
+    float *m_a;
 
-    Serial.print("StateStatusLED_g:");
-    Serial.println(StateStatusLED_g);
-  }
-}
+    float *m_b;
+
+    float m_omega0;
+
+    float m_dt;
+
+    float m_tn1 = 0;
+
+    float *m_x; // Raw values
+
+    float *m_y; // Filtered values
+
+	int m_order; // 1 or 2 order.
+
+  public:  
+
+    LowPassFilter(int order, float f0, float fs, bool adaptive);
+
+    void setCoef();
+
+    float filter(float xn);
+};
+
+#endif // _LOWPASSFILTER_h

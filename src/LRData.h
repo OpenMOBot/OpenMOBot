@@ -24,67 +24,23 @@ SOFTWARE.
 
 */
 
-#pragma region Definitions
+// LRData.h
 
-// #define DEBUG_TEXT
+#ifndef _LRDATA_h
+#define _LRDATA_h
 
-#define DEBUG_OSC
-
-#define BLINK_INTERVAL 500
-
-#pragma endregion
-
-#pragma region Headers
-
-#include "OpenMOBot.h"
-#include "FxTimer.h"
-
-#ifdef DEBUG_TEXT
-#include "DebugPort.h"
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "arduino.h"
+#else
+#include "WProgram.h"
 #endif
 
-#pragma endregion
-
-#pragma region Variables
-
-/**
-  * @brief StateStatusLED_g used to set the LED.
-  */
-int StateStatusLED_g = LOW;
-
-/** 
- * @brief Blink timer instance.
- */
-FxTimer *BlinkTimer_g;
-
-#pragma endregion
-
-void setup()
+/** @brief Left and Right values for speed, or positions data structure. */
+typedef struct
 {
-  Serial.begin(DEFAULT_BAUD);
-  
-  // Setup the user LED pin.
-	pinMode(PIN_USER_LED, OUTPUT);
-	
-	// Setup the blink timer.
-	BlinkTimer_g = new FxTimer();
-	BlinkTimer_g->setExpirationTime(BLINK_INTERVAL);
-	BlinkTimer_g->updateLastTime();
-}
+	int L = 0; ///< Left
+	int R = 0; ///< Right 
+}LRData_t;
 
-void loop()
-{
-  BlinkTimer_g->update();
-  if(BlinkTimer_g->expired())
-  {
-    BlinkTimer_g->updateLastTime();
-    BlinkTimer_g->clear();
+#endif
 
-    // set the LED with the StateStatusLED_g of the variable:
-    StateStatusLED_g = !StateStatusLED_g;
-    digitalWrite(PIN_USER_LED, StateStatusLED_g);
-
-    Serial.print("StateStatusLED_g:");
-    Serial.println(StateStatusLED_g);
-  }
-}

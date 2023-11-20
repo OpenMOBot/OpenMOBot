@@ -126,6 +126,8 @@ void setup()
 
 void loop()
 {
+  MotorController.update();
+
   BlinkTimer_g->update();
   if(BlinkTimer_g->expired())
   {
@@ -135,11 +137,11 @@ void loop()
     // if the LED is off turn it on and vice-versa:
     if (StateStatusLED_g == LOW)
     {
-    	MotorController.SetPWM(-150, 150);
+    	MotorController.SetPWM(-120, 120);
     }
     else
     {
-    	MotorController.SetPWM(150, -150);
+    	MotorController.SetPWM(120, -120);
     }
 
     // set the LED with the StateStatusLED_g of the variable:
@@ -152,12 +154,13 @@ void loop()
   {
     SendTimer_g->updateLastTime();
     SendTimer_g->clear();
-  
-    Serial.print("LeftЕncoder:");
-    Serial.print(MotorController.GetLeftEncoder());
+
+    
+    Serial.print("LeftEncoder:");
+    Serial.print(MotorController.GetLeftMotorRPM());
     Serial.print(",");
     Serial.print("RightEncoder:");
-    Serial.println(MotorController.GetRightEncoder());
+    Serial.println(MotorController.GetRightMotorRPM());
   }
 }
 

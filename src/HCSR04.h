@@ -24,67 +24,58 @@ SOFTWARE.
 
 */
 
-#pragma region Definitions
+// HCSR04.h
 
-// #define DEBUG_TEXT
+#ifndef _HCSR04_h
+#define _HCSR04_h
 
-#define DEBUG_OSC
-
-#define BLINK_INTERVAL 500
-
-#pragma endregion
-
-#pragma region Headers
-
-#include "OpenMOBot.h"
-#include "FxTimer.h"
-
-#ifdef DEBUG_TEXT
-#include "DebugPort.h"
+#if defined(ARDUINO) && ARDUINO >= 100
+	#include "arduino.h"
+#else
+	#include "WProgram.h"
 #endif
 
-#pragma endregion
+// Undefine COMPILE_STD_DEV if you don't want Standard Deviation.
+#define COMPILE_STD_DEV
 
-#pragma region Variables
-
-/**
-  * @brief StateStatusLED_g used to set the LED.
-  */
-int StateStatusLED_g = LOW;
-
-/** 
- * @brief Blink timer instance.
- */
-FxTimer *BlinkTimer_g;
-
-#pragma endregion
-
-void setup()
+typedef struct bufferCtl
 {
-  Serial.begin(DEFAULT_BAUD);
-  
-  // Setup the user LED pin.
-	pinMode(PIN_USER_LED, OUTPUT);
-	
-	// Setup the blink timer.
-	BlinkTimer_g = new FxTimer();
-	BlinkTimer_g->setExpirationTime(BLINK_INTERVAL);
-	BlinkTimer_g->updateLastTime();
-}
+	float* pBegin;
+	float* pIndex;
+	size_t length;
+	bool filled;
+} BufCtl;
 
-void loop()
+class HCSR04
 {
-  BlinkTimer_g->update();
-  if(BlinkTimer_g->expired())
-  {
-    BlinkTimer_g->updateLastTime();
-    BlinkTimer_g->clear();
 
-    // set the LED with the StateStatusLED_g of the variable:
-    StateStatusLED_g = !StateStatusLED_g;
-    digitalWrite(PIN_USER_LED, StateStatusLED_g);
+protected:
+	int m_trigPin;
+	int m_echoPin;
+	float m_cmDivisor;
+	float m_inDivisor;
 
-    Serial.print("StateStatusLED_g:");
-    Serial.println(StateStatusLED_g);
-  }
-}
+#ifdef COMPILE_STD_DEV
+	size_t m_numBufs;
+	BufCtl* m_pBuffers;
+	void sampleUpdate(BufCtl* buf, float msec);
+	void freeBuffers();
+#endif // COMPILE_STD_DEV
+
+public:
+	void init(int tp, int ep);
+	long timing();
+	float convert(long microsec, int metric);
+	void setDivisor(float value, int metric);
+	static const int IN = 0;
+	static const int CM = 1;
+
+#ifdef COMPILE_STD_DEV
+	bool sampleCreate(size_t size, ...);
+	void sampleClear();
+	float unbiasedStdDev(float value, size_t bufNum);
+#endif // COMPILE_STD_DEV
+
+};
+
+#endif

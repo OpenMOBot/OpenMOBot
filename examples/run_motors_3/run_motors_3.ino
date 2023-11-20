@@ -36,6 +36,8 @@ SOFTWARE.
 
 #pragma region Headers
 
+#include <PID_v1.h>
+
 #include "OpenMOBot.h"
 #include "MotorController.h"
 #include "FxTimer.h"
@@ -58,11 +60,6 @@ void ISR_Left_Encoder();
  */
 void ISR_Right_Encoder();
 
-/** @brief Read motor speed.
- *  @return Motor speed.
- */
-double read_motor_speed();
-
 #pragma endregion
 
 #pragma region Variables
@@ -81,6 +78,21 @@ FxTimer *BlinkTimer_g;
  * @brief Send timer instance.
  */
 FxTimer *SendTimer_g;
+
+/** 
+ * @brief Define Variables we'll be connecting to
+ */
+double Setpoint, Input, Output;
+
+/** 
+ * @brief Define the aggressive and conservative Tuning Parameters.
+ */
+double consKp=2, consKi=0.025, consKd=0.00;
+
+/** 
+ * @brief Specify the links and initial tuning parameters.
+ */
+PID *myPID;
 
 #pragma endregion
 
@@ -122,25 +134,28 @@ void setup()
 
 	// Initialize the motor controller.
 	MotorController.init(&model);
+
+
+    // Set the PID regulator.
+    myPID = new PID(&Input, &Output, &Setpoint, consKp, consKi, consKd, DIRECT);
+    myPID->SetMode(AUTOMATIC);
+    myPID->SetSampleTime(50);
+    // myPID->SetTunings(DeviceConfiguration.KP, DeviceConfiguration.KI, DeviceConfiguration.KD);
+    myPID->SetOutputLimits(-PWM_MAX, PWM_MAX);
+
 }
 
 void loop()
 {
+  myPID->Compute();
+
+  MotorController.update();
+
   BlinkTimer_g->update();
   if(BlinkTimer_g->expired())
   {
     BlinkTimer_g->updateLastTime();
     BlinkTimer_g->clear();
-
-    // if the LED is off turn it on and vice-versa:
-    if (StateStatusLED_g == LOW)
-    {
-    	MotorController.SetPWM(-150, 150);
-    }
-    else
-    {
-    	MotorController.SetPWM(150, -150);
-    }
 
     // set the LED with the StateStatusLED_g of the variable:
     StateStatusLED_g = !StateStatusLED_g;
@@ -152,12 +167,24 @@ void loop()
   {
     SendTimer_g->updateLastTime();
     SendTimer_g->clear();
-  
-    Serial.print("LeftЕncoder:");
-    Serial.print(MotorController.GetLeftEncoder());
-    Serial.print(",");
-    Serial.print("RightEncoder:");
-    Serial.println(MotorController.GetRightEncoder());
+
+    // Set the speed.
+    Setpoint = 100;
+
+    // Set the input feedback.
+    Input = MotorController.GetLeftMotorRPM() / 5.0;
+
+    // Set the output from the regulator.
+    MotorController.SetPWM(Output, 0);
+
+    Serial.print("Setpoint:");
+    Serial.print(Setpoint);
+    Serial.print(", ");
+    Serial.print("Input:");
+    Serial.print(Input);
+    Serial.print(", ");
+    Serial.print("Output:");
+    Serial.println(Output);
   }
 }
 

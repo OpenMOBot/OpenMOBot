@@ -40,6 +40,7 @@ SOFTWARE.
 
 #include "OpenMOBot.h"
 #include "FxTimer.h"
+#include "HCSR04.h"
 
 #pragma endregion
 
@@ -75,6 +76,16 @@ FxTimer *BlinkTimer_g;
  */
 FxTimer *ServoSweepTimer;
 
+/** 
+ * @brief Ultrasonic sensor.
+ */
+HCSR04 HCSR04_g;
+
+/** 
+ * @brief Ultra sonic sensor distance value.
+ */
+float USDistance_g = 200;
+
 #pragma endregion
 
 void setup()
@@ -86,12 +97,15 @@ void setup()
 
   pinMode(PIN_USER_LED, OUTPUT);
 
+	// Initialize the ultrasonic.
+	HCSR04_g.init(PIN_US_TRIG, PIN_US_ECHO);
+
   BlinkTimer_g = new FxTimer();
   BlinkTimer_g->setExpirationTime(BLINK_INTERVAL);
   BlinkTimer_g->updateLastTime();
 
   ServoSweepTimer = new FxTimer();
-  ServoSweepTimer->setExpirationTime(15);
+  ServoSweepTimer->setExpirationTime(100);
   ServoSweepTimer->updateLastTime();
 }
 
@@ -141,7 +155,13 @@ void loop()
     // tell servo to go to position in variable 'pos'
     UsServo_g.write(ServoPosition_g);
 
+    long microsec = HCSR04_g.timing();
+    USDistance_g = HCSR04_g.convert(microsec, HCSR04::CM);
+
+
+    Serial.print("Distance:");
+    Serial.print(USDistance_g);
+    Serial.print(",");
     Serial.print("ServoPosition:");
-    Serial.println(ServoPosition_g);
-  }
+    Serial.println(ServoPosition_g);  }
 }

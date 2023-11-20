@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) [2019] [OpenMOBot]
+Copyright (c) [2023] [OpenMOBot]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,11 @@ SOFTWARE.
 #include "WProgram.h"
 #endif
 
-#include "DebugPort.h"
+// #include "DebugPort.h"
+#ifndef DEBUGLOG
+#define DEBUGLOG(...)
+#endif
+
 
 #define UPPER_HIGH 100
 #define UPPER_LOW 80
@@ -110,9 +114,9 @@ protected:
 
 	/** @brief Read a single sensor.
 	 *  @param int sensor, Sensor index.
-	 *  @return uint16_t, ADC filtred sensor value.
+	 *  @return uint16_t, ADC filtered sensor value.
 	 */
-	uint16_t readFiltredSensor(int sensorIndex);
+	uint16_t readFilteredSensor(int sensorIndex);
 
 #pragma endregion
 
@@ -157,7 +161,7 @@ public:
 
 	/** @brief read a single sensor.
 	 *  @param int sensor, Sensor index.
-	 *  @return uint16_t, ADC filtred sensor value.
+	 *  @return uint16_t, ADC filtered sensor value.
 	 */
 	void update();
 
@@ -171,9 +175,9 @@ public:
 	 */
 	float getLinePosition();
 
-	/** @brief Create histeresis binarization.
+	/** @brief Create hysteresis binarization.
 	 *  @param int sensor, Sensor index.
-	 *  @return bool, Threshhold level.
+	 *  @return bool, Threshold level.
 	 */
 	SensorState thresholdSensor(int sensorIndex);
 

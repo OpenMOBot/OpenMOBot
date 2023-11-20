@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) [2023] [OpenMOBot]
+Copyright (c) [2019] [Orlin Dimitrov]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,11 +24,10 @@ SOFTWARE.
 
 */
 
-// DebugPort.h
+// ApplicationState.h
 
-
-#ifndef _DEBUGPORT_h
-#define _DEBUGPORT_h
+#ifndef _APPPLICATIONSTATE_h
+#define _APPPLICATIONSTATE_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "arduino.h"
@@ -36,32 +35,17 @@ SOFTWARE.
 #include "WProgram.h"
 #endif
 
-#pragma region Headers
+#pragma region Enums
 
-#pragma endregion
-
-#pragma region Definitions
-
-#define ENABLE_DEBUG_OUT
-
-#define DEBUG_PORT Serial
-
-#define DEBUG_PORT_BAUDRATE 9600
-
-#ifdef ENABLE_DEBUG_OUT
-#define DEBUGLOG(...) DEBUG_PORT.print(__VA_ARGS__)
-#else
-#define DEBUGLOG(...)
-#endif
-
-#pragma endregion
-
-#pragma region Functions
-
-/** @brief Configure debug port.
- *  @return Void
- */
-void configure_debug_port();
+/** @brief Application state description enum. */
+enum ApplicationState : uint8_t
+{
+	WaitForCalibration = 1U, ///< Wait for calibration state.
+	CalibrateSensors, ///< Calibrate the sensors.
+	WaitForStart, ///< Wait for start.
+	Run, ///< Run the robot.
+	SafetyStop, ///< Safety stop the robot.
+};
 
 #pragma endregion
 

@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) [2019] [Orlin Dimitrov]
+Copyright (c) [2023] [OpenMOBot]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -49,9 +49,29 @@ void MotorControllerClass::init(MotorModel_t* model)
 	digitalWrite(m_motorModel.PinLeftBackward, 0);
 	digitalWrite(m_motorModel.PinRightBackward, 0);
 
-	// Stop all eanbles/PWMs.
+	// Stop all enables/PWMs.
 	analogWrite(m_motorModel.PinLeftPWM, 0);
 	analogWrite(m_motorModel.PinRightPWM, 0);
+	
+	m_MotorSpeedTimer = new FxTimer();
+	m_MotorSpeedTimer->setExpirationTime(RPM_UPDATE_TIME);
+	m_MotorSpeedTimer->updateLastTime();
+	
+	// Init the low pass filters.
+	m_LPFLeftSpeed = new LowPassFilter(FILTER_ORDER, SUPPRESSION_FRQ, UPDATE_FRQ, FILTER_ADAPT);
+	m_LPFRightSpeed = new LowPassFilter(FILTER_ORDER, SUPPRESSION_FRQ, UPDATE_FRQ, FILTER_ADAPT);
+}
+
+void MotorControllerClass::update()
+{
+	m_MotorSpeedTimer->update();
+	if(m_MotorSpeedTimer->expired())
+	{
+		m_MotorSpeedTimer->updateLastTime();
+		m_MotorSpeedTimer->clear();
+
+		calc_motors_speed();		
+	}
 }
 
 /** @brief Update left encoder value.
@@ -59,15 +79,18 @@ void MotorControllerClass::init(MotorModel_t* model)
  */
 void MotorControllerClass::UpdateLeftEncoder()
 {
+	// Increment left counter value.
+	m_encLeftPulses++;
+	
 	if (m_dirCntLeft < 0)
 	{
-    // Decrement Motor Left counter value.
-    m_cntLeft--;
+		// Decrement Motor Left counter value.
+		m_cntLeft--;
 	}
 	else if (m_dirCntLeft > 0)
 	{
-    // Increment Motor Left counter value.
-    m_cntLeft++;
+		// Increment Motor Left counter value.
+		m_cntLeft++;
 	}
 }
 
@@ -76,15 +99,18 @@ void MotorControllerClass::UpdateLeftEncoder()
  */
 void MotorControllerClass::UpdateRightEncoder()
 {
+	// Increment right counter value.	
+	m_encRightPulses++;
+	
 	if (m_dirCntRight < 0)
 	{
-    // Decrement motor right counter value.
-    m_cntRight--;
+		// Decrement motor right counter value.
+		m_cntRight--;
 	}
 	else if (m_dirCntRight > 0)
 	{
-    // Increment motor right counter value.
-    m_cntRight++;
+		// Increment motor right counter value.
+		m_cntRight++;
 	}
 }
 
@@ -110,6 +136,40 @@ unsigned int MotorControllerClass::MM2Steps(float mm)
 	return result;
 }
 
+void MotorControllerClass::calc_motors_speed()
+{
+// Declare motor speed, number of pulses and time elapsed
+	static unsigned long PreviousTimeL = 0;
+	static unsigned long CurrentTimeL = 0;
+	static unsigned long DeltaTimeL = 0;
+	static double LeftPulsesPerMsL = 0;
+	static double RightPulsesPerMsL = 0;
+
+	// Calculate motor speed based on the number of pulses and time elapsed
+	CurrentTimeL = millis();
+	DeltaTimeL = CurrentTimeL - PreviousTimeL;
+
+#if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega2560__)
+ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+{
+#endif
+	// Calculate motor speed in pulses per millisecond
+	LeftPulsesPerMsL = static_cast<double>(m_encLeftPulses) / static_cast<double>(DeltaTimeL);
+	RightPulsesPerMsL = static_cast<double>(m_encRightPulses) / static_cast<double>(DeltaTimeL);
+
+	// Reset encoder pulse count and update previous time
+	m_encLeftPulses = 0;
+	m_encRightPulses = 0;
+	PreviousTimeL = CurrentTimeL;
+
+	// Convert speed to desired units (e.g., RPM)
+	m_leftMotorRPM = m_LPFLeftSpeed->filter(LeftPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
+	m_rightMotorRPM = m_LPFRightSpeed->filter(RightPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
+#if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega2560__)
+}
+#endif
+}
+
 /** @brief Control the PWM chanels of the H bridge for motor control.
  *  @param left int16_t, input value holding values of the left pair PWMs.
  *  @param right int16_t, input value holding values of the right pair PWMs.
@@ -117,6 +177,36 @@ unsigned int MotorControllerClass::MM2Steps(float mm)
  */
 void MotorControllerClass::SetPWM(int16_t left, int16_t right)
 {
+	if (left > PWM_MAX)
+	{
+		left = PWM_MAX;
+	}
+
+	if (left < PWM_MIN)
+	{
+		left = PWM_MIN;
+	}
+
+	if (right > PWM_MAX)
+	{
+		right = PWM_MAX;
+	}
+
+	if (right < PWM_MIN)
+	{
+		right = PWM_MIN;
+	}
+
+	// If the values are the same exit.
+	if (m_leftPWM == left && m_rightPWM == right)
+	{
+		return;
+	}
+	
+	// Else update new values.
+	m_leftPWM = left;
+	m_rightPWM = right;
+	
 	if (left > 0)
 	{
 		// Forward.
@@ -225,6 +315,26 @@ int16_t MotorControllerClass::GetLeftMotor()
 int16_t MotorControllerClass::GetRightMotor()
 {
 	return this->m_rightPWM;
+}
+
+/**
+ * @brief Get the Left wheel RPM.
+ * 
+ * @return double RPM Value
+ */
+double MotorControllerClass::GetLeftMotorRPM()
+{
+	return this->m_leftMotorRPM;
+}
+
+/**
+ * @brief Get the Right wheel RPM.
+ * 
+ * @return double RPM Value
+ */
+double MotorControllerClass::GetRightMotorRPM()
+{
+	return this->m_rightMotorRPM;
 }
 
 /**
