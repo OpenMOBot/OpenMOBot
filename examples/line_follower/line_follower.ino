@@ -48,6 +48,7 @@ SOFTWARE.
 #include "LRData.h"
 #include "XYData.h"
 #include "MotorController.h"
+#include "utils.h"
 
 // #include <Servo.h>
 
@@ -122,12 +123,6 @@ void ISR_Left_Encoder();
  *  @return Void.
  */
 void ISR_Right_Encoder();
-
-/** @brief Transform [X, Y] coordinates to [L, R] PWM values.
- *  @param xyData X and Y "joystick" data.
- *  @return LRData_t Left and Right PWM transformation values.
- */
-LRData_t xy_to_lr(XYData_t xyData);
 
 #pragma endregion
 
@@ -282,7 +277,7 @@ uint16_t readSensor(int index)
 	return analogRead(PinsLineSensor_g[index]);
 }
 
-/** @brief Interrupt Service Routine for handleng left encoder.
+/** @brief Interrupt Service Routine for handling left encoder.
  *  @return Void.
  */
 void ISR_Left_Encoder()
@@ -290,64 +285,12 @@ void ISR_Left_Encoder()
 	MotorController.UpdateLeftEncoder();
 }
 
-/** @brief Interrupt Service Routine for handleng right encoder.
+/** @brief Interrupt Service Routine for handling right encoder.
  *  @return Void.
  */
 void ISR_Right_Encoder()
 {
 	MotorController.UpdateRightEncoder();
-}
-
-/** @brief Transform [X, Y] coordinates to [L, R] PWM values.
- *  @param xyData X and Y "joystick" data.
- *  @return LRData_t Left and Right PWM transformation values.
- */
-LRData_t xy_to_lr(XYData_t xyData)
-{
-	static LRData_t LRDataL;
-
-	// Throttle (Y axis) and direction (X axis).
-	static int ThrottleL, DirectionL = 0;
-
-	// Left Motor helper variables.
-	int leftMotor;
-	float leftMotorScale = 0;
-
-	// Right Motor helper variables.
-	int rightMotor;
-	float rightMotorScale = 0;
-
-	// Holds the mixed output scaling factor.
-	float maxMotorScale = 0;
-
-	// Clear PWM data.
-	LRDataL.L = 0;
-	LRDataL.R = 0;
-
-	// Acquire the analog input for X and Y.
-	// Then rescale the 0..1023 range to -255..255 range.
-	ThrottleL = (512 - xyData.Y) / 2;
-	DirectionL = -(512 - xyData.X) / 2;
-
-	// Mix throttle and direction
-	leftMotor = ThrottleL + DirectionL;
-	rightMotor = ThrottleL - DirectionL;
-
-	// Calculate the scale of the results in comparision base 8 bit PWM resolution
-	leftMotorScale = leftMotor / 255.0;
-	leftMotorScale = abs(leftMotorScale);
-	rightMotorScale = rightMotor / 255.0;
-	rightMotorScale = abs(rightMotorScale);
-
-	// Choose the max scale value if it is above 1
-	maxMotorScale = max(leftMotorScale, rightMotorScale);
-	maxMotorScale = max(1, maxMotorScale);
-
-	//and apply it to the mixed values
-	LRDataL.L = constrain(leftMotor / maxMotorScale, -255, 255);
-	LRDataL.R = constrain(rightMotor / maxMotorScale, -255, 255);
-
-	return LRDataL;
 }
 
 #pragma endregion
