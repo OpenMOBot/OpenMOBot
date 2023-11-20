@@ -92,7 +92,7 @@ typedef struct
 /** @brief H-bridge motor Controller. */
 } MotorModel_t;
 
-/** @brief H-bridge motor hontroller. */
+/** @brief H-bridge motor Controller. */
 class MotorControllerClass
 {
 
