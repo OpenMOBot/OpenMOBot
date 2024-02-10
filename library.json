@@ -36,7 +36,10 @@
     {
       "name": "PIDv1",
       "platforms": "avr"
+    },
+    {
+      "name": "FxTimer"
     }
   ],
-  "headers": "DebugPort.h, FxTimer.h, HCSR04.h, LineSensor.h, LowPassFilter.h, LRData.h, MotorController.h, XYData.h, OpenMOBot.h, utils.h"
+  "headers": "DebugPort.h, HCSR04.h, LineSensor.h, LowPassFilter.h, LRData.h, MotorController.h, XYData.h, OpenMOBot.h, utils.h"
 }
