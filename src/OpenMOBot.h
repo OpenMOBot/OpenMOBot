@@ -163,6 +163,7 @@ SOFTWARE.
 
   // Check the microcontroller type
   #elif defined(ESP32)
+	// https://mischianti.org/wp-content/uploads/2020/11/ESP32-DOIT-DEV-KIT-v1-pinout-mischianti.png
 
 	/** @brief Line sensors count. */
 	#define LINE_SENSORS_COUNT 6
