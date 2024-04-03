@@ -69,7 +69,7 @@ LRData_t xy_to_lr(XYData_t xyData)
 
 	// Choose the max scale value if it is above 1
 	maxMotorScale = max(leftMotorScale, rightMotorScale);
-	maxMotorScale = max(1, maxMotorScale);
+	maxMotorScale = max(1.0f, maxMotorScale);
 
 	//and apply it to the mixed values
 	LRDataL.L = constrain(leftMotor / maxMotorScale, -255, 255);
