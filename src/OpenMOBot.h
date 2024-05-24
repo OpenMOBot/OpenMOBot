@@ -169,58 +169,58 @@ SOFTWARE.
 	#define LINE_SENSORS_COUNT 6
 
 	/** @brief Pin line sensor 1. */
-	#define PIN_LS_1 36
+	#define PIN_LS_1 2
 
 	/** @brief Pin line sensor 2. */
-	#define PIN_LS_2 39
+	#define PIN_LS_2 4
 
 	/** @brief Pin line sensor 3. */
-	#define PIN_LS_3 34
+	#define PIN_LS_3 35
 
 	/** @brief Pin line sensor 4. */
-	#define PIN_LS_4 35
+	#define PIN_LS_4 34
 
 	/** @brief Pin line sensor 5. */
-	#define PIN_LS_5 32
+	#define PIN_LS_5 36
 
 	/** @brief Pin line sensor 6. */
-	#define PIN_LS_6 33
+	#define PIN_LS_6 39
 
 	/** @brief Pin left encoder. */
-	#define PIN_LEFT_ENCODER 22
+	#define PIN_LEFT_ENCODER 25
 
 	/** @brief Pin right encoder. */
-	#define PIN_RIGHT_ENCODER 23
+	#define PIN_RIGHT_ENCODER 26
 
 	/** @brief Pin left forward. */
-	#define PIN_L_F 14
+	#define PIN_L_F 27
 
 	/** @brief Pin left backward. */
-	#define PIN_L_B 12
+	#define PIN_L_B 14
 
 	/** @brief Pin left PWM. */
-	#define PIN_L_PWM 13
+	#define PIN_L_PWM 5
 
 	/** @brief Pin right forward. */
-	#define PIN_R_F 26
+	#define PIN_R_F 17
 
 	/** @brief Pin right backward. */
-	#define PIN_R_B 27
+	#define PIN_R_B 16
 
 	/** @brief Pin right PWM. */
-	#define PIN_R_PWM 25
+	#define PIN_R_PWM 13
 
 	/** @brief Pin ultrasonic servo PWM. */
-	#define PIN_US_SERVO 21
+	#define PIN_US_SERVO 23
 
 	/** @brief Pin user LED */
-	#define PIN_USER_LED 19
+	#define PIN_USER_LED 18
 
 	/** @brief Pin ultra sonic trigger. */
-	#define PIN_US_TRIG 18
+	#define PIN_US_TRIG 12
 	
 	/** @brief Pin ultra sonic echo. */
-	#define PIN_US_ECHO 5
+	#define PIN_US_ECHO 19
 
   // Unsupported
   #else
