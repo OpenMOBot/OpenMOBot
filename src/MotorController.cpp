@@ -138,7 +138,7 @@ unsigned int MotorControllerClass::MM2Steps(float mm)
 
 void MotorControllerClass::calc_motors_speed()
 {
-// Declare motor speed, number of pulses and time elapsed
+    // Declare motor speed, number of pulses and time elapsed
 	static unsigned long PreviousTimeL = 0;
 	static unsigned long CurrentTimeL = 0;
 	static unsigned long DeltaTimeL = 0;
