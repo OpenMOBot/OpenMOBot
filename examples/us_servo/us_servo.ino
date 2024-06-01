@@ -36,10 +36,19 @@ SOFTWARE.
 
 #pragma region Headers
 
+
+#if defined(__AVR_ATmega328P__)
 #include <Servo.h>
+#elif defined(__AVR_ATmega2560__)
+#include <Servo.h>
+#elif defined(ESP8266)
+#pragma message ("Unsupported ESP8266")
+#elif defined(ESP32)
+#include <ESP32Servo.h> 
+#endif
 
 #include "OpenMOBot.h"
-#include "FxTimer.h"
+
 
 #pragma endregion
 
@@ -91,7 +100,7 @@ void setup()
   BlinkTimer_g->updateLastTime();
 
   ServoSweepTimer = new FxTimer();
-  ServoSweepTimer->setExpirationTime(15);
+  ServoSweepTimer->setExpirationTime(30);
   ServoSweepTimer->updateLastTime();
 }
 

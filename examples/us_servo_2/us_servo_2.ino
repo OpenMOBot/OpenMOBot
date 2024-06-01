@@ -36,11 +36,17 @@ SOFTWARE.
 
 #pragma region Headers
 
+#if defined(__AVR_ATmega328P__)
 #include <Servo.h>
+#elif defined(__AVR_ATmega2560__)
+#include <Servo.h>
+#elif defined(ESP8266)
+#pragma message ("Unsupported ESP8266")
+#elif defined(ESP32)
+#include <ESP32Servo.h> 
+#endif
 
 #include "OpenMOBot.h"
-#include "FxTimer.h"
-#include "HCSR04.h"
 
 #pragma endregion
 
