@@ -166,6 +166,7 @@ ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	m_leftMotorRPM = m_LPFLeftSpeed->filter(LeftPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
 	m_rightMotorRPM = m_LPFRightSpeed->filter(RightPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
 
+	// Set the sign.
 	m_leftMotorRPM *= m_dirCntLeft;
 	m_rightMotorRPM *= m_dirCntRight;
 
