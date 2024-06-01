@@ -39,6 +39,9 @@ SOFTWARE.
 #include "LineSensor.h"
 #include "LowPassFilter.h"
 #include "MotorController.h"
+#include "LRData.h"
+#include "XYData.h"
+#include "utils.h"
 #include "FxTimer.h"
 
 #pragma region GPIO Map

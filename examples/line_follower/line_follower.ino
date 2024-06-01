@@ -43,12 +43,6 @@ SOFTWARE.
 
 #include "OpenMOBot.h"
 #include "DebugPort.h"
-#include "LineSensor.h"
-// #include "HCSR04.h"
-#include "LRData.h"
-#include "XYData.h"
-#include "MotorController.h"
-#include "utils.h"
 
 // #include <Servo.h>
 
