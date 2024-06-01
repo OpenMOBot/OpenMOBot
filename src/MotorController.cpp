@@ -165,6 +165,10 @@ ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	// Convert speed to desired units (e.g., RPM)
 	m_leftMotorRPM = m_LPFLeftSpeed->filter(LeftPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
 	m_rightMotorRPM = m_LPFRightSpeed->filter(RightPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
+
+	m_leftMotorRPM *= m_dirCntLeft;
+	m_rightMotorRPM *= m_dirCntRight;
+
 #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega2560__)
 }
 #endif
