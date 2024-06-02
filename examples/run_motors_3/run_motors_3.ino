@@ -39,8 +39,6 @@ SOFTWARE.
 #include <PID_v1.h>
 
 #include "OpenMOBot.h"
-#include "MotorController.h"
-#include "FxTimer.h"
 
 #ifdef DEBUG_TEXT
 #include "DebugPort.h"

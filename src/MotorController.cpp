@@ -138,7 +138,7 @@ unsigned int MotorControllerClass::MM2Steps(float mm)
 
 void MotorControllerClass::calc_motors_speed()
 {
-// Declare motor speed, number of pulses and time elapsed
+    // Declare motor speed, number of pulses and time elapsed
 	static unsigned long PreviousTimeL = 0;
 	static unsigned long CurrentTimeL = 0;
 	static unsigned long DeltaTimeL = 0;
@@ -165,6 +165,11 @@ ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	// Convert speed to desired units (e.g., RPM)
 	m_leftMotorRPM = m_LPFLeftSpeed->filter(LeftPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
 	m_rightMotorRPM = m_LPFRightSpeed->filter(RightPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
+
+	// Set the sign.
+	m_leftMotorRPM *= m_dirCntLeft;
+	m_rightMotorRPM *= m_dirCntRight;
+
 #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega2560__)
 }
 #endif
