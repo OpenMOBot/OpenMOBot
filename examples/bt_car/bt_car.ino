@@ -313,13 +313,13 @@ BluetoothSerial SerialBT_g;
  * @brief Received command.
  * 
  */
-char CodeRecv_g;
+char RecvCmd_g;
 
 /**
  * @brief Bluetooth number parser.
  * 
  */
-String NumPart_g = "";
+String CmdNumPart_g = "";
 
 /**
  * @brief LED 1 flag.
@@ -633,20 +633,20 @@ void read_bt_serial() {
     while (SerialBT_g.available() > 0) {
         String LineL = SerialBT_g.readStringUntil('\n');
         Serial.printf("code received: %s\n", LineL);
-        NumPart_g = "";
+        CmdNumPart_g = "";
         for (int index = 0; index < LineL.length(); index++) {
             int CharacterL = LineL[index];
             if (isDigit(CharacterL)) {
-                NumPart_g += (char) CharacterL;
+                CmdNumPart_g += (char) CharacterL;
             } else if (CharacterL != '\n') {
-                CodeRecv_g = CharacterL;
+                RecvCmd_g = CharacterL;
             } else {
                 break;
             }
         }
     }
 
-    switch (CodeRecv_g) {
+    switch (RecvCmd_g) {
     case CMD_FORWARD:
         Direction_g = Directions_t::Forward;
         break;
@@ -675,13 +675,13 @@ void read_bt_serial() {
         LED2_g = false;
         break;
     case CMD_SERVO_J:
-        if (NumPart_g != "") {
-            SonarServoPos_g = NumPart_g.toInt();
+        if (CmdNumPart_g != "") {
+            SonarServoPos_g = CmdNumPart_g.toInt();
         }
         break;
     case CMD_SERVO_K:
-        if (NumPart_g != "") {
-            ServoKPos_g = NumPart_g.toInt();
+        if (CmdNumPart_g != "") {
+            ServoKPos_g = CmdNumPart_g.toInt();
         }
         break;
     }
