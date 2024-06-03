@@ -88,7 +88,7 @@ typedef struct
 	uint8_t PinRightPWM; ///< Right PWM pin.
 	double WheelDiameter; ///< Wheels diameter.
 	double DistanceBetweenWheels; ///< Distance between wheels.
-	uint32_t EncoderTracs; ///< Number of encoders track.
+	uint32_t EncoderTracks; ///< Number of encoders track.
 /** @brief H-bridge motor Controller. */
 } MotorModel_t;
 
@@ -172,6 +172,25 @@ class MotorControllerClass
 	 */
 	LowPassFilter *m_LPFRightSpeed; // (2, 5, 1e3, true);
 	
+	/**
+	 * @brief Average to the left feedback.
+	 * 
+	 */
+	double m_avgLeft;
+
+	/**
+	 * @brief Average to the right feedback.
+	 * 
+	 */
+	double m_avgRight;
+
+	/**
+	 * @brief 
+	 * 
+	 */
+	double m_K = 0.7;
+
+
 #pragma endregion
 
 #pragma region Methods
