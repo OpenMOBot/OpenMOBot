@@ -125,67 +125,67 @@ SOFTWARE.
  * @brief Bluetooth Forward command.
  * 
  */
-#define BT_CMD_FORWARD 'F'
+#define CMD_FORWARD 'F'
 
 /**
  * @brief Bluetooth Left turn command.
  * 
  */
-#define BT_CMD_LEFT_TURN 'L'
+#define CMD_LEFT_TURN 'L'
 
 /**
  * @brief Bluetooth Backward command.
  * 
  */
-#define BT_CMD_BACKWARD 'B'
+#define CMD_BACKWARD 'B'
 
 /**
  * @brief Bluetooth Right turn command.
  * 
  */
-#define BT_CMD_RIGHT_TURN 'R'
+#define CMD_RIGHT_TURN 'R'
 
 /**
  * @brief Bluetooth Stop command.
  * 
  */
-#define BT_CMD_STOP 'S'
+#define CMD_STOP 'S'
 
 /**
  * @brief Bluetooth Toggle M command.
  * 
  */
-#define BT_CMD_TOGGLE_M 'M'
+#define CMD_TOGGLE_M 'M'
 
 /**
  * @brief Bluetooth Toggle m command.
  * 
  */
-#define BT_CMD_TOGGLE_m 'm'
+#define CMD_TOGGLE_m 'm'
 
 /**
  * @brief Bluetooth Toggle N command.
  * 
  */
-#define BT_CMD_TOGGLE_N 'N'
+#define CMD_TOGGLE_N 'N'
 
 /**
  * @brief Bluetooth Toggle n command.
  * 
  */
-#define BT_CMD_TOGGLE_n 'n'
+#define CMD_TOGGLE_n 'n'
 
 /**
  * @brief Bluetooth Servo J position command.
  * 
  */
-#define BT_CMD_SERVO_J 'J'
+#define CMD_SERVO_J 'J'
 
 /**
  * @brief Bluetooth Servo K position command.
  * 
  */
-#define BT_CMD_SERVO_K 'K'
+#define CMD_SERVO_K 'K'
 
 #if!defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
 #error Bluetooth is not enabled!Please run `make menuconfig` to and enable it
@@ -313,13 +313,13 @@ BluetoothSerial SerialBT_g;
  * @brief Received command.
  * 
  */
-char CodeRecv_g;
+char RecvCmd_g;
 
 /**
  * @brief Bluetooth number parser.
  * 
  */
-String NumPart_g = "";
+String CmdNumPart_g = "";
 
 /**
  * @brief LED 1 flag.
@@ -633,55 +633,55 @@ void read_bt_serial() {
     while (SerialBT_g.available() > 0) {
         String LineL = SerialBT_g.readStringUntil('\n');
         Serial.printf("code received: %s\n", LineL);
-        NumPart_g = "";
+        CmdNumPart_g = "";
         for (int index = 0; index < LineL.length(); index++) {
             int CharacterL = LineL[index];
             if (isDigit(CharacterL)) {
-                NumPart_g += (char) CharacterL;
+                CmdNumPart_g += (char) CharacterL;
             } else if (CharacterL != '\n') {
-                CodeRecv_g = CharacterL;
+                RecvCmd_g = CharacterL;
             } else {
                 break;
             }
         }
     }
 
-    switch (CodeRecv_g) {
-    case BT_CMD_FORWARD:
+    switch (RecvCmd_g) {
+    case CMD_FORWARD:
         Direction_g = Directions_t::Forward;
         break;
-    case BT_CMD_LEFT_TURN:
+    case CMD_LEFT_TURN:
         Direction_g = Directions_t::LeftTurn;
         break;
-    case BT_CMD_BACKWARD:
+    case CMD_BACKWARD:
         Direction_g = Directions_t::Backward;
         break;
-    case BT_CMD_RIGHT_TURN:
+    case CMD_RIGHT_TURN:
         Direction_g = Directions_t::RightTurn;
         break;
-    case BT_CMD_STOP:
+    case CMD_STOP:
         Direction_g = Directions_t::Stop;
         break;
-    case BT_CMD_TOGGLE_M:
+    case CMD_TOGGLE_M:
         LED1_g = true;
         break;
-    case BT_CMD_TOGGLE_m:
+    case CMD_TOGGLE_m:
         LED1_g = false;
         break;
-    case BT_CMD_TOGGLE_N:
+    case CMD_TOGGLE_N:
         LED2_g = true;
         break;
-    case BT_CMD_TOGGLE_n:
+    case CMD_TOGGLE_n:
         LED2_g = false;
         break;
-    case BT_CMD_SERVO_J:
-        if (NumPart_g != "") {
-            SonarServoPos_g = NumPart_g.toInt();
+    case CMD_SERVO_J:
+        if (CmdNumPart_g != "") {
+            SonarServoPos_g = CmdNumPart_g.toInt();
         }
         break;
-    case BT_CMD_SERVO_K:
-        if (NumPart_g != "") {
-            ServoKPos_g = NumPart_g.toInt();
+    case CMD_SERVO_K:
+        if (CmdNumPart_g != "") {
+            ServoKPos_g = CmdNumPart_g.toInt();
         }
         break;
     }

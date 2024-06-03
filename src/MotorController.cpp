@@ -124,7 +124,7 @@ unsigned int MotorControllerClass::MM2Steps(float mm)
 	float circumference = (m_motorModel.WheelDiameter * PI) / 10;
 
 	// mm per Step.
-	float mm_step = circumference / m_motorModel.EncoderTracs;
+	float mm_step = circumference / m_motorModel.EncoderTracks;
 
 	// Calculate result as a float.
 	float f_result = mm / mm_step;
@@ -163,12 +163,17 @@ ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	PreviousTimeL = CurrentTimeL;
 
 	// Convert speed to desired units (e.g., RPM)
-	m_leftMotorRPM = m_LPFLeftSpeed->filter(LeftPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
-	m_rightMotorRPM = m_LPFRightSpeed->filter(RightPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracs));
+	m_leftMotorRPM = m_LPFLeftSpeed->filter(LeftPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracks));
+	m_rightMotorRPM = m_LPFRightSpeed->filter(RightPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracks));
 
 	// Set the sign.
 	m_leftMotorRPM *= m_dirCntLeft;
 	m_rightMotorRPM *= m_dirCntRight;
+
+	// Apply average 
+	m_avgLeft += (m_leftMotorRPM - m_avgLeft) * m_K;
+	m_avgRight += (m_leftMotorRPM - m_avgRight) * m_K;
+
 
 #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega2560__)
 }
