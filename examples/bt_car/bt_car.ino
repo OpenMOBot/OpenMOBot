@@ -86,19 +86,20 @@ SOFTWARE.
  * @brief P value
  * 
  */
-#define CONST_P 3.5
+#define CONST_P 1.0
 
 /**
  * @brief I value
  * 
  */
-#define CONST_I 0.00001
+#define CONST_I 0.00
 
 /**
  * @brief D value
  * 
  */
 #define CONST_D 0.00
+
 
 #endif // ENABLE_PID
 
