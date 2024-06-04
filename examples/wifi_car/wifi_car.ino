@@ -471,7 +471,7 @@ void setup() {
     };
 
     // Initialize the motor controller.
-    MotorController.init( & MotorModelL);
+    MotorController.init(&MotorModelL);
 #endif // ENABLE_MOTORS
 
 #if defined(ENABLE_SONAR_SERVO)
@@ -495,7 +495,7 @@ void setup() {
     if (WiFi.waitForConnectResult() != WL_CONNECTED) {
         Serial.println("WiFi Failed");
         while (1) {
-            delay(1000);
+            delay(500);
         }
     }
     Serial.print("WiFi connected with IP:");
@@ -504,12 +504,12 @@ void setup() {
 
 #if defined(ENABLE_PID)
     // Set the PID regulators.
-    PIDLeft_g = new PID( & LeftMap_g, & OutLeft_g, & PWMLeft_g, CONST_P, CONST_I, CONST_D, DIRECT);
+    PIDLeft_g = new PID(&LeftMap_g, &OutLeft_g, &PWMLeft_g, CONST_P, CONST_I, CONST_D, DIRECT);
     PIDLeft_g -> SetMode(AUTOMATIC);
     PIDLeft_g -> SetSampleTime(PID_UPDATE_INTERVAL_MS);
     PIDLeft_g -> SetOutputLimits(-PWM_MAX, PWM_MAX);
 
-    PIDRight_g = new PID( & RightMap_g, & OutRight_g, & PWMRight_g, CONST_P, CONST_I, CONST_D, DIRECT);
+    PIDRight_g = new PID(&RightMap_g, &OutRight_g, &PWMRight_g, CONST_P, CONST_I, CONST_D, DIRECT);
     PIDRight_g -> SetMode(AUTOMATIC);
     PIDRight_g -> SetSampleTime(PID_UPDATE_INTERVAL_MS);
     PIDRight_g -> SetOutputLimits(-PWM_MAX, PWM_MAX);
@@ -595,7 +595,6 @@ void loop() {
     if (SendTimer_g -> expired()) {
         SendTimer_g -> updateLastTime();
         SendTimer_g -> clear();
-
 #if defined(ENABLE_PID)
     #if defined(ENABLE_MOTORS)
         Serial.print("PWMLeft_g:");
@@ -639,7 +638,7 @@ void loop() {
 #endif // ENABLE_PID
 #if defined(ENABLE_PID) || defined(ENABLE_MOTORS)
         Serial.println();
-#endif defined(ENABLE_PID) || defined(ENABLE_MOTORS)
+#endif // defined(ENABLE_PID) || defined(ENABLE_MOTORS)
     }
 }
 
@@ -649,7 +648,6 @@ void loop() {
 void connect() {
     if (!SocketClient_g.connect(IPAddress_g, SERVICE_PORT)) {
         Serial.println("Connection to host failed");
-        // delay(1000);
         return;
     }
     Serial.printf("Connected to: %s\n", SocketClient_g.remoteIP().toString());
