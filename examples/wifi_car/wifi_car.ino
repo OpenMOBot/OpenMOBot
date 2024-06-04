@@ -54,13 +54,13 @@ SOFTWARE.
  * @brief Enable PID regulators.
  * 
  */
-// #define ENABLE_PID
+#define ENABLE_PID
 
 /**
- * @brief Enable bluetooth interface.
+ * @brief Enable WiFi interface.
  * 
  */
-#define ENABLE_BT
+#define ENABLE_WIFI
 
 /**
  * @brief Time interval for update cycle.
@@ -100,103 +100,83 @@ SOFTWARE.
  */
 #define CONST_D 0.00
 
-
 #endif // ENABLE_PID
 
-#if defined(ENABLE_BT)
-/**
- * @brief Bluetooth device name.
- * 
- */
-#define BT_DEVICE_NAME "OpenMOBot"
+#if defined(ENABLE_WIFI)
 
 /**
- * @brief Bluetooth device timeout.
+ * @brief Service port.
  * 
  */
-#define BT_TIMEOUT 5
+#define SERVICE_PORT 50123
 
 /**
- * @brief Uncomment this to use PIN during pairing. The pin is specified on the line below.
- * 
- */
-//#define BT_PIN "1234"
-
-/**
- * @brief Bluetooth Forward command.
+ * @brief Forward command.
  * 
  */
 #define CMD_FORWARD 'F'
 
 /**
- * @brief Bluetooth Left turn command.
+ * @brief Left turn command.
  * 
  */
 #define CMD_LEFT_TURN 'L'
 
 /**
- * @brief Bluetooth Backward command.
+ * @brief Backward command.
  * 
  */
 #define CMD_BACKWARD 'B'
 
 /**
- * @brief Bluetooth Right turn command.
+ * @brief Right turn command.
  * 
  */
 #define CMD_RIGHT_TURN 'R'
 
 /**
- * @brief Bluetooth Stop command.
+ * @brief Stop command.
  * 
  */
 #define CMD_STOP 'S'
 
 /**
- * @brief Bluetooth Toggle M command.
+ * @brief Toggle M command.
  * 
  */
 #define CMD_TOGGLE_M 'M'
 
 /**
- * @brief Bluetooth Toggle m command.
+ * @brief Toggle m command.
  * 
  */
 #define CMD_TOGGLE_m 'm'
 
 /**
- * @brief Bluetooth Toggle N command.
+ * @brief Toggle N command.
  * 
  */
 #define CMD_TOGGLE_N 'N'
 
 /**
- * @brief Bluetooth Toggle n command.
+ * @brief Toggle n command.
  * 
  */
 #define CMD_TOGGLE_n 'n'
 
 /**
- * @brief Bluetooth Servo J position command.
+ * @brief Servo J position command.
  * 
  */
 #define CMD_SERVO_J 'J'
 
 /**
- * @brief Bluetooth Servo K position command.
+ * @brief Servo K position command.
  * 
  */
 #define CMD_SERVO_K 'K'
 
-#if!defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
-#error Bluetooth is not enabled!Please run `make menuconfig` to and enable it
-#endif
-
-#if!defined(CONFIG_BT_SPP_ENABLED)
-#error Serial Bluetooth not available or not enabled.It is only available for the ESP32 chip.
-#endif
-
-#endif // ENABLE_BT
+#endif // ENABLE_WIFI
 
 #if defined(ENABLE_MOTORS)
 /**
@@ -215,16 +195,16 @@ SOFTWARE.
  * @brief Motors PWM acceleration step.
  * 
  */
-#define PWM_STEP 5
+#define PWM_STEP 10
 #endif // ENABLE_MOTORS
 
-#if defined(ENABLE_SONAR_SERVO) || defined(ENABLE_BT)
+#if defined(ENABLE_SONAR_SERVO) || defined(ENABLE_WIFI)
 /**
  * @brief Sonar default servo position.
  * 
  */
 #define DEFAULT_SERVO_POS 90
-#endif // defined(ENABLE_SONAR_SERVO) || defined(ENABLE_BT)
+#endif // defined(ENABLE_SONAR_SERVO) || defined(ENABLE_WIFI)
 
 #pragma endregion
 
@@ -240,15 +220,16 @@ SOFTWARE.
 #include <PID_v1.h>
 #endif // ENABLE_PID
 
-#if defined(ENABLE_BT)
-#include "BluetoothSerial.h"
-#endif // ENABLE_BT
+#if defined(ENABLE_WIFI)
+#include "WiFi.h"
+#include "DefaultCredentials.h"
+#endif // ENABLE_WIFI
 
 #pragma endregion
 
 #pragma region Functions Prototypes
 
-#if defined(ENABLE_BT)
+#if defined(ENABLE_WIFI)
 /**
  * @brief Read sensors.
  * 
@@ -259,8 +240,8 @@ void send_sensors();
  * @brief Read bluetooth commands.
  * 
  */
-void read_bt_serial();
-#endif // ENABLE_BT
+void read_wifi_client();
+#endif // ENABLE_WIFI
 
 #if defined(ENABLE_MOTORS)
 /**
@@ -303,12 +284,27 @@ enum Directions_t : uint8_t{
 int StateStatusLED_g = LOW;
 #endif // ENABLE_STATUS_LED
 
-#if defined(ENABLE_BT)
+#if defined(ENABLE_WIFI)
+
 /**
- * @brief Bluetooth serial interface.
+ * @brief Socket client.
  * 
  */
-BluetoothSerial SerialBT_g;
+WiFiClient SocketClient_g;
+
+/**
+ * @brief Smartphone IP.
+ * 
+ */
+IPAddress IPAddress_g = IPAddress(192, 168, 88, 230);
+
+#if !defined(DEFAULT_SSID)
+#define DEFAULT_SSID "<YOUR_SSID>"
+#endif // DEFAULT_SSID
+
+#if !defined(DEFAULT_PASS)
+#define DEFAULT_PASS "<YOUR_PASS>"
+#endif // DEFAULT_PASS
 
 /**
  * @brief Received command.
@@ -317,7 +313,7 @@ BluetoothSerial SerialBT_g;
 char RecvCmd_g;
 
 /**
- * @brief Bluetooth number parser.
+ * @brief Message number parser.
  * 
  */
 String CmdNumPart_g = "";
@@ -346,7 +342,7 @@ int ServoKPos_g = DEFAULT_SERVO_POS;
  */
 float Temp_g = 0.0;
 
-#endif // ENABLE_BT
+#endif // ENABLE_WIFI
 
 #if defined(ENABLE_MOTORS)
 /**
@@ -356,7 +352,7 @@ float Temp_g = 0.0;
 Directions_t Direction_g;
 #endif // ENABLE_MOTORS
 
-#if defined(ENABLE_MOTORS) || defined(ENABLE_BT) || defined(ENABLE_PID)
+#if defined(ENABLE_MOTORS) || defined(ENABLE_WIFI) || defined(ENABLE_PID)
 /**
  * @brief Left motor PWM.
  * 
@@ -368,7 +364,19 @@ double PWMLeft_g = 0;
  * 
  */
 double PWMRight_g = 0;
-#endif // defined(ENABLE_MOTORS) || defined(ENABLE_BT) || defined(ENABLE_PID)
+
+/**
+ * @brief Feedback from left encoder.
+ * 
+ */
+double FBLeft_g = 0;
+
+/**
+ * @brief Feedback from right encoder.
+ * 
+ */
+double FBRight_g = 0;
+#endif // defined(ENABLE_MOTORS) || defined(ENABLE_WIFI) || defined(ENABLE_PID)
 
 #if defined(ENABLE_SONAR_SERVO)
 /**
@@ -377,21 +385,21 @@ double PWMRight_g = 0;
 Servo UsServo_g;
 #endif // ENABLE_SONAR_SERVO
 
-#if defined(ENABLE_SONAR_SERVO) || defined(ENABLE_BT)
+#if defined(ENABLE_SONAR_SERVO) || defined(ENABLE_WIFI)
 /**
  * @brief Servo J position.
  * 
  */
 int SonarServoPos_g = DEFAULT_SERVO_POS;
-#endif // defined(ENABLE_SONAR_SERVO) || defined(ENABLE_BT)
+#endif // defined(ENABLE_SONAR_SERVO) || defined(ENABLE_WIFI)
 
-#if defined(ENABLE_SONAR) || defined(ENABLE_BT)
+#if defined(ENABLE_SONAR) || defined(ENABLE_WIFI)
 /**
  * @brief Distance from sonar.
  * 
  */
 float Distance_g = 0.0;
-#endif // defined(ENABLE_SONAR) || defined(ENABLE_BT)
+#endif // defined(ENABLE_SONAR) || defined(ENABLE_WIFI)
 
 /** 
  * @brief Update timer instance.
@@ -415,7 +423,7 @@ HCSR04 HCSR04_g;
 /** 
  * @brief Define Variables we'll be connecting to
  */
-double FBLeft_g, FBRight_g, OutLeft_g, OutRight_g;
+double OutLeft_g, OutRight_g;
 
 /** 
  * @brief PID regulator for left wheel.
@@ -428,6 +436,9 @@ PID * PIDLeft_g;
 PID * PIDRight_g;
 
 #endif // ENABLE_PID
+
+double LeftMap_g;
+double RightMap_g;
 
 #pragma endregion
 
@@ -460,7 +471,7 @@ void setup() {
     };
 
     // Initialize the motor controller.
-    MotorController.init( & MotorModelL);
+    MotorController.init(&MotorModelL);
 #endif // ENABLE_MOTORS
 
 #if defined(ENABLE_SONAR_SERVO)
@@ -477,23 +488,28 @@ void setup() {
     pinMode(PIN_USER_LED, OUTPUT);
 #endif // ENABLE_STATUS_LED
 
-#if defined(ENABLE_BT)
-    // Bluetooth device name.
-    SerialBT_g.begin(BT_DEVICE_NAME);
-    SerialBT_g.setTimeout(BT_TIMEOUT);
-#ifdef BT_PIN
-    SerialBT_g.setPin(BT_PIN);
-#endif // BT_PIN
-#endif // ENABLE_BT
+#if defined(ENABLE_WIFI)
+    // Init wifi
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(DEFAULT_SSID, DEFAULT_PASS);
+    if (WiFi.waitForConnectResult() != WL_CONNECTED) {
+        Serial.println("WiFi Failed");
+        while (1) {
+            delay(500);
+        }
+    }
+    Serial.print("WiFi connected with IP:");
+    Serial.println(WiFi.localIP());
+#endif // ENABLE_WIFI
 
 #if defined(ENABLE_PID)
     // Set the PID regulators.
-    PIDLeft_g = new PID( & FBLeft_g, & OutLeft_g, & PWMLeft_g, CONST_P, CONST_I, CONST_D, DIRECT);
+    PIDLeft_g = new PID(&LeftMap_g, &OutLeft_g, &PWMLeft_g, CONST_P, CONST_I, CONST_D, DIRECT);
     PIDLeft_g -> SetMode(AUTOMATIC);
     PIDLeft_g -> SetSampleTime(PID_UPDATE_INTERVAL_MS);
     PIDLeft_g -> SetOutputLimits(-PWM_MAX, PWM_MAX);
 
-    PIDRight_g = new PID( & FBRight_g, & OutRight_g, & PWMRight_g, CONST_P, CONST_I, CONST_D, DIRECT);
+    PIDRight_g = new PID(&RightMap_g, &OutRight_g, &PWMRight_g, CONST_P, CONST_I, CONST_D, DIRECT);
     PIDRight_g -> SetMode(AUTOMATIC);
     PIDRight_g -> SetSampleTime(PID_UPDATE_INTERVAL_MS);
     PIDRight_g -> SetOutputLimits(-PWM_MAX, PWM_MAX);
@@ -506,14 +522,16 @@ void setup() {
     SendTimer_g = new FxTimer();
     SendTimer_g -> setExpirationTime(DEBUG_UPDATE_INTERVAL_MS);
     SendTimer_g -> updateLastTime();
+
+    connect();
 }
 
 void loop() {
 
-#if defined(ENABLE_BT)
+#if defined(ENABLE_WIFI)
     // Read serial.
-    read_bt_serial();
-#endif // ENABLE_BT
+    read_wifi_client();
+#endif // ENABLE_WIFI
 
     // Update the timer. 
     UpdateTimer_g -> update();
@@ -526,10 +544,10 @@ void loop() {
     Distance_g = HCSR04_g.convert(MicrosecL, HCSR04::CM);
 #endif // ENABLE_SONAR
 
-#if defined(ENABLE_BT)
+#if defined(ENABLE_WIFI)
         // Send feed back.
         send_sensors();
-#endif // ENABLE_BT
+#endif // ENABLE_WIFI
 
 #if defined(ENABLE_MOTORS)
         // Update the PWM.
@@ -537,20 +555,23 @@ void loop() {
 
         // Update motor speeds.
         MotorController.update();
+
+        // Set the input feedback.
+        FBLeft_g = MotorController.GetLeftMotorRPM(); // / 5.0;
+        FBRight_g = MotorController.GetRightMotorRPM(); // / 5.0;
+
+        LeftMap_g = map(FBLeft_g, -650, 650, -255, 255);
+        RightMap_g = map(FBRight_g, -600, 600, -255, 255);
 #endif // ENABLE_MOTORS
 
 #if defined(ENABLE_PID)
         PIDLeft_g->Compute();
         PIDRight_g->Compute();
 
-#if defined(ENABLE_MOTORS)
-        // Set the input feedback.
-        FBLeft_g = MotorController.GetLeftMotorRPM(); // / 5.0;
-        FBRight_g = MotorController.GetRightMotorRPM(); // / 5.0;
-        
+    #if defined(ENABLE_MOTORS)
         // Set the output from the regulator.
         MotorController.SetPWM(OutLeft_g, OutRight_g);
-#endif // ENABLE_MOTORS
+    #endif // ENABLE_MOTORS
 #else
     #if defined(ENABLE_MOTORS)
         // Set the PWMs to the motors.
@@ -574,9 +595,27 @@ void loop() {
     if (SendTimer_g -> expired()) {
         SendTimer_g -> updateLastTime();
         SendTimer_g -> clear();
-
 #if defined(ENABLE_PID)
-#if defined(ENABLE_MOTORS)
+    #if defined(ENABLE_MOTORS)
+        Serial.print("PWMLeft_g:");
+        Serial.print(PWMLeft_g);
+        Serial.print(", PWMRight_g:");
+        Serial.print(PWMRight_g);
+        // Serial.print(", FBLeft_g:");
+        // Serial.print(FBLeft_g);
+        // Serial.print(", FBRight_g:");
+        // Serial.print(FBRight_g);
+        Serial.print(", LeftMap_g:");
+        Serial.print(LeftMap_g);
+        Serial.print(", RightMap_g:");
+        Serial.print(RightMap_g);
+        Serial.print(", OutLeft_g:");
+        Serial.print(OutLeft_g);
+        Serial.print(", OutRight_g:");
+        Serial.print(OutRight_g);
+    #endif // ENABLE_MOTORS
+#else
+    #if defined(ENABLE_MOTORS)
         Serial.print("PWMLeft_g:");
         Serial.print(PWMLeft_g);
         Serial.print(",");
@@ -589,50 +628,58 @@ void loop() {
         Serial.print("FBRight_g:");
         Serial.print(FBRight_g);
         Serial.print(", ");
-        Serial.print("OutRight_g:");
-        Serial.println(OutRight_g);
+        Serial.print("LeftMap_g:");
+        Serial.print(LeftMap_g);
         Serial.print(", ");
-        Serial.print("OutLeft_g:");
-        Serial.print(OutLeft_g);
-#endif // ENABLE_MOTORS
-#else
-    #if defined(ENABLE_MOTORS)
-        Serial.print("PWMLeft_g:");
-        Serial.print(PWMLeft_g);
-        Serial.print(",");
-        Serial.print("PWMRight_g:");
-        Serial.print(PWMRight_g);
+        Serial.print("RightMap_g:");
+        Serial.print(RightMap_g);
+        
     #endif // ENABLE_MOTORS
 #endif // ENABLE_PID
+#if defined(ENABLE_PID) || defined(ENABLE_MOTORS)
         Serial.println();
+#endif // defined(ENABLE_PID) || defined(ENABLE_MOTORS)
     }
 }
 
 #pragma region Functions
 
-#if defined(ENABLE_BT)
+#if defined(ENABLE_WIFI)
+void connect() {
+    if (!SocketClient_g.connect(IPAddress_g, SERVICE_PORT)) {
+        Serial.println("Connection to host failed");
+        return;
+    }
+    Serial.printf("Connected to: %s\n", SocketClient_g.remoteIP().toString());
+}
+
 /**
  * @brief Read sensors.
  * 
  */
 void send_sensors() {
-    SerialBT_g.print("D");
-    SerialBT_g.println(Distance_g);
-    SerialBT_g.print("T");
-    SerialBT_g.println(Temp_g);
+    SocketClient_g.print("D");
+    SocketClient_g.println(Distance_g);
+    SocketClient_g.print("T");
+    SocketClient_g.println(Temp_g);
 }
 
 /**
  * @brief Read bluetooth commands.
  * 
  */
-void read_bt_serial() {
-    if (Serial.available()) {
-        SerialBT_g.write(Serial.read());
+void read_wifi_client() {
+    if (!SocketClient_g.connected()) { // Reconnect if not connected
+        connect();
+        return;
     }
 
-    while (SerialBT_g.available() > 0) {
-        String LineL = SerialBT_g.readStringUntil('\n');
+    if (Serial.available()) {
+        SocketClient_g.write(Serial.read());
+    }
+
+    while (SocketClient_g.available() > 0) {
+        String LineL = SocketClient_g.readStringUntil('\n');
         Serial.printf("code received: %s\n", LineL);
         CmdNumPart_g = "";
         for (int index = 0; index < LineL.length(); index++) {
@@ -646,6 +693,8 @@ void read_bt_serial() {
             }
         }
     }
+
+    // SocketClient_g.printf("D%d cm\n", Distance_g);
 
     switch (RecvCmd_g) {
     case CMD_FORWARD:
@@ -687,7 +736,7 @@ void read_bt_serial() {
         break;
     }
 }
-#endif // ENABLE_BT
+#endif // ENABLE_WIFI
 
 #if defined(ENABLE_MOTORS)
 /**

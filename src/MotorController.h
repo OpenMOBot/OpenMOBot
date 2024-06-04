@@ -42,7 +42,7 @@ SOFTWARE.
 /** 
  * @brief LPF update frequency.
  */
-#define UPDATE_FRQ 5
+#define UPDATE_FRQ 10
 
 /** 
  * @brief PWM adaptation.
