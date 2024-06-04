@@ -27,7 +27,7 @@ SOFTWARE.
 #pragma region Definitions
 
 /**
- * @brief Enable  .
+ * @brief Enable status LED.
  * 
  */
 #define ENABLE_STATUS_LED

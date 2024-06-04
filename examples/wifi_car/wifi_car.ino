@@ -27,7 +27,7 @@ SOFTWARE.
 #pragma region Definitions
 
 /**
- * @brief Enable  .
+ * @brief Enable status LED.
  * 
  */
 #define ENABLE_STATUS_LED
@@ -296,7 +296,7 @@ WiFiClient SocketClient_g;
  * @brief Smartphone IP.
  * 
  */
-IPAddress IPAddress_g = IPAddress(192, 168, 88, 214);
+IPAddress IPAddress_g = IPAddress(192, 168, 88, 230);
 
 #if !defined(DEFAULT_SSID)
 #define DEFAULT_SSID "<YOUR_SSID>"
