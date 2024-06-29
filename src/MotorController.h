@@ -29,45 +29,45 @@ SOFTWARE.
 #ifndef _MOTORCONTROLLER_h
 #define _MOTORCONTROLLER_h
 
-/** 
+/**
  * @brief LPF order.
  */
 #define FILTER_ORDER 2
 
-/** 
+/**
  * @brief LPF suppression frequency.
  */
 #define SUPPRESSION_FRQ 2
 
-/** 
+/**
  * @brief LPF update frequency.
  */
 #define UPDATE_FRQ 10
 
-/** 
+/**
  * @brief PWM adaptation.
  */
 #define FILTER_ADAPT true
 
-/** 
+/**
  * @brief RPM timer update time.
  */
 #define RPM_UPDATE_TIME 100
 
-/** 
+/**
  * @brief PWM minimum value.
  */
 #define PWM_MIN -255
 
-/** 
+/**
  * @brief PWM maximum value.
  */
 #define PWM_MAX 255
 
 #if defined(ARDUINO) && ARDUINO >= 100
-	#include "arduino.h"
+#include "arduino.h"
 #else
-	#include "WProgram.h"
+#include "WProgram.h"
 #endif
 
 #include "FxTimer.h"
@@ -80,24 +80,23 @@ SOFTWARE.
 
 typedef struct
 {
-	uint8_t PinLeftForward; ///< Left speed pin.
-	uint8_t PinLeftBackward; ///< Left direction pin.
-	uint8_t PinLeftPWM; ///< Left PWM pin.
-	uint8_t PinRightForward; ///< Right speed pin.
-	uint8_t PinRightBackward; ///< Right direction pin.
-	uint8_t PinRightPWM; ///< Right PWM pin.
-	double WheelDiameter; ///< Wheels diameter.
+	uint8_t PinLeftForward;		  ///< Left speed pin.
+	uint8_t PinLeftBackward;	  ///< Left direction pin.
+	uint8_t PinLeftPWM;			  ///< Left PWM pin.
+	uint8_t PinRightForward;	  ///< Right speed pin.
+	uint8_t PinRightBackward;	  ///< Right direction pin.
+	uint8_t PinRightPWM;		  ///< Right PWM pin.
+	double WheelDiameter;		  ///< Wheels diameter.
 	double DistanceBetweenWheels; ///< Distance between wheels.
-	uint32_t EncoderTracks; ///< Number of encoders track.
-/** @brief H-bridge motor Controller. */
+	uint32_t EncoderTracks;		  ///< Number of encoders track.
+								  /** @brief H-bridge motor Controller. */
 } MotorModel_t;
 
 /** @brief H-bridge motor Controller. */
 class MotorControllerClass
 {
 
- protected:
-
+protected:
 #pragma region Variables
 
 	/**
@@ -120,76 +119,75 @@ class MotorControllerClass
 	 */
 	volatile int8_t m_dirCntLeft;
 
-	/** 
+	/**
 	 * @brief Right encoder counter enable flag.
 	 */
 	volatile int8_t m_dirCntRight;
 
 	/**
 	 * @brief Left motor PWM value.
-	 * 
+	 *
 	 */
 	int16_t m_leftPWM;
 
 	/**
 	 * @brief Right motor PWM value.
-	 * 
+	 *
 	 */
 	int16_t m_rightPWM;
-	
-	/** 
+
+	/**
 	 * @brief Motor speed timer instance.
 	 */
 	FxTimer *m_MotorSpeedTimer;
 
-	/** 
+	/**
 	 * @brief Left encoder pulses.
 	 */
 	double m_encLeftPulses;
 
-	/** 
+	/**
 	 * @brief Right encoder pulses.
 	 */
 	double m_encRightPulses;
 
-	/** 
+	/**
 	 * @brief Left motor RPM.
 	 */
 	double m_leftMotorRPM;
 
-	/** 
+	/**
 	 * @brief Right motor RPM.
 	 */
 	double m_rightMotorRPM;
 
-	/** 
+	/**
 	 * @brief Low Pass filter left speed.
 	 */
 	LowPassFilter *m_LPFLeftSpeed; // (2, 5, 1e3, true);
 
-	/** 
+	/**
 	 * @brief Low Pass filter right speed.
 	 */
 	LowPassFilter *m_LPFRightSpeed; // (2, 5, 1e3, true);
-	
+
 	/**
 	 * @brief Average to the left feedback.
-	 * 
+	 *
 	 */
 	double m_avgLeft;
 
 	/**
 	 * @brief Average to the right feedback.
-	 * 
+	 *
 	 */
 	double m_avgRight;
 
 	/**
-	 * @brief 
-	 * 
+	 * @brief
+	 *
 	 */
 	double m_K = 0.7;
-
 
 #pragma endregion
 
@@ -208,21 +206,19 @@ class MotorControllerClass
 
 #pragma endregion
 
- public:
-
+public:
 #pragma region Methods
 
 	/** @brief Initialize the bridge controller.
 	 *  @param model MotorModel_t, Motor the controller.
 	 *  @return Void.
 	 */
-	void init(MotorModel_t* model);
+	void init(MotorModel_t *model);
 
 	/** @brief Update the bridge controller.
 	 *  @return Void.
 	 */
 	void update();
-
 
 	/** @brief Incremet the left encoder value.
 	 *  @return Void.
@@ -248,7 +244,6 @@ class MotorControllerClass
 	 */
 	void SetPWM(int16_t left, int16_t right);
 
-
 	/** @brief Function to Spin Right.
 	 *  @param mm float, Millimeters to be done.
 	 *  @param mspeed int, input value holding values of the PWM.
@@ -267,62 +262,61 @@ class MotorControllerClass
 
 	/**
 	 * @brief Get the Left Encoder value.
-	 * 
+	 *
 	 * @return unsigned int Value
 	 */
 	long GetLeftEncoder();
 
 	/**
 	 * @brief Get the Right Encoder value.
-	 * 
+	 *
 	 * @return unsigned int Value
 	 */
 	long GetRightEncoder();
 
 	/**
 	 * @brief Set the Left Encoder value.
-	 * 
+	 *
 	 * @param value Value
 	 */
 	void SetLeftEncoder(long value);
 
 	/**
 	 * @brief Set the Right Encoder value.
-	 * 
+	 *
 	 * @param value Value
 	 */
 	void SetRightEncoder(long value);
 
 	/**
 	 * @brief Get the Left Motor PWM value.
-	 * 
+	 *
 	 * @return int16_t Value
 	 */
 	int16_t GetLeftMotor();
 
 	/**
 	 * @brief Get the Right Motor PWM value.
-	 * 
+	 *
 	 * @return int16_t Value
 	 */
 	int16_t GetRightMotor();
 
 	/**
 	 * @brief Get the Left wheel RPM.
-	 * 
+	 *
 	 * @return double RPM Value
 	 */
 	double GetLeftMotorRPM();
 
 	/**
 	 * @brief Get the Right wheel RPM.
-	 * 
+	 *
 	 * @return double RPM Value
 	 */
 	double GetRightMotorRPM();
 
 #pragma endregion
-
 };
 
 /** @brief Instance of the /h-Motor controller. */

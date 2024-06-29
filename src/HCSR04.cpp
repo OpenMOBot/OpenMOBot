@@ -51,15 +51,19 @@ long HCSR04::timing()
 float HCSR04::convert(long microsec, int metric)
 {
 	// microsec / 29 / 2;
-	if (metric) return microsec / m_cmDivisor / 2.0;  // CM
+	if (metric)
+		return microsec / m_cmDivisor / 2.0; // CM
 	// microsec / 74 / 2;
-	else return microsec / m_inDivisor / 2.0;  // IN
+	else
+		return microsec / m_inDivisor / 2.0; // IN
 }
 
 void HCSR04::setDivisor(float value, int metric)
 {
-	if (metric) m_cmDivisor = value;
-	else m_inDivisor = value;
+	if (metric)
+		m_cmDivisor = value;
+	else
+		m_inDivisor = value;
 }
 
 #ifdef COMPILE_STD_DEV
@@ -69,10 +73,10 @@ bool HCSR04::sampleCreate(size_t numBufs, ...)
 	va_list ap;
 	m_numBufs = numBufs;
 
-	if ((m_pBuffers = (BufCtl*)calloc(numBufs, sizeof(BufCtl))) != NULL)
+	if ((m_pBuffers = (BufCtl *)calloc(numBufs, sizeof(BufCtl))) != NULL)
 	{
 		va_start(ap, numBufs);
-		BufCtl* buf;
+		BufCtl *buf;
 		size_t smpSize;
 
 		for (size_t i = 0; i < m_numBufs; i++)
@@ -80,7 +84,7 @@ bool HCSR04::sampleCreate(size_t numBufs, ...)
 			buf = &m_pBuffers[i];
 			smpSize = va_arg(ap, size_t);
 
-			if ((buf->pBegin = (float*)calloc(smpSize, sizeof(float))) != NULL)
+			if ((buf->pBegin = (float *)calloc(smpSize, sizeof(float))) != NULL)
 			{
 				buf->pIndex = buf->pBegin;
 				buf->length = smpSize;
@@ -97,7 +101,8 @@ bool HCSR04::sampleCreate(size_t numBufs, ...)
 		va_end(ap);
 	}
 
-	if (!result) freeBuffers();
+	if (!result)
+		freeBuffers();
 	return result;
 }
 
@@ -105,7 +110,7 @@ void HCSR04::sampleClear()
 {
 	if (m_pBuffers)
 	{
-		BufCtl* buf;
+		BufCtl *buf;
 
 		for (size_t i = 0; i < m_numBufs; i++)
 		{
@@ -123,7 +128,7 @@ float HCSR04::unbiasedStdDev(float value, size_t bufNum)
 
 	if (m_pBuffers)
 	{
-		BufCtl* buf = &m_pBuffers[bufNum];
+		BufCtl *buf = &m_pBuffers[bufNum];
 
 		if (buf->length > 1)
 		{
@@ -146,10 +151,10 @@ float HCSR04::unbiasedStdDev(float value, size_t bufNum)
 				}
 
 				result = sqrt(sum / (buf->length - 1));
-				//DEBUGLOG(bufNum);
-				//DEBUGLOG(" : ");
-				//DEBUGLOG(result);
-				//DEBUGLOG("\r\n");
+				// DEBUGLOG(bufNum);
+				// DEBUGLOG(" : ");
+				// DEBUGLOG(result);
+				// DEBUGLOG("\r\n");
 			}
 		}
 	}
@@ -157,7 +162,7 @@ float HCSR04::unbiasedStdDev(float value, size_t bufNum)
 	return result;
 }
 
-void HCSR04::sampleUpdate(BufCtl* buf, float msec)
+void HCSR04::sampleUpdate(BufCtl *buf, float msec)
 {
 	if (buf->pIndex >= (buf->pBegin + buf->length))
 	{
@@ -172,7 +177,7 @@ void HCSR04::freeBuffers()
 {
 	if (m_pBuffers)
 	{
-		BufCtl* buf;
+		BufCtl *buf;
 
 		for (size_t i = 0; i < m_numBufs; i++)
 		{

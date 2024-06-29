@@ -29,9 +29,9 @@ SOFTWARE.
 /** @brief Initialize the H bridge for motor control.
  *  @return Void.
  */
-void MotorControllerClass::init(MotorModel_t* model)
+void MotorControllerClass::init(MotorModel_t *ModelL)
 {
-	m_motorModel = *model;
+	m_motorModel = *ModelL;
 	m_cntLeft = 0;
 	m_cntRight = 0;
 	m_dirCntLeft = 0;
@@ -52,11 +52,11 @@ void MotorControllerClass::init(MotorModel_t* model)
 	// Stop all enables/PWMs.
 	analogWrite(m_motorModel.PinLeftPWM, 0);
 	analogWrite(m_motorModel.PinRightPWM, 0);
-	
+
 	m_MotorSpeedTimer = new FxTimer();
 	m_MotorSpeedTimer->setExpirationTime(RPM_UPDATE_TIME);
 	m_MotorSpeedTimer->updateLastTime();
-	
+
 	// Init the low pass filters.
 	m_LPFLeftSpeed = new LowPassFilter(FILTER_ORDER, SUPPRESSION_FRQ, UPDATE_FRQ, FILTER_ADAPT);
 	m_LPFRightSpeed = new LowPassFilter(FILTER_ORDER, SUPPRESSION_FRQ, UPDATE_FRQ, FILTER_ADAPT);
@@ -65,12 +65,12 @@ void MotorControllerClass::init(MotorModel_t* model)
 void MotorControllerClass::update()
 {
 	m_MotorSpeedTimer->update();
-	if(m_MotorSpeedTimer->expired())
+	if (m_MotorSpeedTimer->expired())
 	{
 		m_MotorSpeedTimer->updateLastTime();
 		m_MotorSpeedTimer->clear();
 
-		calc_motors_speed();		
+		calc_motors_speed();
 	}
 }
 
@@ -81,7 +81,7 @@ void MotorControllerClass::UpdateLeftEncoder()
 {
 	// Increment left counter value.
 	m_encLeftPulses++;
-	
+
 	if (m_dirCntLeft < 0)
 	{
 		// Decrement Motor Left counter value.
@@ -99,9 +99,9 @@ void MotorControllerClass::UpdateLeftEncoder()
  */
 void MotorControllerClass::UpdateRightEncoder()
 {
-	// Increment right counter value.	
+	// Increment right counter value.
 	m_encRightPulses++;
-	
+
 	if (m_dirCntRight < 0)
 	{
 		// Decrement motor right counter value.
@@ -138,7 +138,7 @@ unsigned int MotorControllerClass::MM2Steps(float mm)
 
 void MotorControllerClass::calc_motors_speed()
 {
-    // Declare motor speed, number of pulses and time elapsed
+	// Declare motor speed, number of pulses and time elapsed
 	static unsigned long PreviousTimeL = 0;
 	static unsigned long CurrentTimeL = 0;
 	static unsigned long DeltaTimeL = 0;
@@ -150,33 +150,32 @@ void MotorControllerClass::calc_motors_speed()
 	DeltaTimeL = CurrentTimeL - PreviousTimeL;
 
 #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega2560__)
-ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-{
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+	{
 #endif
-	// Calculate motor speed in pulses per millisecond
-	LeftPulsesPerMsL = static_cast<double>(m_encLeftPulses) / static_cast<double>(DeltaTimeL);
-	RightPulsesPerMsL = static_cast<double>(m_encRightPulses) / static_cast<double>(DeltaTimeL);
+		// Calculate motor speed in pulses per millisecond
+		LeftPulsesPerMsL = static_cast<double>(m_encLeftPulses) / static_cast<double>(DeltaTimeL);
+		RightPulsesPerMsL = static_cast<double>(m_encRightPulses) / static_cast<double>(DeltaTimeL);
 
-	// Reset encoder pulse count and update previous time
-	m_encLeftPulses = 0;
-	m_encRightPulses = 0;
-	PreviousTimeL = CurrentTimeL;
+		// Reset encoder pulse count and update previous time
+		m_encLeftPulses = 0;
+		m_encRightPulses = 0;
+		PreviousTimeL = CurrentTimeL;
 
-	// Convert speed to desired units (e.g., RPM)
-	m_leftMotorRPM = m_LPFLeftSpeed->filter(LeftPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracks));
-	m_rightMotorRPM = m_LPFRightSpeed->filter(RightPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracks));
+		// Convert speed to desired units (e.g., RPM)
+		m_leftMotorRPM = m_LPFLeftSpeed->filter(LeftPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracks));
+		m_rightMotorRPM = m_LPFRightSpeed->filter(RightPulsesPerMsL * (60000.0 / m_motorModel.EncoderTracks));
 
-	// Set the sign.
-	m_leftMotorRPM *= m_dirCntLeft;
-	m_rightMotorRPM *= m_dirCntRight;
+		// Set the sign.
+		m_leftMotorRPM *= m_dirCntLeft;
+		m_rightMotorRPM *= m_dirCntRight;
 
-	// Apply average 
-	m_avgLeft += (m_leftMotorRPM - m_avgLeft) * m_K;
-	m_avgRight += (m_leftMotorRPM - m_avgRight) * m_K;
-
+		// Apply average
+		m_avgLeft += (m_leftMotorRPM - m_avgLeft) * m_K;
+		m_avgRight += (m_leftMotorRPM - m_avgRight) * m_K;
 
 #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega2560__)
-}
+	}
 #endif
 }
 
@@ -212,11 +211,11 @@ void MotorControllerClass::SetPWM(int16_t left, int16_t right)
 	{
 		return;
 	}
-	
+
 	// Else update new values.
 	m_leftPWM = left;
 	m_rightPWM = right;
-	
+
 	if (left > 0)
 	{
 		// Forward.
@@ -266,10 +265,9 @@ void MotorControllerClass::SetPWM(int16_t left, int16_t right)
 	}
 }
 
-
 /**
  * @brief Get the Left Encoder value.
- * 
+ *
  * @return unsigned int Value
  */
 long MotorControllerClass::GetLeftEncoder()
@@ -279,7 +277,7 @@ long MotorControllerClass::GetLeftEncoder()
 
 /**
  * @brief Get the Right Encoder value.
- * 
+ *
  * @return unsigned int Value
  */
 long MotorControllerClass::GetRightEncoder()
@@ -289,7 +287,7 @@ long MotorControllerClass::GetRightEncoder()
 
 /**
  * @brief Set the Left Encoder value.
- * 
+ *
  * @param value Value
  */
 void MotorControllerClass::SetLeftEncoder(long value)
@@ -299,7 +297,7 @@ void MotorControllerClass::SetLeftEncoder(long value)
 
 /**
  * @brief Set the Right Encoder value.
- * 
+ *
  * @param value Value
  */
 void MotorControllerClass::SetRightEncoder(long value)
@@ -309,7 +307,7 @@ void MotorControllerClass::SetRightEncoder(long value)
 
 /**
  * @brief Get the Left Motor PWM value.
- * 
+ *
  * @return int16_t Value
  */
 int16_t MotorControllerClass::GetLeftMotor()
@@ -319,7 +317,7 @@ int16_t MotorControllerClass::GetLeftMotor()
 
 /**
  * @brief Get the Right Motor PWM value.
- * 
+ *
  * @return int16_t Value
  */
 int16_t MotorControllerClass::GetRightMotor()
@@ -329,7 +327,7 @@ int16_t MotorControllerClass::GetRightMotor()
 
 /**
  * @brief Get the Left wheel RPM.
- * 
+ *
  * @return double RPM Value
  */
 double MotorControllerClass::GetLeftMotorRPM()
@@ -339,7 +337,7 @@ double MotorControllerClass::GetLeftMotorRPM()
 
 /**
  * @brief Get the Right wheel RPM.
- * 
+ *
  * @return double RPM Value
  */
 double MotorControllerClass::GetRightMotorRPM()
@@ -349,6 +347,6 @@ double MotorControllerClass::GetRightMotorRPM()
 
 /**
  * @brief Bridge controller instance.
- * 
+ *
  */
 MotorControllerClass MotorController;

@@ -49,7 +49,7 @@ SOFTWARE.
 #pragma region Functions Prototypes
 
 /** @brief Read analog line sensor callback function.
- * 
+ *
  *  @param index int, Sensor index it exists in [0 to Sensor count -1].
  *  @return uint16_t Read sensor data.
  */
@@ -60,49 +60,47 @@ uint16_t read_sensor(int index);
 #pragma region Constants
 
 /**
-  * @brief Line sensor pins definitions.
-  */
-const uint8_t PinsLineSensor_g[LINE_SENSORS_COUNT] = 
-{
-  PIN_LS_1,
-  PIN_LS_2,
-  PIN_LS_3,
-  PIN_LS_4,
-  PIN_LS_5,
-  PIN_LS_6
-};
+ * @brief Line sensor pins definitions.
+ */
+const uint8_t PinsLineSensor_g[LINE_SENSORS_COUNT] =
+    {
+        PIN_LS_1,
+        PIN_LS_2,
+        PIN_LS_3,
+        PIN_LS_4,
+        PIN_LS_5,
+        PIN_LS_6};
 
 #pragma endregion
 
 #pragma region Variables
 
 /**
-  * @brief Line sensor calibration flag.
-  */
+ * @brief Line sensor calibration flag.
+ */
 bool CalibrationDone_g = false;
 
 /**
-  * @brief Line sensor position.
-  */
+ * @brief Line sensor position.
+ */
 float LinePosCur_g = 0.0;
 
 /**
-  * @brief Line sensor position.
-  */
+ * @brief Line sensor position.
+ */
 float LinePosPrev_g = 0.0;
 
-
 /**
-  * @brief StateStatusLED_g used to set the LED.
-  */
+ * @brief StateStatusLED_g used to set the LED.
+ */
 int StateStatusLED_g = LOW;
 
-/** 
+/**
  * @brief Blink timer instance.
  */
 FxTimer *BlinkTimer_g;
 
-/** 
+/**
  * @brief Send timer instance.
  */
 FxTimer *LineSensorTimer_g;
@@ -112,17 +110,17 @@ FxTimer *LineSensorTimer_g;
 void setup()
 {
 #ifdef DEBUG_TEXT
-	configure_debug_port();
+  configure_debug_port();
 #endif
 
 #ifdef DEBUG_OSC
   Serial.begin(DEFAULT_BAUD);
 #endif
 
-	// Initialize the line sensor.
-	LineSensor.init(LINE_SENSORS_COUNT);
-	LineSensor.setCbReadSensor(read_sensor);
-	LineSensor.setInvertedReadings(false);
+  // Initialize the line sensor.
+  LineSensor.init(LINE_SENSORS_COUNT);
+  LineSensor.setCbReadSensor(read_sensor);
+  LineSensor.setInvertedReadings(false);
 
   pinMode(PIN_USER_LED, OUTPUT);
 
@@ -140,7 +138,7 @@ void loop()
   LineSensor.update();
 
   BlinkTimer_g->update();
-  if(BlinkTimer_g->expired())
+  if (BlinkTimer_g->expired())
   {
     BlinkTimer_g->updateLastTime();
     BlinkTimer_g->clear();
@@ -151,30 +149,30 @@ void loop()
   }
 
   LineSensorTimer_g->update();
-  if(LineSensorTimer_g->expired())
+  if (LineSensorTimer_g->expired())
   {
     LineSensorTimer_g->updateLastTime();
     LineSensorTimer_g->clear();
 
     static int CalibartionsL = 0;
 
-		if (CalibartionsL < LINE_SENSORS_CALIBRATION_SIZE && CalibrationDone_g == false)
-		{
-			LineSensor.calibrate();
-			CalibartionsL++;
-		}
-		else
-		{
-			CalibartionsL = 0;
+    if (CalibartionsL < LINE_SENSORS_CALIBRATION_SIZE && CalibrationDone_g == false)
+    {
+      LineSensor.calibrate();
+      CalibartionsL++;
+    }
+    else
+    {
+      CalibartionsL = 0;
       CalibrationDone_g = true;
       BlinkTimer_g->setExpirationTime(500);
       LineSensorTimer_g->setExpirationTime(200);
-		}
+    }
 
     if (CalibrationDone_g)
     {
-  		// Get Road conditions.
-	  	LinePosCur_g = LineSensor.getLinePosition();
+      // Get Road conditions.
+      LinePosCur_g = LineSensor.getLinePosition();
 
 #ifdef DEBUG_OSC
       // Not on the line bit.
@@ -215,13 +213,13 @@ void loop()
 #pragma region Functions
 
 /** @brief Read analog line sensor callback function.
- * 
+ *
  *  @param index int, Sensor index it exists in [0 to Sensor count -1].
  *  @return uint16_t Read sensor data.
  */
 uint16_t read_sensor(int index)
 {
-	return analogRead(PinsLineSensor_g[index]);
+  return analogRead(PinsLineSensor_g[index]);
 }
 
 #pragma endregion

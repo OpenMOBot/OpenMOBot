@@ -67,17 +67,17 @@ double read_motor_speed();
 
 #pragma region Variables
 
-/** 
+/**
  * @brief Blink led last state flag.
  */
 int StateStatusLED_g = LOW;
 
-/** 
+/**
  * @brief Blink timer instance.
  */
 FxTimer *BlinkTimer_g;
 
-/** 
+/**
  * @brief Send timer instance.
  */
 FxTimer *SendTimer_g;
@@ -88,14 +88,14 @@ void setup()
 {
   pinMode(PIN_USER_LED, OUTPUT);
 
-	// Attach the Interrupts to their ISR's
-	pinMode(PIN_LEFT_ENCODER, INPUT_PULLUP);
+  // Attach the Interrupts to their ISR's
+  pinMode(PIN_LEFT_ENCODER, INPUT_PULLUP);
   pinMode(PIN_RIGHT_ENCODER, INPUT_PULLUP);
-  
+
   // Increase counter 1 when speed sensor pin goes High.
-	attachInterrupt(digitalPinToInterrupt(PIN_LEFT_ENCODER), ISR_Left_Encoder, RISING);
-	// Increase counter 2 when speed sensor pin goes High.
-	attachInterrupt(digitalPinToInterrupt(PIN_RIGHT_ENCODER), ISR_Right_Encoder, RISING);
+  attachInterrupt(digitalPinToInterrupt(PIN_LEFT_ENCODER), ISR_Left_Encoder, RISING);
+  // Increase counter 2 when speed sensor pin goes High.
+  attachInterrupt(digitalPinToInterrupt(PIN_RIGHT_ENCODER), ISR_Right_Encoder, RISING);
 
   Serial.begin(DEFAULT_BAUD);
 
@@ -107,21 +107,20 @@ void setup()
   SendTimer_g->setExpirationTime(100);
   SendTimer_g->updateLastTime();
 
-	// Setup the motor driver.
-	MotorModel_t model = {
-		PIN_L_F,
-		PIN_L_B,
-    PIN_L_PWM,
-		PIN_R_F,
-		PIN_R_B,
-    PIN_R_PWM,
-		WHEEL_DIAMETER,
-		DISTANCE_BETWEEN_WHEELS,
-		ENCODER_TRACKS
-	};
+  // Setup the motor driver.
+  MotorModel_t ModelL = {
+      PIN_L_F,
+      PIN_L_B,
+      PIN_L_PWM,
+      PIN_R_F,
+      PIN_R_B,
+      PIN_R_PWM,
+      WHEEL_DIAMETER,
+      DISTANCE_BETWEEN_WHEELS,
+      ENCODER_TRACKS};
 
-	// Initialize the motor controller.
-	MotorController.init(&model);
+  // Initialize the motor controller.
+  MotorController.init(&ModelL);
 }
 
 void loop()
@@ -129,7 +128,7 @@ void loop()
   MotorController.update();
 
   BlinkTimer_g->update();
-  if(BlinkTimer_g->expired())
+  if (BlinkTimer_g->expired())
   {
     BlinkTimer_g->updateLastTime();
     BlinkTimer_g->clear();
@@ -137,11 +136,11 @@ void loop()
     // if the LED is off turn it on and vice-versa:
     if (StateStatusLED_g == LOW)
     {
-    	MotorController.SetPWM(-120, 120);
+      MotorController.SetPWM(-120, 120);
     }
     else
     {
-    	MotorController.SetPWM(120, -120);
+      MotorController.SetPWM(120, -120);
     }
 
     // set the LED with the StateStatusLED_g of the variable:
@@ -150,12 +149,11 @@ void loop()
   }
 
   SendTimer_g->update();
-  if(SendTimer_g->expired())
+  if (SendTimer_g->expired())
   {
     SendTimer_g->updateLastTime();
     SendTimer_g->clear();
 
-    
     Serial.print("LeftEncoder:");
     Serial.print(MotorController.GetLeftMotorRPM());
     Serial.print(",");
@@ -171,7 +169,7 @@ void loop()
  */
 void ISR_Left_Encoder()
 {
-	MotorController.UpdateLeftEncoder();
+  MotorController.UpdateLeftEncoder();
 }
 
 /** @brief Interrupt Service Routine for handling right encoder.
@@ -179,7 +177,7 @@ void ISR_Left_Encoder()
  */
 void ISR_Right_Encoder()
 {
-	MotorController.UpdateRightEncoder();
+  MotorController.UpdateRightEncoder();
 }
 
 #pragma endregion

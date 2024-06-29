@@ -26,7 +26,6 @@ SOFTWARE.
 
 // DebugPort.h
 
-
 #ifndef _DEBUGPORT_h
 #define _DEBUGPORT_h
 
@@ -66,4 +65,3 @@ void configure_debug_port();
 #pragma endregion
 
 #endif
-
