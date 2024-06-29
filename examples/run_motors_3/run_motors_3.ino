@@ -118,7 +118,7 @@ void setup()
   SendTimer_g->updateLastTime();
 
   // Setup the motor driver.
-  MotorModel_t ModelL = {
+  MotorModel_t MotorModelL = {
       PIN_L_F,
       PIN_L_B,
       PIN_L_PWM,
