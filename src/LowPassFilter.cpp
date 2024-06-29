@@ -28,34 +28,34 @@ SOFTWARE.
 
 LowPassFilter::LowPassFilter(int order, float f0, float fs, bool adaptive)
 {
-	m_order = order;
-	
-	m_a = new float[m_order];
+  m_order = order;
 
-    m_b = new float[m_order+1];
+  m_a = new float[m_order];
 
-    m_x = new float[m_order+1]; // Raw values
+  m_b = new float[m_order + 1];
 
-    m_y = new float[m_order+1]; // Filtered values
+  m_x = new float[m_order + 1]; // Raw values
 
-      // f0: cutoff frequency (Hz)
-      // fs: sample frequency (Hz)
-      // adaptive: boolean flag, if set to 1, the code will automatically set
-      // the sample frequency based on the time history.
-      
-      m_omega0 = 6.28318530718*f0;
-      m_dt = 1.0 / fs;
-      m_adaptive = adaptive;
-      m_tn1 = -m_dt;
+  m_y = new float[m_order + 1]; // Filtered values
 
-      for(int k = 0; k < m_order+1; k++)
-      {
-        m_x[k] = 0;
-        m_y[k] = 0;        
-      }
+  // f0: cutoff frequency (Hz)
+  // fs: sample frequency (Hz)
+  // adaptive: boolean flag, if set to 1, the code will automatically set
+  // the sample frequency based on the time history.
 
-      setCoef();
-    }
+  m_omega0 = 6.28318530718 * f0;
+  m_dt = 1.0 / fs;
+  m_adaptive = adaptive;
+  m_tn1 = -m_dt;
+
+  for (int k = 0; k < m_order + 1; k++)
+  {
+    m_x[k] = 0;
+    m_y[k] = 0;
+  }
+
+  setCoef();
+}
 
 void LowPassFilter::setCoef()
 {
@@ -65,13 +65,13 @@ void LowPassFilter::setCoef()
     m_dt = t - m_tn1;
     m_tn1 = t;
   }
-  
+
   float alpha = m_omega0 * m_dt;
   if (m_order == 1)
   {
-    m_a[0] = -(alpha - 2.0) / (alpha+2.0);
-    m_b[0] = alpha / (alpha+2.0);
-    m_b[1] = alpha / (alpha+2.0);        
+    m_a[0] = -(alpha - 2.0) / (alpha + 2.0);
+    m_b[0] = alpha / (alpha + 2.0);
+    m_b[1] = alpha / (alpha + 2.0);
   }
 
   if (m_order == 2)
@@ -91,28 +91,28 @@ float LowPassFilter::filter(float xn)
 {
   // Provide me with the current raw value: x
   // I will give you the current filtered value: y
-  if(m_adaptive)
+  if (m_adaptive)
   {
-    setCoef(); // Update coefficients if necessary      
+    setCoef(); // Update coefficients if necessary
   }
 
   m_y[0] = 0;
   m_x[0] = xn;
 
   // Compute the filtered values
-  for(int k = 0; k < m_order; k++)
+  for (int k = 0; k < m_order; k++)
   {
-    m_y[0] += m_a[k] * m_y[k+1] + m_b[k] * m_x[k];
+    m_y[0] += m_a[k] * m_y[k + 1] + m_b[k] * m_x[k];
   }
   m_y[0] += m_b[m_order] * m_x[m_order];
 
   // Save the historical values
-  for(int k = m_order; k > 0; k--)
+  for (int k = m_order; k > 0; k--)
   {
-    m_y[k] = m_y[k-1];
-    m_x[k] = m_x[k-1];
+    m_y[k] = m_y[k - 1];
+    m_x[k] = m_x[k - 1];
   }
 
-  // Return the filtered value    
+  // Return the filtered value
   return m_y[0];
 }

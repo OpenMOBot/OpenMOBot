@@ -30,12 +30,12 @@
   },
   "version": "1.0.0",
   "license": "MIT",
-  "frameworks": "arduino",
-  "platforms": ["atmelavr", "atmelmegaavr", "avr"],
+  "frameworks": ["arduino"],
+  "platforms": ["atmelavr", "atmelmegaavr", "avr", "espressif32"],
   "dependencies": [
     {
       "name": "PIDv1",
-      "platforms": "avr"
+      "platforms": ["atmelavr", "atmelmegaavr", "avr", "espressif32"]
     },
     {
       "name": "FxTimer"

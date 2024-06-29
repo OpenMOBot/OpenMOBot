@@ -43,12 +43,6 @@ SOFTWARE.
 
 #include "OpenMOBot.h"
 #include "DebugPort.h"
-#include "LineSensor.h"
-// #include "HCSR04.h"
-#include "LRData.h"
-#include "XYData.h"
-#include "MotorController.h"
-#include "utils.h"
 
 // #include <Servo.h>
 
@@ -57,17 +51,16 @@ SOFTWARE.
 #pragma region Constants
 
 /**
-  * @brief Line sensor pins definitions.
-  */
-const uint8_t PinsLineSensor_g[LINE_SENSORS_COUNT] = 
-{
-  PIN_LS_1,
-  PIN_LS_2,
-  PIN_LS_3,
-  PIN_LS_4,
-  PIN_LS_5,
-  PIN_LS_6
-};
+ * @brief Line sensor pins definitions.
+ */
+const uint8_t PinsLineSensor_g[LINE_SENSORS_COUNT] =
+	{
+		PIN_LS_1,
+		PIN_LS_2,
+		PIN_LS_3,
+		PIN_LS_4,
+		PIN_LS_5,
+		PIN_LS_6};
 
 #pragma endregion
 
@@ -108,7 +101,7 @@ LRData_t LRData_g;
 #pragma region Prototypes Functions
 
 /** @brief Read analog line sensor callback function.
- * 
+ *
  *  @param index int, Sensor index it exists in [0 to Sensor count -1].
  *  @return uint16_t Read sensor data.
  */
@@ -128,12 +121,12 @@ void ISR_Right_Encoder();
 
 /**
  * @brief The setup function runs once when you press reset or power the board.
- * 
+ *
  */
 void setup()
 {
 	// Setup the motor driver.
-	MotorModel_t model = {
+	MotorModel_t ModelL = {
 		PIN_L_F,
 		PIN_L_B,
 		PIN_L_PWM,
@@ -142,18 +135,17 @@ void setup()
 		PIN_R_PWM,
 		WHEEL_DIAMETER,
 		DISTANCE_BETWEEN_WHEELS,
-		ENCODER_TRACKS
-	};
+		ENCODER_TRACKS};
 
 	// Initialize the motor controller.
-	MotorController.init(&model);
+	MotorController.init(&ModelL);
 	// Attach the Interrupts to their ISR's
 	// Increase counter 1 when speed sensor pin goes High.
 	attachInterrupt(digitalPinToInterrupt(PIN_LEFT_ENCODER), ISR_Left_Encoder, RISING);
 	// Increase counter 2 when speed sensor pin goes High.
 	attachInterrupt(digitalPinToInterrupt(PIN_RIGHT_ENCODER), ISR_Right_Encoder, RISING);
 	// play the test animation.
-	//play_animation();
+	// play_animation();
 
 	// Initialize the line sensor.
 	LineSensor.init(LINE_SENSORS_COUNT);
@@ -174,7 +166,7 @@ void setup()
 
 /**
  * @brief Main loop.
- * 
+ *
  */
 void loop()
 {
@@ -268,7 +260,7 @@ void loop()
 #pragma region Functions
 
 /** @brief Read analog line sensor callback function.
- * 
+ *
  *  @param index int, Sensor index it exists in [0 to Sensor count -1].
  *  @return uint16_t Read sensor data.
  */

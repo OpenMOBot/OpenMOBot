@@ -30,40 +30,38 @@ SOFTWARE.
 #define _LOWPASSFILTER_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
-	#include "Arduino.h"
+#include "Arduino.h"
 #else
-	#include "WProgram.h"
+#include "WProgram.h"
 #endif
 
 class LowPassFilter
 {
-  protected:
+protected:
+  bool m_adaptive;
 
-    bool m_adaptive;
+  float *m_a;
 
-    float *m_a;
+  float *m_b;
 
-    float *m_b;
+  float m_omega0;
 
-    float m_omega0;
+  float m_dt;
 
-    float m_dt;
+  float m_tn1 = 0;
 
-    float m_tn1 = 0;
+  float *m_x; // Raw values
 
-    float *m_x; // Raw values
+  float *m_y; // Filtered values
 
-    float *m_y; // Filtered values
+  int m_order; // 1 or 2 order.
 
-	int m_order; // 1 or 2 order.
+public:
+  LowPassFilter(int order, float f0, float fs, bool adaptive);
 
-  public:  
+  void setCoef();
 
-    LowPassFilter(int order, float f0, float fs, bool adaptive);
-
-    void setCoef();
-
-    float filter(float xn);
+  float filter(float xn);
 };
 
 #endif // _LOWPASSFILTER_h

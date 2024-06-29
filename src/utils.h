@@ -45,4 +45,3 @@ SOFTWARE.
 LRData_t xy_to_lr(XYData_t xyData);
 
 #endif
-

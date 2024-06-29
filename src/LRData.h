@@ -39,8 +39,7 @@ SOFTWARE.
 typedef struct
 {
 	int L = 0; ///< Left
-	int R = 0; ///< Right 
-}LRData_t;
+	int R = 0; ///< Right
+} LRData_t;
 
 #endif
-

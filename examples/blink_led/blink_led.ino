@@ -48,11 +48,11 @@ SOFTWARE.
 #pragma region Variables
 
 /**
-  * @brief StateStatusLED_g used to set the LED.
-  */
+ * @brief StateStatusLED_g used to set the LED.
+ */
 int StateStatusLED_g = LOW;
 
-/** 
+/**
  * @brief Blink timer instance.
  */
 FxTimer *BlinkTimer_g;
@@ -62,20 +62,20 @@ FxTimer *BlinkTimer_g;
 void setup()
 {
   Serial.begin(DEFAULT_BAUD);
-  
+
   // Setup the user LED pin.
-	pinMode(PIN_USER_LED, OUTPUT);
-	
-	// Setup the blink timer.
-	BlinkTimer_g = new FxTimer();
-	BlinkTimer_g->setExpirationTime(BLINK_INTERVAL);
-	BlinkTimer_g->updateLastTime();
+  pinMode(PIN_USER_LED, OUTPUT);
+
+  // Setup the blink timer.
+  BlinkTimer_g = new FxTimer();
+  BlinkTimer_g->setExpirationTime(BLINK_INTERVAL);
+  BlinkTimer_g->updateLastTime();
 }
 
 void loop()
 {
   BlinkTimer_g->update();
-  if(BlinkTimer_g->expired())
+  if (BlinkTimer_g->expired())
   {
     BlinkTimer_g->updateLastTime();
     BlinkTimer_g->clear();
