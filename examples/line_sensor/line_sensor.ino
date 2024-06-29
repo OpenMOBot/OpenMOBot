@@ -30,7 +30,7 @@ SOFTWARE.
 
 #define DEBUG_OSC
 
-#define BLINK_INTERVAL 100
+#define BLINK_INTERVAL_MS 100
 
 #pragma endregion
 
