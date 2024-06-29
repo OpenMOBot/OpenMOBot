@@ -40,7 +40,6 @@ SOFTWARE.
 #define DEBUGLOG(...)
 #endif
 
-
 #define UPPER_HIGH 100
 #define UPPER_LOW 80
 #define LOWER_HIGH 20
@@ -50,18 +49,17 @@ SOFTWARE.
 enum SensorState : uint8_t
 {
 	S_LOW = 0U, ///< Logic LOW
-	S_HIGH, ///< Logic HIGH
-	S_Z, ///< High impedance.
+	S_HIGH,		///< Logic HIGH
+	S_Z,		///< High impedance.
 };
 
 class LineSensorClass
 {
 private:
-
 #pragma region Variables
 
 	/** @brief Callback function. */
-	uint16_t(*callbackGetSensorValue)(int);
+	uint16_t (*callbackGetSensorValue)(int);
 
 	/** @brief Line position */
 	float m_linePosition;
@@ -88,23 +86,21 @@ private:
 	bool m_invertedReadings = false;
 
 	/* @brief Average sensors values. */
-	uint16_t * m_curSensorsValues;
+	uint16_t *m_curSensorsValues;
 
 	/* @brief Minimum sensors values. */
-	uint16_t * m_minSensorsValues;
+	uint16_t *m_minSensorsValues;
 
 	/* @brief Maximum sensors values. */
-	uint16_t * m_maxSensorsValues;
+	uint16_t *m_maxSensorsValues;
 
 	/* @brief Actual sensors values. */
-	uint16_t * m_actSensorsValues;
+	uint16_t *m_actSensorsValues;
 
 #pragma endregion
 
 protected:
-
 #pragma region Methods
-
 
 	/** @brief Read a single sensor.
 	 *  @param int sensor, Sensor index.
@@ -121,7 +117,6 @@ protected:
 #pragma endregion
 
 public:
-
 #pragma region Methods
 
 	/** @brief Configure the sensor.
@@ -135,7 +130,7 @@ public:
 	 *  @param callback, Callback pointer.
 	 *  @return Void.
 	 */
-	void setCbReadSensor(uint16_t(*callback)(int));
+	void setCbReadSensor(uint16_t (*callback)(int));
 	/** @brief Set inverted readings flag.
 	 *  @param value bool, Inverted flag.
 	 *  @return Void.
@@ -157,7 +152,6 @@ public:
 	 *  @return int, Resolution value.
 	 */
 	int getResolution();
-
 
 	/** @brief read a single sensor.
 	 *  @param int sensor, Sensor index.
@@ -183,14 +177,13 @@ public:
 
 	/**
 	 * @brief Get the specified sensor value.
-	 * 
+	 *
 	 * @param index Index of the sensor in array.
 	 * @return uint16_t Value of the sensor.
 	 */
 	uint16_t getSensor(uint8_t index);
 
 #pragma endregion
-
 };
 
 /** @brief Instance of the line sensor. */

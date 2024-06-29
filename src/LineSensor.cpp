@@ -70,7 +70,7 @@ void LineSensorClass::update()
 	{
 		m_curSensorsValues[index] = readFilteredSensor(index);
 	}
-	
+
 	// Clamp and scale to resolution.
 	for (uint8_t index = 0; index < m_sensorsCount; index++)
 	{
@@ -167,7 +167,6 @@ void LineSensorClass::calibrate()
 	}
 	DEBUGLOG("\r\n");
 
-
 	DEBUGLOG("\r\n");
 	DEBUGLOG("Current: ");
 	for (uint8_t index = 0; index < m_sensorsCount; index++)
@@ -194,17 +193,14 @@ void LineSensorClass::calibrate()
 	DEBUGLOG("\r\n");
 }
 
-
-
 /** @brief Set the read callback.
  *  @param callback, Callback pointer.
  *  @return Void.
  */
-void LineSensorClass::setCbReadSensor(uint16_t(*callback)(int))
+void LineSensorClass::setCbReadSensor(uint16_t (*callback)(int))
 {
 	callbackGetSensorValue = callback;
 }
-
 
 /** @brief Set inverted readings flag.
  *  @param value bool, Inverted flag.
@@ -240,7 +236,6 @@ int LineSensorClass::getResolution()
 	return m_resolution;
 }
 
-
 /** @brief Read a single sensor.
  *  @param int sensor, Sensor index.
  *  @return uint16_t, ADC sensor value.
@@ -268,10 +263,10 @@ uint16_t LineSensorClass::readFilteredSensor(int sensorIndex)
 		SensorValueL += readSensor(sensorIndex);
 	}
 
-	//if (SensorValueL <= 0)
+	// if (SensorValueL <= 0)
 	//{
 	//	return 0;
-	//}
+	// }
 
 	SensorValueL /= m_avgFilterCount;
 
@@ -286,14 +281,12 @@ SensorState LineSensorClass::thresholdSensor(int sensorIndex)
 {
 	SensorState StateL = S_Z;
 
-	if (UPPER_HIGH <= m_curSensorsValues[sensorIndex]
-		&& UPPER_LOW >= m_curSensorsValues[sensorIndex])
+	if (UPPER_HIGH <= m_curSensorsValues[sensorIndex] && UPPER_LOW >= m_curSensorsValues[sensorIndex])
 	{
 		StateL = S_HIGH;
 	}
 
-	if (LOWER_HIGH <= m_curSensorsValues[sensorIndex]
-		&& LOWER_LOW >= m_curSensorsValues[sensorIndex])
+	if (LOWER_HIGH <= m_curSensorsValues[sensorIndex] && LOWER_LOW >= m_curSensorsValues[sensorIndex])
 	{
 		StateL = S_LOW;
 	}
@@ -348,7 +341,7 @@ float LineSensorClass::getLinePosition()
 			return (m_sensorsCount - 1) * m_resolution;
 		}
 	}
-	
+
 	DEBUGLOG("\r\n");
 	DEBUGLOG("Actual: ");
 	for (uint8_t index = 0; index < m_sensorsCount; index++)
@@ -364,7 +357,7 @@ float LineSensorClass::getLinePosition()
 
 /**
  * @brief Get the specified sensor value.
- * 
+ *
  * @param index Index of the sensor in array.
  * @return uint16_t Value of the sensor.
  */
@@ -375,6 +368,6 @@ uint16_t LineSensorClass::getSensor(uint8_t index)
 
 /**
  * @brief Line sensor instance.
- * 
+ *
  */
 LineSensorClass LineSensor;

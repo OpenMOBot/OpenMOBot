@@ -40,6 +40,6 @@ typedef struct
 {
 	int X = 512; ///< X position.
 	int Y = 512; ///< Y position.
-}XYData_t;
+} XYData_t;
 
 #endif

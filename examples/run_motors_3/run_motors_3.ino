@@ -62,32 +62,32 @@ void ISR_Right_Encoder();
 
 #pragma region Variables
 
-/** 
+/**
  * @brief Blink led last state flag.
  */
 int StateStatusLED_g = LOW;
 
-/** 
+/**
  * @brief Blink timer instance.
  */
 FxTimer *BlinkTimer_g;
 
-/** 
+/**
  * @brief Send timer instance.
  */
 FxTimer *SendTimer_g;
 
-/** 
+/**
  * @brief Define Variables we'll be connecting to
  */
 double Setpoint, Input, Output;
 
-/** 
+/**
  * @brief Define the aggressive and conservative Tuning Parameters.
  */
-double consKp=2, consKi=0.025, consKd=0.00;
+double consKp = 2, consKi = 0.025, consKd = 0.00;
 
-/** 
+/**
  * @brief Specify the links and initial tuning parameters.
  */
 PID *myPID;
@@ -98,14 +98,14 @@ void setup()
 {
   pinMode(PIN_USER_LED, OUTPUT);
 
-	// Attach the Interrupts to their ISR's
-	pinMode(PIN_LEFT_ENCODER, INPUT_PULLUP);
+  // Attach the Interrupts to their ISR's
+  pinMode(PIN_LEFT_ENCODER, INPUT_PULLUP);
   pinMode(PIN_RIGHT_ENCODER, INPUT_PULLUP);
-  
+
   // Increase counter 1 when speed sensor pin goes High.
-	attachInterrupt(digitalPinToInterrupt(PIN_LEFT_ENCODER), ISR_Left_Encoder, RISING);
-	// Increase counter 2 when speed sensor pin goes High.
-	attachInterrupt(digitalPinToInterrupt(PIN_RIGHT_ENCODER), ISR_Right_Encoder, RISING);
+  attachInterrupt(digitalPinToInterrupt(PIN_LEFT_ENCODER), ISR_Left_Encoder, RISING);
+  // Increase counter 2 when speed sensor pin goes High.
+  attachInterrupt(digitalPinToInterrupt(PIN_RIGHT_ENCODER), ISR_Right_Encoder, RISING);
 
   Serial.begin(DEFAULT_BAUD);
 
@@ -117,30 +117,27 @@ void setup()
   SendTimer_g->setExpirationTime(100);
   SendTimer_g->updateLastTime();
 
-	// Setup the motor driver.
-	MotorModel_t model = {
-		PIN_L_F,
-		PIN_L_B,
-    PIN_L_PWM,
-		PIN_R_F,
-		PIN_R_B,
-    PIN_R_PWM,
-		WHEEL_DIAMETER,
-		DISTANCE_BETWEEN_WHEELS,
-		ENCODER_TRACKS
-	};
+  // Setup the motor driver.
+  MotorModel_t ModelL = {
+      PIN_L_F,
+      PIN_L_B,
+      PIN_L_PWM,
+      PIN_R_F,
+      PIN_R_B,
+      PIN_R_PWM,
+      WHEEL_DIAMETER,
+      DISTANCE_BETWEEN_WHEELS,
+      ENCODER_TRACKS};
 
-	// Initialize the motor controller.
-	MotorController.init(&model);
+  // Initialize the motor controller.
+  MotorController.init(&ModelL);
 
-
-    // Set the PID regulator.
-    myPID = new PID(&Input, &Output, &Setpoint, consKp, consKi, consKd, DIRECT);
-    myPID->SetMode(AUTOMATIC);
-    myPID->SetSampleTime(50);
-    // myPID->SetTunings(DeviceConfiguration.KP, DeviceConfiguration.KI, DeviceConfiguration.KD);
-    myPID->SetOutputLimits(-PWM_MAX, PWM_MAX);
-
+  // Set the PID regulator.
+  myPID = new PID(&Input, &Output, &Setpoint, consKp, consKi, consKd, DIRECT);
+  myPID->SetMode(AUTOMATIC);
+  myPID->SetSampleTime(50);
+  // myPID->SetTunings(DeviceConfiguration.KP, DeviceConfiguration.KI, DeviceConfiguration.KD);
+  myPID->SetOutputLimits(-PWM_MAX, PWM_MAX);
 }
 
 void loop()
@@ -150,7 +147,7 @@ void loop()
   MotorController.update();
 
   BlinkTimer_g->update();
-  if(BlinkTimer_g->expired())
+  if (BlinkTimer_g->expired())
   {
     BlinkTimer_g->updateLastTime();
     BlinkTimer_g->clear();
@@ -161,7 +158,7 @@ void loop()
   }
 
   SendTimer_g->update();
-  if(SendTimer_g->expired())
+  if (SendTimer_g->expired())
   {
     SendTimer_g->updateLastTime();
     SendTimer_g->clear();
@@ -193,7 +190,7 @@ void loop()
  */
 void ISR_Left_Encoder()
 {
-	MotorController.UpdateLeftEncoder();
+  MotorController.UpdateLeftEncoder();
 }
 
 /** @brief Interrupt Service Routine for handling right encoder.
@@ -201,7 +198,7 @@ void ISR_Left_Encoder()
  */
 void ISR_Right_Encoder()
 {
-	MotorController.UpdateRightEncoder();
+  MotorController.UpdateRightEncoder();
 }
 
 #pragma endregion

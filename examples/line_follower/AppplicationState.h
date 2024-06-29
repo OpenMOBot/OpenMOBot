@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) [2019] [Orlin Dimitrov]
+Copyright (c) [2019] [OpenMOBOt]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -41,13 +41,12 @@ SOFTWARE.
 enum ApplicationState : uint8_t
 {
 	WaitForCalibration = 1U, ///< Wait for calibration state.
-	CalibrateSensors, ///< Calibrate the sensors.
-	WaitForStart, ///< Wait for start.
-	Run, ///< Run the robot.
-	SafetyStop, ///< Safety stop the robot.
+	CalibrateSensors,		 ///< Calibrate the sensors.
+	WaitForStart,			 ///< Wait for start.
+	Run,					 ///< Run the robot.
+	SafetyStop,				 ///< Safety stop the robot.
 };
 
 #pragma endregion
 
 #endif
-

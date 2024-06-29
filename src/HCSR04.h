@@ -30,9 +30,9 @@ SOFTWARE.
 #define _HCSR04_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
-	#include "arduino.h"
+#include "arduino.h"
 #else
-	#include "WProgram.h"
+#include "WProgram.h"
 #endif
 
 // Undefine COMPILE_STD_DEV if you don't want Standard Deviation.
@@ -40,8 +40,8 @@ SOFTWARE.
 
 typedef struct bufferCtl
 {
-	float* pBegin;
-	float* pIndex;
+	float *pBegin;
+	float *pIndex;
 	size_t length;
 	bool filled;
 } BufCtl;
@@ -57,8 +57,8 @@ protected:
 
 #ifdef COMPILE_STD_DEV
 	size_t m_numBufs;
-	BufCtl* m_pBuffers;
-	void sampleUpdate(BufCtl* buf, float msec);
+	BufCtl *m_pBuffers;
+	void sampleUpdate(BufCtl *buf, float msec);
 	void freeBuffers();
 #endif // COMPILE_STD_DEV
 
@@ -75,7 +75,6 @@ public:
 	void sampleClear();
 	float unbiasedStdDev(float value, size_t bufNum);
 #endif // COMPILE_STD_DEV
-
 };
 
 #endif

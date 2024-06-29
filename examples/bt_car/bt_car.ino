@@ -28,49 +28,49 @@ SOFTWARE.
 
 /**
  * @brief Enable status LED.
- * 
+ *
  */
 #define ENABLE_STATUS_LED
 
 /**
  * @brief Enable motors of the robot features.
- * 
+ *
  */
 #define ENABLE_MOTORS
 
 /**
  * @brief Enable sonar servo feature.
- * 
+ *
  */
 #define ENABLE_SONAR_SERVO
 
 /**
  * @brief Enable sonar sensor.
- * 
+ *
  */
 // #define ENABLE_SONAR
 
 /**
  * @brief Enable PID regulators.
- * 
+ *
  */
 // #define ENABLE_PID
 
 /**
  * @brief Enable bluetooth interface.
- * 
+ *
  */
 #define ENABLE_BT
 
 /**
  * @brief Time interval for update cycle.
- * 
+ *
  */
 #define UPDATE_INTERVAL_MS 100
 
 /**
  * @brief Time interval for debug update cycle.
- * 
+ *
  */
 #define DEBUG_UPDATE_INTERVAL_MS 100
 
@@ -78,121 +78,120 @@ SOFTWARE.
 
 /**
  * @brief PID update interval.
- * 
+ *
  */
 #define PID_UPDATE_INTERVAL_MS 100
 
 /**
  * @brief P value
- * 
+ *
  */
 #define CONST_P 1.0
 
 /**
  * @brief I value
- * 
+ *
  */
 #define CONST_I 0.00
 
 /**
  * @brief D value
- * 
+ *
  */
 #define CONST_D 0.00
-
 
 #endif // ENABLE_PID
 
 #if defined(ENABLE_BT)
 /**
  * @brief Bluetooth device name.
- * 
+ *
  */
 #define BT_DEVICE_NAME "OpenMOBot"
 
 /**
  * @brief Bluetooth device timeout.
- * 
+ *
  */
 #define BT_TIMEOUT 5
 
 /**
  * @brief Uncomment this to use PIN during pairing. The pin is specified on the line below.
- * 
+ *
  */
-//#define BT_PIN "1234"
+// #define BT_PIN "1234"
 
 /**
  * @brief Bluetooth Forward command.
- * 
+ *
  */
 #define CMD_FORWARD 'F'
 
 /**
  * @brief Bluetooth Left turn command.
- * 
+ *
  */
 #define CMD_LEFT_TURN 'L'
 
 /**
  * @brief Bluetooth Backward command.
- * 
+ *
  */
 #define CMD_BACKWARD 'B'
 
 /**
  * @brief Bluetooth Right turn command.
- * 
+ *
  */
 #define CMD_RIGHT_TURN 'R'
 
 /**
  * @brief Bluetooth Stop command.
- * 
+ *
  */
 #define CMD_STOP 'S'
 
 /**
  * @brief Bluetooth Toggle M command.
- * 
+ *
  */
 #define CMD_TOGGLE_M 'M'
 
 /**
  * @brief Bluetooth Toggle m command.
- * 
+ *
  */
 #define CMD_TOGGLE_m 'm'
 
 /**
  * @brief Bluetooth Toggle N command.
- * 
+ *
  */
 #define CMD_TOGGLE_N 'N'
 
 /**
  * @brief Bluetooth Toggle n command.
- * 
+ *
  */
 #define CMD_TOGGLE_n 'n'
 
 /**
  * @brief Bluetooth Servo J position command.
- * 
+ *
  */
 #define CMD_SERVO_J 'J'
 
 /**
  * @brief Bluetooth Servo K position command.
- * 
+ *
  */
 #define CMD_SERVO_K 'K'
 
-#if!defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
-#error Bluetooth is not enabled!Please run `make menuconfig` to and enable it
+#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
+#error Bluetooth is not enabled!Please run `make menu config` to and enable it
 #endif
 
-#if!defined(CONFIG_BT_SPP_ENABLED)
+#if !defined(CONFIG_BT_SPP_ENABLED)
 #error Serial Bluetooth not available or not enabled.It is only available for the ESP32 chip.
 #endif
 
@@ -201,19 +200,19 @@ SOFTWARE.
 #if defined(ENABLE_MOTORS)
 /**
  * @brief Motors PWM absolute maximum.
- * 
+ *
  */
 #define PWM_ABSOLUTE_MAX 255
 
 /**
  * @brief Motors PWM software limitation.
- * 
+ *
  */
 #define PWM_MAX 200
 
 /**
  * @brief Motors PWM acceleration step.
- * 
+ *
  */
 #define PWM_STEP 5
 #endif // ENABLE_MOTORS
@@ -221,7 +220,7 @@ SOFTWARE.
 #if defined(ENABLE_SONAR_SERVO) || defined(ENABLE_BT)
 /**
  * @brief Sonar default servo position.
- * 
+ *
  */
 #define DEFAULT_SERVO_POS 90
 #endif // defined(ENABLE_SONAR_SERVO) || defined(ENABLE_BT)
@@ -251,13 +250,13 @@ SOFTWARE.
 #if defined(ENABLE_BT)
 /**
  * @brief Read sensors.
- * 
+ *
  */
 void send_sensors();
 
 /**
  * @brief Read bluetooth commands.
- * 
+ *
  */
 void read_bt_serial();
 #endif // ENABLE_BT
@@ -265,7 +264,7 @@ void read_bt_serial();
 #if defined(ENABLE_MOTORS)
 /**
  * @brief Update direction control.
- * 
+ *
  */
 void update_direction_control();
 
@@ -284,7 +283,8 @@ void ISR_Right_Encoder();
 
 #pragma region Enums
 
-enum Directions_t : uint8_t{
+enum Directions_t : uint8_t
+{
     Stop = 0,
     Forward = 1,
     Backward = 2,
@@ -297,7 +297,7 @@ enum Directions_t : uint8_t{
 #pragma region Variables
 
 #if defined(ENABLE_STATUS_LED)
-/** 
+/**
  * @brief Blink led last state flag.
  */
 int StateStatusLED_g = LOW;
@@ -306,43 +306,43 @@ int StateStatusLED_g = LOW;
 #if defined(ENABLE_BT)
 /**
  * @brief Bluetooth serial interface.
- * 
+ *
  */
 BluetoothSerial SerialBT_g;
 
 /**
  * @brief Received command.
- * 
+ *
  */
 char RecvCmd_g;
 
 /**
  * @brief Bluetooth number parser.
- * 
+ *
  */
 String CmdNumPart_g = "";
 
 /**
  * @brief LED 1 flag.
- * 
+ *
  */
 bool LED1_g = false;
 
 /**
  * @brief LED 2 flag.
- * 
+ *
  */
 bool LED2_g = false;
 
 /**
  * @brief Servo K position.
- * 
+ *
  */
 int ServoKPos_g = DEFAULT_SERVO_POS;
 
 /**
  * @brief Measured temperature.
- * 
+ *
  */
 float Temp_g = 0.0;
 
@@ -351,7 +351,7 @@ float Temp_g = 0.0;
 #if defined(ENABLE_MOTORS)
 /**
  * @brief Robot direction.
- * 
+ *
  */
 Directions_t Direction_g;
 #endif // ENABLE_MOTORS
@@ -359,28 +359,28 @@ Directions_t Direction_g;
 #if defined(ENABLE_MOTORS) || defined(ENABLE_BT) || defined(ENABLE_PID)
 /**
  * @brief Left motor PWM.
- * 
+ *
  */
 double PWMLeft_g = 0;
 
 /**
  * @brief Right motor PWM.
- * 
+ *
  */
 double PWMRight_g = 0;
 #endif // defined(ENABLE_MOTORS) || defined(ENABLE_BT) || defined(ENABLE_PID)
 
 #if defined(ENABLE_SONAR_SERVO)
 /**
-  * @brief Create servo object to control a servo.
-  */
+ * @brief Create servo object to control a servo.
+ */
 Servo UsServo_g;
 #endif // ENABLE_SONAR_SERVO
 
 #if defined(ENABLE_SONAR_SERVO) || defined(ENABLE_BT)
 /**
  * @brief Servo J position.
- * 
+ *
  */
 int SonarServoPos_g = DEFAULT_SERVO_POS;
 #endif // defined(ENABLE_SONAR_SERVO) || defined(ENABLE_BT)
@@ -388,23 +388,23 @@ int SonarServoPos_g = DEFAULT_SERVO_POS;
 #if defined(ENABLE_SONAR) || defined(ENABLE_BT)
 /**
  * @brief Distance from sonar.
- * 
+ *
  */
 float Distance_g = 0.0;
 #endif // defined(ENABLE_SONAR) || defined(ENABLE_BT)
 
-/** 
+/**
  * @brief Update timer instance.
  */
-FxTimer * UpdateTimer_g;
+FxTimer *UpdateTimer_g;
 
-/** 
+/**
  * @brief Send timer instance.
  */
-FxTimer * SendTimer_g;
+FxTimer *SendTimer_g;
 
 #if defined(ENABLE_SONAR)
-/** 
+/**
  * @brief Ultrasonic sensor.
  */
 HCSR04 HCSR04_g;
@@ -412,26 +412,27 @@ HCSR04 HCSR04_g;
 
 #if defined(ENABLE_PID)
 
-/** 
+/**
  * @brief Define Variables we'll be connecting to
  */
 double FBLeft_g, FBRight_g, OutLeft_g, OutRight_g;
 
-/** 
+/**
  * @brief PID regulator for left wheel.
  */
-PID * PIDLeft_g;
+PID *PIDLeft_g;
 
-/** 
+/**
  * @brief PID regulator for right wheel.
  */
-PID * PIDRight_g;
+PID *PIDRight_g;
 
 #endif // ENABLE_PID
 
 #pragma endregion
 
-void setup() {
+void setup()
+{
 
     // Init serial
     Serial.begin(DEFAULT_BAUD);
@@ -456,11 +457,10 @@ void setup() {
         PIN_R_PWM,
         WHEEL_DIAMETER,
         DISTANCE_BETWEEN_WHEELS,
-        ENCODER_TRACKS
-    };
+        ENCODER_TRACKS};
 
     // Initialize the motor controller.
-    MotorController.init( & MotorModelL);
+    MotorController.init(&MotorModelL);
 #endif // ENABLE_MOTORS
 
 #if defined(ENABLE_SONAR_SERVO)
@@ -469,8 +469,8 @@ void setup() {
 #endif // ENABLE_SONAR_SERVO
 
 #if defined(ENABLE_SONAR)
-	// Initialize the ultrasonic.
-	HCSR04_g.init(PIN_US_TRIG, PIN_US_ECHO);
+    // Initialize the ultrasonic.
+    HCSR04_g.init(PIN_US_TRIG, PIN_US_ECHO);
 #endif // ENABLE_SONAR
 
 #if defined(ENABLE_STATUS_LED)
@@ -488,42 +488,44 @@ void setup() {
 
 #if defined(ENABLE_PID)
     // Set the PID regulators.
-    PIDLeft_g = new PID( & FBLeft_g, & OutLeft_g, & PWMLeft_g, CONST_P, CONST_I, CONST_D, DIRECT);
-    PIDLeft_g -> SetMode(AUTOMATIC);
-    PIDLeft_g -> SetSampleTime(PID_UPDATE_INTERVAL_MS);
-    PIDLeft_g -> SetOutputLimits(-PWM_MAX, PWM_MAX);
+    PIDLeft_g = new PID(&FBLeft_g, &OutLeft_g, &PWMLeft_g, CONST_P, CONST_I, CONST_D, DIRECT);
+    PIDLeft_g->SetMode(AUTOMATIC);
+    PIDLeft_g->SetSampleTime(PID_UPDATE_INTERVAL_MS);
+    PIDLeft_g->SetOutputLimits(-PWM_MAX, PWM_MAX);
 
-    PIDRight_g = new PID( & FBRight_g, & OutRight_g, & PWMRight_g, CONST_P, CONST_I, CONST_D, DIRECT);
-    PIDRight_g -> SetMode(AUTOMATIC);
-    PIDRight_g -> SetSampleTime(PID_UPDATE_INTERVAL_MS);
-    PIDRight_g -> SetOutputLimits(-PWM_MAX, PWM_MAX);
+    PIDRight_g = new PID(&FBRight_g, &OutRight_g, &PWMRight_g, CONST_P, CONST_I, CONST_D, DIRECT);
+    PIDRight_g->SetMode(AUTOMATIC);
+    PIDRight_g->SetSampleTime(PID_UPDATE_INTERVAL_MS);
+    PIDRight_g->SetOutputLimits(-PWM_MAX, PWM_MAX);
 #endif // ENABLE_PID
 
     UpdateTimer_g = new FxTimer();
-    UpdateTimer_g -> setExpirationTime(UPDATE_INTERVAL_MS);
-    UpdateTimer_g -> updateLastTime();
+    UpdateTimer_g->setExpirationTime(UPDATE_INTERVAL_MS);
+    UpdateTimer_g->updateLastTime();
 
     SendTimer_g = new FxTimer();
-    SendTimer_g -> setExpirationTime(DEBUG_UPDATE_INTERVAL_MS);
-    SendTimer_g -> updateLastTime();
+    SendTimer_g->setExpirationTime(DEBUG_UPDATE_INTERVAL_MS);
+    SendTimer_g->updateLastTime();
 }
 
-void loop() {
+void loop()
+{
 
 #if defined(ENABLE_BT)
     // Read serial.
     read_bt_serial();
 #endif // ENABLE_BT
 
-    // Update the timer. 
-    UpdateTimer_g -> update();
-    if (UpdateTimer_g -> expired()) {
-        UpdateTimer_g -> updateLastTime();
-        UpdateTimer_g -> clear();
+    // Update the timer.
+    UpdateTimer_g->update();
+    if (UpdateTimer_g->expired())
+    {
+        UpdateTimer_g->updateLastTime();
+        UpdateTimer_g->clear();
 
 #if defined(ENABLE_SONAR)
-    long MicrosecL = HCSR04_g.timing();
-    Distance_g = HCSR04_g.convert(MicrosecL, HCSR04::CM);
+        long MicrosecL = HCSR04_g.timing();
+        Distance_g = HCSR04_g.convert(MicrosecL, HCSR04::CM);
 #endif // ENABLE_SONAR
 
 #if defined(ENABLE_BT)
@@ -545,17 +547,17 @@ void loop() {
 
 #if defined(ENABLE_MOTORS)
         // Set the input feedback.
-        FBLeft_g = MotorController.GetLeftMotorRPM(); // / 5.0;
+        FBLeft_g = MotorController.GetLeftMotorRPM();   // / 5.0;
         FBRight_g = MotorController.GetRightMotorRPM(); // / 5.0;
-        
+
         // Set the output from the regulator.
         MotorController.SetPWM(OutLeft_g, OutRight_g);
 #endif // ENABLE_MOTORS
 #else
-    #if defined(ENABLE_MOTORS)
+#if defined(ENABLE_MOTORS)
         // Set the PWMs to the motors.
         MotorController.SetPWM(PWMLeft_g, PWMRight_g);
-    #endif // ENABLE_MOTORS
+#endif // ENABLE_MOTORS
 #endif // ENABLE_PID
 
 #if defined(ENABLE_SONAR_SERVO)
@@ -570,10 +572,11 @@ void loop() {
 #endif // ENABLE_STATUS_LED
     }
 
-    SendTimer_g -> update();
-    if (SendTimer_g -> expired()) {
-        SendTimer_g -> updateLastTime();
-        SendTimer_g -> clear();
+    SendTimer_g->update();
+    if (SendTimer_g->expired())
+    {
+        SendTimer_g->updateLastTime();
+        SendTimer_g->clear();
 
 #if defined(ENABLE_PID)
 #if defined(ENABLE_MOTORS)
@@ -596,13 +599,13 @@ void loop() {
         Serial.print(OutLeft_g);
 #endif // ENABLE_MOTORS
 #else
-    #if defined(ENABLE_MOTORS)
+#if defined(ENABLE_MOTORS)
         Serial.print("PWMLeft_g:");
         Serial.print(PWMLeft_g);
         Serial.print(",");
         Serial.print("PWMRight_g:");
         Serial.print(PWMRight_g);
-    #endif // ENABLE_MOTORS
+#endif // ENABLE_MOTORS
 #endif // ENABLE_PID
         Serial.println();
     }
@@ -613,9 +616,10 @@ void loop() {
 #if defined(ENABLE_BT)
 /**
  * @brief Read sensors.
- * 
+ *
  */
-void send_sensors() {
+void send_sensors()
+{
     SerialBT_g.print("D");
     SerialBT_g.println(Distance_g);
     SerialBT_g.print("T");
@@ -624,30 +628,40 @@ void send_sensors() {
 
 /**
  * @brief Read bluetooth commands.
- * 
+ *
  */
-void read_bt_serial() {
-    if (Serial.available()) {
+void read_bt_serial()
+{
+    if (Serial.available())
+    {
         SerialBT_g.write(Serial.read());
     }
 
-    while (SerialBT_g.available() > 0) {
+    while (SerialBT_g.available() > 0)
+    {
         String LineL = SerialBT_g.readStringUntil('\n');
         Serial.printf("code received: %s\n", LineL);
         CmdNumPart_g = "";
-        for (int index = 0; index < LineL.length(); index++) {
+        for (int index = 0; index < LineL.length(); index++)
+        {
             int CharacterL = LineL[index];
-            if (isDigit(CharacterL)) {
-                CmdNumPart_g += (char) CharacterL;
-            } else if (CharacterL != '\n') {
+            if (isDigit(CharacterL))
+            {
+                CmdNumPart_g += (char)CharacterL;
+            }
+            else if (CharacterL != '\n')
+            {
                 RecvCmd_g = CharacterL;
-            } else {
+            }
+            else
+            {
                 break;
             }
         }
     }
 
-    switch (RecvCmd_g) {
+    switch (RecvCmd_g)
+    {
     case CMD_FORWARD:
         Direction_g = Directions_t::Forward;
         break;
@@ -676,12 +690,14 @@ void read_bt_serial() {
         LED2_g = false;
         break;
     case CMD_SERVO_J:
-        if (CmdNumPart_g != "") {
+        if (CmdNumPart_g != "")
+        {
             SonarServoPos_g = CmdNumPart_g.toInt();
         }
         break;
     case CMD_SERVO_K:
-        if (CmdNumPart_g != "") {
+        if (CmdNumPart_g != "")
+        {
             ServoKPos_g = CmdNumPart_g.toInt();
         }
         break;
@@ -692,57 +708,75 @@ void read_bt_serial() {
 #if defined(ENABLE_MOTORS)
 /**
  * @brief Update direction control.
- * 
+ *
  */
-void update_direction_control() {
-    if (Direction_g == Directions_t::Forward) {
+void update_direction_control()
+{
+    if (Direction_g == Directions_t::Forward)
+    {
         PWMLeft_g += PWM_STEP;
         PWMRight_g += PWM_STEP;
-    } else if (Direction_g == Directions_t::Backward) {
+    }
+    else if (Direction_g == Directions_t::Backward)
+    {
         PWMLeft_g -= PWM_STEP;
         PWMRight_g -= PWM_STEP;
-    } else if (Direction_g == Directions_t::LeftTurn) {
+    }
+    else if (Direction_g == Directions_t::LeftTurn)
+    {
         PWMLeft_g -= PWM_STEP;
         PWMRight_g += PWM_STEP;
-    } else if (Direction_g == Directions_t::RightTurn) {
+    }
+    else if (Direction_g == Directions_t::RightTurn)
+    {
         PWMLeft_g += PWM_STEP;
         PWMRight_g -= PWM_STEP;
-    } else if (Direction_g == Directions_t::Stop) {
+    }
+    else if (Direction_g == Directions_t::Stop)
+    {
         PWMLeft_g = 0;
         PWMRight_g = 0;
     }
 
     // Limit Left PWM.
-    if (PWMLeft_g > PWM_MAX) {
+    if (PWMLeft_g > PWM_MAX)
+    {
         PWMLeft_g = PWM_MAX;
     }
     // Limit Left PWM by absolute maximum.
-    if (PWMLeft_g > PWM_ABSOLUTE_MAX) {
+    if (PWMLeft_g > PWM_ABSOLUTE_MAX)
+    {
         PWMLeft_g = PWM_ABSOLUTE_MAX;
     }
     // Limit Left PWM.
-    if (PWMLeft_g < -PWM_MAX) {
+    if (PWMLeft_g < -PWM_MAX)
+    {
         PWMLeft_g = -PWM_MAX;
     }
     // Limit Left PWM by absolute maximum.
-    if (PWMLeft_g < -PWM_ABSOLUTE_MAX) {
+    if (PWMLeft_g < -PWM_ABSOLUTE_MAX)
+    {
         PWMLeft_g = -PWM_ABSOLUTE_MAX;
     }
 
     // Limit Right PWM.
-    if (PWMRight_g > PWM_MAX) {
+    if (PWMRight_g > PWM_MAX)
+    {
         PWMRight_g = PWM_MAX;
     }
     // Limit Right PWM by absolute maximum.
-    if (PWMRight_g > PWM_ABSOLUTE_MAX) {
+    if (PWMRight_g > PWM_ABSOLUTE_MAX)
+    {
         PWMRight_g = PWM_ABSOLUTE_MAX;
     }
     // Limit Right PWM.
-    if (PWMRight_g < -PWM_MAX) {
+    if (PWMRight_g < -PWM_MAX)
+    {
         PWMRight_g = -PWM_MAX;
     }
     // Limit Right PWM by absolute maximum.
-    if (PWMRight_g < -PWM_ABSOLUTE_MAX) {
+    if (PWMRight_g < -PWM_ABSOLUTE_MAX)
+    {
         PWMRight_g = -PWM_ABSOLUTE_MAX;
     }
 }
@@ -750,14 +784,16 @@ void update_direction_control() {
 /** @brief Interrupt Service Routine for handling left encoder.
  *  @return Void.
  */
-void ISR_Left_Encoder() {
+void ISR_Left_Encoder()
+{
     MotorController.UpdateLeftEncoder();
 }
 
 /** @brief Interrupt Service Routine for handling right encoder.
  *  @return Void.
  */
-void ISR_Right_Encoder() {
+void ISR_Right_Encoder()
+{
     MotorController.UpdateRightEncoder();
 }
 #endif // ENABLE_MOTORS

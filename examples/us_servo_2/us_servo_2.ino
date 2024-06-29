@@ -41,9 +41,9 @@ SOFTWARE.
 #elif defined(__AVR_ATmega2560__)
 #include <Servo.h>
 #elif defined(ESP8266)
-#pragma message ("Unsupported ESP8266")
+#pragma message("Unsupported ESP8266")
 #elif defined(ESP32)
-#include <ESP32Servo.h> 
+#include <ESP32Servo.h>
 #endif
 
 #include "OpenMOBot.h"
@@ -53,41 +53,41 @@ SOFTWARE.
 #pragma region Variables
 
 /**
-  * @brief Create servo object to control a servo.
-  */
+ * @brief Create servo object to control a servo.
+ */
 Servo UsServo_g;
 
 /**
-  * @brief Variable to store the servo position.
-  */
+ * @brief Variable to store the servo position.
+ */
 int ServoPosition_g = 0;
 
 /**
-  * @brief Variable to store the servo position.
-  */
+ * @brief Variable to store the servo position.
+ */
 int ServoDirection_g = 0;
 
 /**
-  * @brief StateStatusLED_g used to set the LED.
-  */
+ * @brief StateStatusLED_g used to set the LED.
+ */
 int StateStatusLED_g = LOW;
 
-/** 
+/**
  * @brief Blink timer instance.
  */
 FxTimer *BlinkTimer_g;
 
-/** 
+/**
  * @brief Send timer instance.
  */
 FxTimer *ServoSweepTimer;
 
-/** 
+/**
  * @brief Ultrasonic sensor.
  */
 HCSR04 HCSR04_g;
 
-/** 
+/**
  * @brief Ultra sonic sensor distance value.
  */
 float USDistance_g = 200;
@@ -103,8 +103,8 @@ void setup()
 
   pinMode(PIN_USER_LED, OUTPUT);
 
-	// Initialize the ultrasonic.
-	HCSR04_g.init(PIN_US_TRIG, PIN_US_ECHO);
+  // Initialize the ultrasonic.
+  HCSR04_g.init(PIN_US_TRIG, PIN_US_ECHO);
 
   BlinkTimer_g = new FxTimer();
   BlinkTimer_g->setExpirationTime(BLINK_INTERVAL);
@@ -118,7 +118,7 @@ void setup()
 void loop()
 {
   BlinkTimer_g->update();
-  if(BlinkTimer_g->expired())
+  if (BlinkTimer_g->expired())
   {
     BlinkTimer_g->updateLastTime();
     BlinkTimer_g->clear();
@@ -129,7 +129,7 @@ void loop()
   }
 
   ServoSweepTimer->update();
-  if(ServoSweepTimer->expired())
+  if (ServoSweepTimer->expired())
   {
     ServoSweepTimer->updateLastTime();
     ServoSweepTimer->clear();
@@ -141,7 +141,7 @@ void loop()
 
       if (ServoPosition_g == 180)
       {
-      // Turn the other direction.
+        // Turn the other direction.
         ServoDirection_g = 1;
       }
     }
@@ -153,7 +153,7 @@ void loop()
 
       if (ServoPosition_g == 0)
       {
-      // Turn the other direction.
+        // Turn the other direction.
         ServoDirection_g = 0;
       }
     }
@@ -164,10 +164,10 @@ void loop()
     long microsec = HCSR04_g.timing();
     USDistance_g = HCSR04_g.convert(microsec, HCSR04::CM);
 
-
     Serial.print("Distance:");
     Serial.print(USDistance_g);
     Serial.print(",");
     Serial.print("ServoPosition:");
-    Serial.println(ServoPosition_g);  }
+    Serial.println(ServoPosition_g);
+  }
 }
