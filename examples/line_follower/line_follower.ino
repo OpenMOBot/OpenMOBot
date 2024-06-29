@@ -126,7 +126,7 @@ void ISR_Right_Encoder();
 void setup()
 {
 	// Setup the motor driver.
-	MotorModel_t ModelL = {
+	MotorModel_t MotorModelL = {
 		PIN_L_F,
 		PIN_L_B,
 		PIN_L_PWM,
