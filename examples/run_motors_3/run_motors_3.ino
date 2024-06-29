@@ -30,7 +30,11 @@ SOFTWARE.
 
 #define DEBUG_OSC
 
-#define BLINK_INTERVAL 5000
+/**
+ * @brief Time interval for update blink cycle.
+ *
+ */
+#define BLINK_INTERVAL_MS 5000
 
 #pragma endregion
 
@@ -110,7 +114,7 @@ void setup()
   Serial.begin(DEFAULT_BAUD);
 
   BlinkTimer_g = new FxTimer();
-  BlinkTimer_g->setExpirationTime(BLINK_INTERVAL);
+  BlinkTimer_g->setExpirationTime(BLINK_INTERVAL_MS);
   BlinkTimer_g->updateLastTime();
 
   SendTimer_g = new FxTimer();

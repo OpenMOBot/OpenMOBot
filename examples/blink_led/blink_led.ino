@@ -30,7 +30,11 @@ SOFTWARE.
 
 #define DEBUG_OSC
 
-#define BLINK_INTERVAL 500
+/**
+ * @brief Time interval for update blink cycle.
+ *
+ */
+#define BLINK_INTERVAL_MS 500
 
 #pragma endregion
 
@@ -68,7 +72,7 @@ void setup()
 
   // Setup the blink timer.
   BlinkTimer_g = new FxTimer();
-  BlinkTimer_g->setExpirationTime(BLINK_INTERVAL);
+  BlinkTimer_g->setExpirationTime(BLINK_INTERVAL_MS);
   BlinkTimer_g->updateLastTime();
 }
 

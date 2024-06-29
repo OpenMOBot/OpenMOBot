@@ -30,7 +30,11 @@ SOFTWARE.
 
 #define DEBUG_OSC
 
-#define BLINK_INTERVAL 100
+/**
+ * @brief Time interval for update blink cycle.
+ *
+ */
+#define BLINK_INTERVAL_MS 100
 
 #pragma endregion
 
