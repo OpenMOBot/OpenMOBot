@@ -65,7 +65,7 @@ SOFTWARE.
 #define PWM_MAX 255
 
 #if defined(ARDUINO) && ARDUINO >= 100
-#include "arduino.h"
+#include "Arduino.h"
 #else
 #include "WProgram.h"
 #endif
