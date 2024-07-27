@@ -138,7 +138,7 @@ void setup()
 		ENCODER_TRACKS};
 
 	// Initialize the motor controller.
-	MotorController.init(&ModelL);
+	MotorController.init(&MotorModelL);
 	// Attach the Interrupts to their ISR's
 	// Increase counter 1 when speed sensor pin goes High.
 	attachInterrupt(digitalPinToInterrupt(PIN_LEFT_ENCODER), ISR_Left_Encoder, RISING);
