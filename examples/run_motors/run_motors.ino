@@ -124,7 +124,7 @@ void setup()
       ENCODER_TRACKS};
 
   // Initialize the motor controller.
-  MotorController.init(&ModelL);
+  MotorController.init(&MotorModelL);
 }
 
 void loop()
