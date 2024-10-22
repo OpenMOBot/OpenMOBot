@@ -24,6 +24,13 @@ SOFTWARE.
 
 */
 
+/*
+    Mobile Application
+    Name: Arduino Car
+    URL: https://play.google.com/store/apps/details?id=com.electro_tex.bluetoothcar
+    Note: Switch the controller to bluetooth mode.
+ */
+
 #pragma region Definitions
 
 /**
