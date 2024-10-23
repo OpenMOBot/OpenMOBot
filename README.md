@@ -91,6 +91,35 @@ Unfortunately, because it is an educational and a 'hobby' robot, this example on
 As of this date (2023 5-th of November), this is the last example provided.
 We believe that you as an enthusiast will begin writing your application using our API. After all, it is your turn to show to yourself what you can do with this robot. <u>The example will provide a line following functionality.</u>
 
+# Custom Things
+
+### Pin definitons
+
+The actual definitions can be seen in the [following file](https://github.com/OpenMOBot/OpenMOBot/blob/main/src/OpenMOBot.h) @ lines 47 to 238
+
+| Definition | ATmega328p (Uno) | ATmega2560 (Mega) | ESP32 (D1 R32) |
+|----------|:-------------|:------|:------|
+| PIN_LS_1 | A0 | 8 | 2 |
+| PIN_LS_2 | A1 | 9 | 4 |
+| PIN_LS_3 | A2 | 10 | 35 |
+| PIN_LS_4 | A3 | 11 | 34 |
+| PIN_LS_5 | A4 | 12 | 36 |
+| PIN_LS_6 | A5 | 13 | 39 |
+| PIN_LS_7 | - | 14 | - |
+| PIN_LS_8 | - | 15 | - |
+| PIN_LEFT_ENCODER | 3 | 3 | 25 |
+| PIN_RIGHT_ENCODER | 2 | 2 | 26 |
+| PIN_L_F | 7 | 7 | 27 |
+| PIN_L_B | 6 | 6 | 14 |
+| PIN_L_PWM | 10 | 10 | 5 |
+| PIN_R_F | 5 | 5 | 17 |
+| PIN_R_B | 4 | 4 | 16 |
+| PIN_R_PWM | 9 | 9 | 13 |
+| PIN_US_SERVO | 11 | 11 | 23 |
+| PIN_USER_LED | 13 | 13 | 18 |
+| PIN_US_TRIG | 8 |  | 12 |
+| PIN_US_ECHO | 12 |  | 19 |
+
 # Contributing
 
 If you'd like to contribute to this project, please follow these steps:
