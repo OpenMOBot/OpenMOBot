@@ -113,28 +113,28 @@ SOFTWARE.
 #define LINE_SENSORS_COUNT 8
 
 /** @brief Pin line sensor 1. */
-#define PIN_LS_1 8
+#define PIN_LS_1 A8
 
 /** @brief Pin line sensor 2. */
-#define PIN_LS_2 9
+#define PIN_LS_2 A9
 
 /** @brief Pin line sensor 3. */
-#define PIN_LS_3 10
+#define PIN_LS_3 A10
 
 /** @brief Pin line sensor 4. */
-#define PIN_LS_4 11
+#define PIN_LS_4 A11
 
 /** @brief Pin line sensor 5. */
-#define PIN_LS_5 12
+#define PIN_LS_5 A12
 
 /** @brief Pin line sensor 6. */
-#define PIN_LS_6 13
+#define PIN_LS_6 A13
 
 /** @brief Pin line sensor 7. */
-#define PIN_LS_7 14
+#define PIN_LS_7 A14
 
 /** @brief Pin line sensor 8. */
-#define PIN_LS_8 15
+#define PIN_LS_8 A15
 
 /** @brief Pin left encoder. */
 #define PIN_LEFT_ENCODER 2
@@ -165,6 +165,12 @@ SOFTWARE.
 
 /** @brief Pin user LED */
 #define PIN_USER_LED 13
+
+/** @brief Pin ultra sonic trigger. */
+#define PIN_US_TRIG 8
+
+/** @brief Pin ultra sonic echo. */
+#define PIN_US_ECHO 12
 
 // Check the microcontroller type
 #elif defined(ESP8266)

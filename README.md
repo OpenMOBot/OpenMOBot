@@ -99,14 +99,14 @@ The actual definitions can be seen in the [following file](https://github.com/Op
 
 | Definition | ATmega328p (Uno) | ATmega2560 (Mega) | ESP32 (D1 R32) |
 |----------|:-------------|:------|:------|
-| PIN_LS_1 | A0 | 8 | 2 |
-| PIN_LS_2 | A1 | 9 | 4 |
-| PIN_LS_3 | A2 | 10 | 35 |
-| PIN_LS_4 | A3 | 11 | 34 |
-| PIN_LS_5 | A4 | 12 | 36 |
-| PIN_LS_6 | A5 | 13 | 39 |
-| PIN_LS_7 | - | 14 | - |
-| PIN_LS_8 | - | 15 | - |
+| PIN_LS_1 | A0 | A8 | 2 |
+| PIN_LS_2 | A1 | A9 | 4 |
+| PIN_LS_3 | A2 | A10 | 35 |
+| PIN_LS_4 | A3 | A11 | 34 |
+| PIN_LS_5 | A4 | A12 | 36 |
+| PIN_LS_6 | A5 | A13 | 39 |
+| PIN_LS_7 | - | A14 | - |
+| PIN_LS_8 | - | A15 | - |
 | PIN_LEFT_ENCODER | 2 | 2 | 26 |
 | PIN_RIGHT_ENCODER | 3 | 3 | 25 |
 | PIN_L_F | 7 | 7 | 27 |
@@ -117,8 +117,8 @@ The actual definitions can be seen in the [following file](https://github.com/Op
 | PIN_R_PWM | 9 | 9 | 13 |
 | PIN_US_SERVO | 11 | 11 | 23 |
 | PIN_USER_LED | 13 | 13 | 18 |
-| PIN_US_TRIG | 8 |  | 12 |
-| PIN_US_ECHO | 12 |  | 19 |
+| PIN_US_TRIG | 8 | 8 | 12 |
+| PIN_US_ECHO | 12 | 12 | 19 |
 
 # Contributing
 
