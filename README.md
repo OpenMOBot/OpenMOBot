@@ -15,7 +15,7 @@ The system provides modular robotics hardware that can be separated on a modular
 
 In this section, we will describe, through a schematic diagram, how the electrical connections of the robot are made.
 
-![](https://raw.githubusercontent.com/OpenMOBot/OpenMOBot/development/schematic/OpenBotSchematic.png)
+![](https://raw.githubusercontent.com/OpenMOBot/OpenMOBot/development/schematic/OpenMOBot_png.png)
 
 ### Installing the Arduino library
  - Go to the [main branch](https://github.com/OpenMOBot/OpenMOBot).
