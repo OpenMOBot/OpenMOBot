@@ -107,8 +107,8 @@ The actual definitions can be seen in the [following file](https://github.com/Op
 | PIN_LS_6 | A5 | 13 | 39 |
 | PIN_LS_7 | - | 14 | - |
 | PIN_LS_8 | - | 15 | - |
-| PIN_LEFT_ENCODER | 3 | 3 | 25 |
-| PIN_RIGHT_ENCODER | 2 | 2 | 26 |
+| PIN_LEFT_ENCODER | 2 | 2 | 26 |
+| PIN_RIGHT_ENCODER | 3 | 3 | 25 |
 | PIN_L_F | 7 | 7 | 27 |
 | PIN_L_B | 6 | 6 | 14 |
 | PIN_L_PWM | 10 | 10 | 5 |
